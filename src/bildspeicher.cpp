@@ -205,9 +205,9 @@ void Bildspeicher::zeichne_bsh_bild(bsh_bild_t *bild, int x, int y, int ausricht
     x -= bild->breite / 2;
     y -= bild->hoehe;
   }
-  if (x >= (int)this->breite || y >= (int)this->hoehe || x + bild->breite < 0 || y + bild->hoehe < 0)
+  if (x >= (int)this->breite || y >= (int)this->hoehe || x + (int)bild->breite < 0 || y + (int)bild->hoehe < 0)
     return;
-  if ((x < 0) || (y < 0) || (x + bild->breite > this->breite) || (y + bild->hoehe > this->hoehe))
+  if ((x < 0) || (y < 0) || (x + (int)bild->breite > (int)this->breite) || (y + (int)bild->hoehe > (int)this->hoehe))
     zeichne_bsh_bild_partiell(bild, x, y);
   else
     zeichne_bsh_bild_ganz(bild, x, y);
