@@ -1,0 +1,28 @@
+Warencodes
+==========
+
+Code   | Ware
+-------|--------------
+0x0961 | Eisenerz
+0x0965 | Gold
+0x05e1 | Wolle
+0x05e7 | Zuckerrohr
+0x05e3 | Tabak
+0x05e9 | Schlachtvieh
+0x05df | Weizen
+0x01f5 | Mehl
+0x0209 | Eisen
+0x0205 | Schwerter
+0x0211 | Musketen
+0x020f | Kanonen
+0x0433 | Nahrung
+0x020d | Tabakwaren
+0x05dd | Gewürze
+0x05e5 | Kakao
+0x0207 | Alkohol
+0x01fb | Stoffe
+0x01f9 | Kleidung
+0x0215 | Schmuck
+0x0203 | Werkzeug
+0x07d1 | Holz
+0x0201 | Steine
