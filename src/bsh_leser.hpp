@@ -33,6 +33,10 @@ typedef struct
 class Bsh_leser
 {
   boost::iostreams::mapped_file_source bsh;
+  uint32_t anzahl_bilder;
+  uint32_t *bilderindex;
+  
+  bool ist_bild_fehlerfrei(uint32_t index);
   
 public:
   Bsh_leser(std::string pfadname);
