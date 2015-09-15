@@ -156,8 +156,9 @@ struct Werft // 24 bytes
 struct Militar // 112 bytes
 {
   uint8_t inselnummer;
-  //uint8_t
-  
+  uint8_t x_pos; //Vermutung
+  uint8_t y_pos;
+  uint8_t unbekannt[109];
 } __attribute__((packed));
 
 struct Stadt // 168 bytes
@@ -289,8 +290,8 @@ struct Ship // 436 bytes
 
 struct Soldat // 68 bytes
 {
-  uint16_t x_pos_8;     ///< X-Position auf der Insel in 1/8 Feldern (?)
-  uint16_t y_pos_8;     ///< Y-Position auf der Insel in 1/8 Feldern (?)
+  uint16_t x_pos_2;     ///< X-Position auf der Karte in 1/2 Feldern
+  uint16_t y_pos_2;     ///< Y-Position auf der Karte in 1/2 Feldern
   uint8_t typ_a; // 0x40, 0x80
   uint8_t typ_b; // 0x01, 0x02
   uint8_t typ_c; // 0x01, 0x02, 0x05, 0x06, 0x0f
