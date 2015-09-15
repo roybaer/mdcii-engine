@@ -48,71 +48,52 @@ Bildspeicher::~Bildspeicher()
 
 void Bildspeicher::zeichne_bsh_bild_ganz(bsh_bild_t *bild, int x, int y)
 {
-  int u = 0;
-  int v = 0;
-  int i = 0;
-  unsigned char ch;
-  int laenge = bild->laenge - 16;
+  uint8_t ch;
+  uint8_t *quelle = bild->puffer;
+  uint8_t *zielzeile;
+  uint8_t *ziel;
   
   if (this->format == 1)
   {
-    while ((i < laenge) && ((ch = bild->puffer[i++]) != 0xff))
+    ziel = zielzeile = this->puffer + y * this->breite + x;
+    int restbreite = this->breite;
+    
+    while ((ch = *(quelle++)) != 0xff)
     {
       if (ch == 0xfe)
       {
-	u = 0;
-	v++;
-	if (v == bild->hoehe)
-	  return;
+	ziel = zielzeile += restbreite;
       }
       else
       {
-	if (ch > bild->breite - u)
-	  return;
-	u += ch;
+	ziel += ch;
 	
-	if (i >= laenge)
-	  return;
-	ch = bild->puffer[i++];
-	if (ch > laenge - i)
-	  return;
-	if (ch > bild->breite - u)
-	  return;
-	for (; ch > 0; ch--, u++)
-	  this->puffer[(y + v) * this->breite + x + u] = bild->puffer[i++];
+	for (ch = *(quelle++); ch > 0; ch--)
+	  *(ziel++) = *(quelle++);
       }
     }
   }
   else if (this->format == 3)
   {
-    while ((i < laenge) && ((ch = bild->puffer[i++]) != 0xff))
+    ziel = zielzeile = this->puffer + (y * this->breite + x) * 3;
+    int restbreite = this->breite * 3;
+    
+    while ((ch = *(quelle++)) != 0xff)
     {
       if (ch == 0xfe)
       {
-	u = 0;
-	v++;
-	if (v == bild->hoehe)
-	  return;
+	ziel = zielzeile += restbreite;
       }
       else
       {
-	if (ch > bild->breite - u)
-	  return;
-	u += ch;
+	ziel += ((int)ch) * 3;
 	
-	if (i >= laenge)
-	  return;
-	ch = bild->puffer[i++];
-	if (ch > laenge - i)
-	  return;
-	if (ch > bild->breite - u)
-	  return;
-	for (; ch > 0; ch--, u++)
+	for (ch = *(quelle++); ch > 0; ch--)
 	{
-	  unsigned char a = bild->puffer[i++];
-	  this->puffer[((y + v) * this->breite + x + u) * 3] = palette[a * 3];
-	  this->puffer[((y + v) * this->breite + x + u) * 3 + 1] = palette[a * 3 + 1];
-	  this->puffer[((y + v) * this->breite + x + u) * 3 + 2] = palette[a * 3 + 2];
+	  int index = ((int)*(quelle++)) * 3;
+	  *(ziel++) = palette[index++];
+	  *(ziel++) = palette[index++];
+	  *(ziel++) = palette[index];
 	}
       }
     }
@@ -125,63 +106,105 @@ void Bildspeicher::zeichne_bsh_bild_partiell(bsh_bild_t *bild, int x, int y)
   int v = 0;
   int i = 0;
   unsigned char ch;
-  int laenge = bild->laenge - 16;
   
   if (this->format == 1)
   {
-    while ((i < laenge) && ((ch = bild->puffer[i++]) != 0xff))
+    uint8_t *quelle = bild->puffer;
+    uint8_t *zielzeile;
+    uint8_t *ziel = zielzeile = this->puffer + y * (int)this->breite + x;
+    int restbreite = this->breite;
+    
+    if (x >= 0 && x + bild->breite < this->breite)
     {
-      if (ch == 0xfe)
+      uint8_t *anfang = this->puffer;
+      uint8_t *ende = this->puffer + this->breite * this->hoehe;
+      
+      while (ziel < anfang)
       {
-	u = 0;
-	v++;
-	if (v == bild->hoehe)
+	ch = *(quelle++);
+	if (ch == 0xff)
 	  return;
+	if (ch == 0xfe)
+	{
+	  ziel = zielzeile += restbreite;
+	  if (ziel >= ende)
+	    return;
+	}
+	else
+	{
+	  ziel += ch;
+	  
+	  ch = *(quelle++);
+	  quelle += ch;
+	  ziel += ch;
+	}
       }
-      else
+      while ((ch = *(quelle++)) != 0xff)
       {
-	if (ch > bild->breite - u)
-	  return;
-	u += ch;
-	
-	if (i >= laenge)
-	  return;
-	ch = bild->puffer[i++];
-	if (ch > laenge - i)
-	  return;
-	if (ch > bild->breite - u)
-	  return;
-	for (; ch > 0; ch--, u++, i++)
-	  if (y + v >= 0 && y + v < this->hoehe && x + u >= 0 && x + u < this->breite)
-	    this->puffer[(y + v) * this->breite + x + u] = bild->puffer[i];
+	if (ch == 0xfe)
+	{
+	  ziel = zielzeile += restbreite;
+	  if (ziel >= ende)
+	    return;
+	}
+	else
+	{
+	  ziel += ch;
+	  
+	  for (ch = *(quelle++); ch > 0; ch--)
+	    *(ziel++) = *(quelle++);
+	}
+      }
+    }
+    else
+    {
+      while ((ch = *(quelle++)) != 0xff)
+      {
+	if (ch == 0xfe)
+	{
+	  ziel = zielzeile += restbreite;
+	  u = 0;
+	  v++;
+	  if (y + v >= (int)this->hoehe)
+	    return;
+	}
+	else
+	{
+	  u += ch;
+	  ziel += ch;
+	  
+	  ch = *(quelle++);
+	  if (y + v >= 0 || x + u + ch > 0 || x + u + ch < this->breite)
+	  {
+	    for (; ch > 0; ch--, u++, quelle++, ziel++)
+	      if (x + u >= 0 && x + u < this->breite)
+		*ziel = *quelle;
+	  }
+	  else
+	  {
+	    u += ch;
+	    quelle += ch;
+	    ziel += ch;
+	    ch = 0;
+	  }
+	}
       }
     }
   }
   else if (this->format == 3)
   {
-    while ((i < laenge) && ((ch = bild->puffer[i++]) != 0xff))
+    while ((ch = bild->puffer[i++]) != 0xff)
     {
       if (ch == 0xfe)
       {
 	u = 0;
 	v++;
-	if (v == bild->hoehe)
-	  return;
       }
       else
       {
-	if (ch > bild->breite - u)
-	  return;
 	u += ch;
 	
-	if (i >= laenge)
-	  return;
-	ch = bild->puffer[i++];
-	if (ch > laenge - i)
-	  return;
-	if (ch > bild->breite - u)
-	  return;
-	for (; ch > 0; ch--, u++, i++)
+	for (ch = bild->puffer[i++]; ch > 0; ch--, u++, i++)
 	{
 	  if (y + v >= 0 && y + v < this->hoehe && x + u >= 0 && x + u < this->breite)
 	  {
