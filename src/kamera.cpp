@@ -53,9 +53,9 @@ Kamera::Kamera()
   ship_bsh[1] = new Bsh_leser(MGFX + "SHIP.BSH");
   ship_bsh[2] = new Bsh_leser(GFX + "SHIP.BSH");
   
-//   soldat_bsh[0] = new Bsh_leser(SGFX + "soldat.bsh");
-//   soldat_bsh[1] = new Bsh_leser(MGFX + "SOLDAT.BSH");
-//   soldat_bsh[2] = new Bsh_leser(GFX + "SOLDAT.BSH");
+  soldat_bsh[0] = new Bsh_leser(SGFX + "soldat.bsh");
+  soldat_bsh[1] = new Bsh_leser(MGFX + "SOLDAT.BSH");
+  soldat_bsh[2] = new Bsh_leser(GFX + "SOLDAT.BSH");
   
   stadtfld_bsh[0] = new Bsh_leser(SGFX + "stadtfld.bsh");
   stadtfld_bsh[1] = new Bsh_leser(MGFX + "STADTFLD.BSH");
@@ -226,6 +226,49 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	bs.zeichne_bsh_bild(bsh, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] + bs.hoehe / 2, 1);
 	bsh_bild_t *flagge = ship_bsh[vergroesserung]->gib_bsh_bild(192 + (schiff->spieler - 1) * 8);
 	bs.zeichne_bsh_bild(flagge, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] + bs.hoehe / 2, 1);
+      }
+      
+      for (Soldat *soldat : welt.soldaten)
+      {
+	int index = 0;
+	if (soldat->typ == 1)
+	  index = 0;
+	else if (soldat->typ == 2)
+	  index = 280;
+	else if (soldat->typ == 3)
+	  index = 560;
+	else if (soldat->typ == 4)
+	  index = 840;
+	else if (soldat->typ == 5)
+	  index = 1120;
+	else if (soldat->typ == 6)
+	  index = 1424;
+	else if (soldat->typ == 7)
+	  index = 1728;
+	else if (soldat->typ == 8)
+	  index = 2032;
+	else if (soldat->typ == 13)
+	  index = 2336;
+	else if (soldat->typ == 14)
+	  index = 2552;
+	else if (soldat->typ == 15)
+	  index = 2768;
+	else if (soldat->typ == 16)
+	  index = 2984;
+	else if (soldat->typ == 9)
+	  index = 3200;
+	else if (soldat->typ == 10)
+	  index = 3336;
+	else if (soldat->typ == 11)
+	  index = 3472;
+	else if (soldat->typ == 12)
+	  index = 3608;
+	else if (soldat->typ == 33)
+	  index = 3744;
+	bsh_bild_t *bsh = soldat_bsh[vergroesserung]->gib_bsh_bild(index + soldat->richtung * 8);  // FIXME
+	int x_auf_karte = soldat->x_pos_2 / 2 - xpos;
+	int y_auf_karte = soldat->y_pos_2 / 2 - ypos;
+	bs.zeichne_bsh_bild(bsh, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] - grundhoehe[vergroesserung] + bs.hoehe / 2, 1);
       }
       
     }

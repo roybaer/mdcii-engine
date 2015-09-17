@@ -35,6 +35,7 @@ public:
   std::vector<Insel *> inseln;
   std::vector<Kontor *> kontore;
   std::vector<Ship *> schiffe;
+  std::vector<Soldat *> soldaten;
   Welt(std::istream& f);
   void simulationsschritt();
   void feld_an_pos(feld_t& feld, int x, int y);

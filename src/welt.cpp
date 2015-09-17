@@ -43,6 +43,11 @@ Welt::Welt(std::istream& f)
       for (int j = 0; j < (*i)->laenge / sizeof(Ship); j++)
 	schiffe.push_back(new Ship((Ship&)(*i)->daten[j * sizeof(Ship)]));
     }
+    else if (strcmp((*i)->kennung, soldat3_kennung) == 0)
+    {
+      for (int j = 0; j < (*i)->laenge / sizeof(Soldat); j++)
+	soldaten.push_back(new Soldat((Soldat&)(*i)->daten[j * sizeof(Soldat)]));
+    }
     i++;
   }
 }
