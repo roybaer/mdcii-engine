@@ -12,3 +12,6 @@ target_link_libraries(weltbmp boost_iostreams)
 
 add_executable(sdltest sdltest.cpp bildspeicher.cpp block.cpp bsh_leser.cpp grafikinfo.cpp insel.cpp stadtfld_bsh.cpp strukturen.cpp welt.cpp kamera.cpp)
 target_link_libraries(sdltest SDL boost_iostreams)
+
+add_executable(bshdump bshdump.cpp bildspeicher.cpp bsh_leser.cpp)
+target_link_libraries(bshdump boost_iostreams)
