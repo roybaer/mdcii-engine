@@ -187,12 +187,12 @@ struct Kontor // 1004 bytes
 struct Markt_intern // 16 bytes
 {
   uint16_t a; //unbekannt
-  uint16_t b; //0x0000
+  uint16_t b; //0x0000, 0x0001, 0x0002, 0x0004 (im gleichen Markt kombinierbar)
   uint16_t c; //unbekannt
   uint16_t d; //0x0000
   uint32_t e; //0x00000000
   uint16_t f; //Ware: 0x3304 0x0d02 0xdd05 0xe505 0x0702 0xfb01 0xf901 0x1502 0x0302 0xd107 0x0102
-  uint8_t g;  //0x00 oder 0x80
+  uint8_t g;  //0x00 oder 0x80, manchmal 0x66 oder 0x50
   uint8_t h;  //0x00
 } __attribute__((packed));
 
@@ -206,9 +206,21 @@ struct Markt // 260 bytes
 
 struct Player // 1072 bytes
 {
-  int32_t kontostand;   ///< Kontostand dieses Spielers
-  uint8_t unbekannt[956];
-  char name[112];       ///< Name dieses Spielers
+  int32_t kontostand;           ///< Kontostand dieses Spielers
+  uint8_t b;
+  uint8_t spieler;              ///< Spielernummer? (0 bis 3)
+  uint8_t c;
+  uint8_t farbe;                ///< Spielerfarbe? (0 bis 3)
+  uint8_t unbekannt1[8];
+  uint32_t a; // Anzahl besiegter Spieler?
+  uint16_t soldaten_besiegt;    ///< Anzahl Soldaten, die dieser Spieler besiegt hat
+  uint16_t soldaten_gefallen;   ///< Anzahl gefallener Soldaten
+  uint16_t schiffe_gesunken;    ///< Anzahl gesunkener Schiffe
+  uint16_t schiffe_versenkt;    ///< Anzahl Schiffe, die dieser Spieler versenkt hat
+  uint8_t unbekannt2[28];
+  uint16_t zufriedenheit;       ///< Zufriedenheit der Bevölkerung (Anzahl Denkmäler)
+  uint8_t unbekannt3[902];
+  char name[112];               ///< Name dieses Spielers
 } __attribute__((packed));
 
 struct Auftrag // 1684
@@ -292,20 +304,24 @@ struct Soldat // 68 bytes
 {
   uint16_t x_pos_2;     ///< X-Position auf der Karte in 1/2 Feldern
   uint16_t y_pos_2;     ///< Y-Position auf der Karte in 1/2 Feldern
-  uint8_t typ_a; // 0x40, 0x80
-  uint8_t typ_b; // 0x01, 0x02
-  uint8_t typ_c; // 0x01, 0x02, 0x05, 0x06, 0x0f
-  uint8_t typ_d; // 0x00
+  uint16_t lp;          ///< Zustand (Lebenspunkte) der Einheit, z.B. 0x0240, 0x0280, 0x01e0, 0x0180
+  uint16_t typ;         ///< Typ und Uniformfarbe. 1-4: Infanterist, 5-8: Kavallerist, 9-12: Musketier, 13-16: Kanonier, 33: Eingeborener
   uint16_t id;          ///< ID (fortlaufend nummeriert)
-  uint8_t b; // 0x33, 0x34, 0x38
-  uint8_t inselnummer;
-  uint16_t c;
+  uint8_t kurs1[4]; // Byte1: 0x33, 0x34, 0x38
   uint16_t d; // 0x0000
   uint16_t e; // 0x0000
   uint8_t f; // 0x00
-  uint8_t inselnummer2;
-  
-  uint8_t unbekannt[48];
+  uint8_t unbekannt1; // Nicht die Inselnummer
+  uint8_t unbekannt2[4];
+  uint8_t spieler;      ///< Spieler, dem die Einheit gehört (0 bis 3 bzw. 6 für Eingeborene)
+  uint8_t h; // 1, 4, 5, 6, 7
+  uint8_t i; // 0x2d (45)
+  uint8_t richtung;     ///< Gegenwärtige Blickrichtung (0 bis 7)
+  uint8_t leer1;
+  uint8_t patrouille;   ///< Einheit ist auf Patrouille (0 = nein, 1 = ja)
+  uint8_t kurs2[4];     ///< 4 Bytes Kurs
+  uint8_t kurs3[4];     ///< 4 Bytes Kurs
+  uint8_t leer[30];     ///< Füllbytes
 };
 
 struct Turm // 36 bytes
