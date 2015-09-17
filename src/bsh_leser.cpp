@@ -133,3 +133,8 @@ bool Bsh_leser::ist_bild_fehlerfrei(uint32_t index)
   }
   return false;
 }
+
+uint32_t Bsh_leser::anzahl()
+{
+  return anzahl_bilder;
+}

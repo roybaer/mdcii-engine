@@ -41,6 +41,7 @@ class Bsh_leser
 public:
   Bsh_leser(std::string pfadname);
   bsh_bild_t *gib_bsh_bild(uint32_t index);
+  uint32_t anzahl();
 };
 
 

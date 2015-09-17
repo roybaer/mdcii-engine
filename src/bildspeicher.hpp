@@ -38,8 +38,9 @@ public:
   Bildspeicher(uint32_t breite, uint32_t hoehe, uint32_t format = 1, uint32_t farbe = 0, uint8_t *puffer = NULL);
   ~Bildspeicher();
   void zeichne_bsh_bild(bsh_bild_t *bild, int x, int y, int ausrichtung);
-  void exportiere_pnm(char *pfadname);
-  void exportiere_bmp(char *pfadname);
+  void exportiere_pnm(const char *pfadname);
+  void exportiere_bmp(const char *pfadname);
+  void bild_loeschen();
 };
 
 #endif

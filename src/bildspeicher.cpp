@@ -236,7 +236,7 @@ void Bildspeicher::zeichne_bsh_bild(bsh_bild_t *bild, int x, int y, int ausricht
     zeichne_bsh_bild_ganz(bild, x, y);
 }
 
-void Bildspeicher::exportiere_pnm(char* pfadname)
+void Bildspeicher::exportiere_pnm(const char* pfadname)
 {
   std::ofstream pnm;
   pnm.open(pfadname);
@@ -248,7 +248,7 @@ void Bildspeicher::exportiere_pnm(char* pfadname)
   pnm.close();
 }
 
-void Bildspeicher::exportiere_bmp(char* pfadname)
+void Bildspeicher::exportiere_bmp(const char* pfadname)
 {
   if (format != 1)
     return;
@@ -287,4 +287,22 @@ void Bildspeicher::exportiere_bmp(char* pfadname)
   for (i = hoehe - 1; i >= 0; i--)
     bmp.write((char*)&puffer[breite * i], breite);
   bmp.close();
+}
+
+void Bildspeicher::bild_loeschen()
+{
+  if (format == 1)
+  {
+    for (int i = 0; i < breite * hoehe; i++)
+      puffer[i] = farbe;
+  }
+  else if (format == 3)
+  {
+    for (int i = 0; i < breite * hoehe * 3; i += 3)
+    {
+      puffer[i] = farbe;
+      puffer[i + 1] = farbe >> 8;
+      puffer[i + 2] = farbe >> 16;
+    }
+  }
 }
