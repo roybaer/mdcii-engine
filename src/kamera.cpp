@@ -86,9 +86,21 @@ void Kamera::nach_links()
       if (ypos < KARTENHOEHE - 1)
 	ypos++;
       break;
+    case 1:
+      if (xpos < KARTENBREITE - 1)
+	xpos++;
+      if (ypos < KARTENHOEHE - 1)
+	ypos++;
+      break;
     case 2:
       if (xpos < KARTENBREITE - 1)
 	xpos++;
+      if (ypos > 0)
+	ypos--;
+      break;
+    case 3:
+      if (xpos > 0)
+	xpos--;
       if (ypos > 0)
 	ypos--;
       break;
@@ -105,9 +117,21 @@ void Kamera::nach_rechts()
       if (ypos > 0)
 	ypos--;
       break;
+    case 1:
+      if (xpos > 0)
+	xpos--;
+      if (ypos > 0)
+	ypos--;
+      break;
     case 2:
       if (xpos > 0)
 	xpos--;
+      if (ypos < KARTENHOEHE - 1)
+	ypos++;
+      break;
+    case 3:
+      if (xpos < KARTENBREITE - 1)
+	xpos++;
       if (ypos < KARTENHOEHE - 1)
 	ypos++;
       break;
@@ -124,11 +148,23 @@ void Kamera::nach_oben()
       if (ypos > 0)
 	ypos--;
       break;
+    case 1:
+      if (xpos > 0)
+	xpos--;
+      if (ypos < KARTENHOEHE - 1)
+	ypos++;
+      break;
     case 2:
       if (xpos < KARTENBREITE - 1)
 	xpos++;
       if (ypos < KARTENHOEHE - 1)
 	ypos++;
+      break;
+    case 3:
+      if (xpos < KARTENBREITE - 1)
+	xpos++;
+      if (ypos > 0)
+	ypos--;
       break;
   }
 }
@@ -143,11 +179,23 @@ void Kamera::nach_unten()
       if (ypos < KARTENHOEHE - 1)
 	ypos++;
       break;
+    case 1:
+      if (xpos < KARTENBREITE - 1)
+	xpos++;
+      if (ypos > 0)
+	ypos--;
+      break;
     case 2:
       if (xpos > 0)
 	xpos--;
       if (ypos > 0)
 	ypos--;
+      break;
+    case 3:
+      if (xpos > 0)
+	xpos--;
+      if (ypos < KARTENHOEHE - 1)
+	ypos++;
       break;
   }
 }

@@ -133,6 +133,14 @@ int main(int argc, char **argv)
 	{
 	  kamera.setze_vergroesserung(2);
 	}
+	if (e.key.keysym.sym == SDLK_x)
+	{
+	  kamera.rechts_drehen();
+	}
+	if (e.key.keysym.sym == SDLK_y)
+	{
+	  kamera.links_drehen();
+	}
 	break;
     }
   }
