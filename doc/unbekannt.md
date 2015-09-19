@@ -1,10 +1,6 @@
 Fehlende Informationen
 ======================
 
-Inseln
-------
-Was wächst wie gut auf der Insel?
-
 Schiffe
 -------
 - Weiße Flagge
@@ -18,12 +14,7 @@ Schiffe
 
 Werft
 -----
-- Im Bau befindlicher Schiffstyp
-- Fortschritt
-- Lagerstand Holz
-- Lagerstand Stoffe
-- Hat Auftrag
-- Ist stillgelegt
+- Lagerstand Stoffe (wird offenbar nicht mitgespeichert)
 - Hat Rohstoffmangel
 - Auslastung?
 - Lebenspunkte?
@@ -44,6 +35,6 @@ Player
 
 Soldat
 ------
-- Lebenspunkte
-- Typ
+- Formation
+- Ist auf Schiff
 - ...

@@ -48,9 +48,12 @@ struct Ware// 20 bytes
   uint8_t einkaufswert;
   uint16_t einheit;
   uint32_t unbekannt; // i.d.R. 0, einmal 0x80
-  uint32_t lagerstand_soll;
-  uint32_t lagerstand_ist;
-  uint32_t ware; //0x6109 0x6509 0xe105 0xe705 0xe305 0xe905 0xdf05 0xf501 0x0902 0x0502 0x1102 0x0f02 0x3304 0x0d02 0xdd05 0xe505 0x0702 0xfb01 0xf901 0x1502 0x0302 0xd107 0x0102
+  uint16_t leer1;
+  uint16_t lagerstand_soll;
+  uint16_t lagerstand_ist;
+  uint16_t leer2;
+  uint16_t ware; //0x6109 0x6509 0xe105 0xe705 0xe305 0xe905 0xdf05 0xf501 0x0902 0x0502 0x1102 0x0f02 0x3304 0x0d02 0xdd05 0xe505 0x0702 0xfb01 0xf901 0x1502 0x0302 0xd107 0x0102
+  uint16_t leer3;
 } __attribute__((packed));
 
 
@@ -125,19 +128,20 @@ struct Prodlist // 24 bytes
   uint8_t inselnummer;      ///< Insel, auf der dieser Betrieb steht
   uint8_t x_pos;            ///< X-Position auf der Insel
   uint8_t y_pos;            ///< Y-Position auf der Insel
-  uint8_t b; // 0x00
-  uint8_t c; // 0x07, 0x05, 0x00 irgendetwas, pro prodlist konstant
-  uint16_t produkt;         ///< Das von diesem Betrieb hergestellte Produkt
-  uint8_t d; // 0x00
-  uint16_t warteschritt; //? 0x00 bis 0x17
-  uint16_t rohstoff2;       ///< Der zweite Rohstoff dieses Betriebes
-  uint16_t rohstoff;        ///< Der erste Rohstoff dieses Betriebes
-  uint8_t f; // 0x00
-  uint8_t arbeitsschritt;
-  uint32_t g; // 2 shorts, Auslastung
-  uint8_t modus; // 0x00, 0x01, 0x05, 0x15, 0x2d, 0x35, 0x25, 0x19, 0x03, 0x11, 0x29, 0x21, 0x31, 0x39, 0x28
-  uint8_t ani; // vermutlich auch Modus ? 0x00 bis 0x0f  Animationsschritt??? angezeigter Lagerstand???
-  uint16_t h; // 0x0000
+  uint8_t leer1;            ///< immer 0
+  uint8_t unbekannt;        ///< 0x07, 0x05, 0x00 (irgendetwas, pro prodlist konstant)
+  uint16_t produkt_menge;   ///< Lagerstand des von diesem Betrieb hergestellten Produkts
+  uint8_t leer2;            ///< immer 0
+  uint16_t warteschritt; //? 0x00 bis 0x1b, einmal 0x4e: wird heruntergezählt, bei 0 kommt der neue Lagerstand
+  uint16_t rohstoff2_menge; ///< Lagerstand des zweiten Rohstoffs dieses Betriebes
+  uint16_t rohstoff1_menge; ///< Lagerstand des ersten Rohstoffs dieses Betriebes
+  uint8_t leer3;            ///< immer 0
+  uint8_t arbeitsschritt; // 0x00, 0x80, seltener 0x56, 0x60, 0x40
+  uint16_t auslastung_zaehler; // Auslastung in Prozent etwa = (200 * zaehler) / (256 * nenner) abgerundet
+  uint16_t auslastung_nenner;
+  uint8_t modus; // 0x00, 0x01, 0x05, 0x15, 0x2d, 0x35, 0x25, 0x19, 0x03, 0x11, 0x29, 0x21, 0x31, 0x39, 0x28  Flag 0x01 = aktiv, 0x40 = nicht abholen
+  uint8_t ani; // vermutlich auch Modus ? 0x00 bis 0x0f  Animationsschritt???  0x0f = Rohstoffmangel oder öffentlich
+  uint16_t leer4;           ///< immer 0
 } __attribute__((packed));
 
 struct Werft // 24 bytes
@@ -145,12 +149,14 @@ struct Werft // 24 bytes
   uint8_t inselnummer;  ///< Insel, auf der die Werft steht
   uint8_t x_pos;        ///< X-Position auf der Insel
   uint8_t y_pos;        ///< Y-Position auf der Insel
-  uint8_t a;
-  uint32_t b; // 0x00ff0000
-  uint32_t c; // short 0x0000 short rohstoff
-  uint32_t d; // 0x0000ffff
-  uint32_t e; // 0x00000000
-  uint32_t f; // 0x00000000
+  uint8_t flags;        ///< Flag 0x08 = aktiv, Flags 0x01, 0x02, 0x04 = unbekannt
+  uint16_t leer1;       ///< immer 0
+  uint8_t auftrag;      ///< 0xff = kein Auftrag, 0 = kl. Handelsschiff, 1 = gr. Handelsschiff, 2 = kl. Kr., 3 = gr. Kr., 4 = fliegender Händler(!), 5 = Piratenschiff(!)
+  uint8_t leer2;        ///< immer 0
+  uint16_t fortschritt; ///< Fortschritt (wahrscheinlich in Lebenspunkten), 0x0060 für ca. 5-10% beim kl. Handelsschiff
+  uint16_t holz;        ///< Lagerstand Holz (Bug: Lagerstand Stoffe wird nicht mitgespeichert)
+  uint16_t ffff;        ///< immer 0xffff
+  uint8_t leer3[10];    ///< immer 0
 } __attribute__((packed));
 
 struct Militar // 112 bytes
@@ -186,14 +192,14 @@ struct Kontor // 1004 bytes
 
 struct Markt_intern // 16 bytes
 {
-  uint16_t a; //unbekannt
-  uint16_t b; //0x0000, 0x0001, 0x0002, 0x0004 (im gleichen Markt kombinierbar)
-  uint16_t c; //unbekannt
-  uint16_t d; //0x0000
-  uint32_t e; //0x00000000
-  uint16_t f; //Ware: 0x3304 0x0d02 0xdd05 0xe505 0x0702 0xfb01 0xf901 0x1502 0x0302 0xd107 0x0102
-  uint8_t g;  //0x00 oder 0x80, manchmal 0x66 oder 0x50
-  uint8_t h;  //0x00
+  uint16_t unbekannt1;
+  uint16_t unbekannt2; //0x0000, 0x0001, 0x0002, 0x0004 (im gleichen Markt kombinierbar)
+  uint16_t unbekannt3;
+  uint16_t leer1;       ///< immer 0
+  uint32_t leer2;       ///< immer 0
+  uint16_t ware; //Ware: 0x3304 0x0d02 0xdd05 0xe505 0x0702 0xfb01 0xf901 0x1502 0x0302 0xd107 0x0102
+  uint8_t unbekannt4;  //0x00 oder 0x80, manchmal 0x66 oder 0x50
+  uint8_t leer3;        ///< immer 0
 } __attribute__((packed));
 
 struct Markt // 260 bytes
@@ -245,27 +251,21 @@ struct Handler // 604 bytes
   uint8_t leer2[292];
 };
 
+struct Laderaum
+{
+  uint16_t ware;        ///< Warenkennung
+  uint16_t menge;       ///< Menge in 1/32 t
+  uint32_t aktion;      ///< 0 = einladen, 1 = ausladen
+};
+
 struct Handelsroute // 36 bytes
 {
   uint8_t id; // 0x35, 0x36, 0x37
   uint8_t kontornummer;
-  uint16_t a; // 0x0000
-  uint16_t ware1;
-  uint16_t menge1;
-  uint16_t aktion1; // 0x0000 = einladen, 0x0001 = ausladen
-  uint16_t b; // 0x0000
-  uint16_t ware2;
-  uint16_t menge2;
-  uint16_t aktion2;
-  uint8_t c[18]; // 0
+  uint16_t leer1; // 0x0000
+  Laderaum ladung[2];
+  uint8_t leer2[16]; // 0
 } __attribute__((packed));
-
-struct Ware_schiff
-{
-  uint16_t ware;        ///< Warenkennung
-  uint16_t menge;
-  uint32_t unbekannt; // 0
-};
 
 struct Ship // 436 bytes
 {
@@ -297,7 +297,7 @@ struct Ship // 436 bytes
   
   Handelsroute handelsrouten[8];
   uint16_t j;
-  Ware_schiff ladung[8];
+  Laderaum ladung[8];
 } __attribute__((packed));
 
 struct Soldat // 68 bytes

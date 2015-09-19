@@ -54,10 +54,8 @@ Unbekannte benutzte Bits sind: 6, 8, 9, 11, 16, 17, 19
 Bits im `modus`-Attribut der `Prodlist`-Struktur
 ------------------------------------------------
 
-(Geht abweichend von einem 16-Bit-Feld aus)
 - bit 0 = aktiv
 - bit 6 = nicht abholen
-- bit 15 = Mangel
 
 Bits im `fruchtbarkeit`-Attribut der `Insel5`-Struktur
 ------------------------------------------------------
