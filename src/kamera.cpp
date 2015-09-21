@@ -18,6 +18,7 @@
 
 #include <string>
 #include "kamera.hpp"
+#include "iteratoren.hpp"
 
 #define KARTENBREITE 500
 #define KARTENHOEHE 350
@@ -235,24 +236,37 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
     case 0:
     {
       int radius = bs.breite / x_raster[vergroesserung] / 2 + bs.hoehe / y_raster[vergroesserung] / 2;
-      for (int y = ypos - radius; y < ypos + radius; y++)
+      int start_y = (-radius) * y_raster[vergroesserung] + bs.hoehe / 2;
+      for (int y = 0; y < radius; y++)
       {
-	for (int x = xpos - radius; x < xpos + radius; x++)
+	Nordoststreifen nos1(welt, xpos + y - radius, ypos + y, radius);
+	int start_x = (-radius - 1) * x_raster[vergroesserung] + bs.breite / 2;
+	for (feld_t *feld : nos1)
 	{
-	  feld_t feld;
-	  welt.feld_an_pos(feld, x, y);
 	  /*feld_t feld2;
 	  insel->grafik_boden(&feld2, x, y, 0);*/
-	  if (feld.index != -1)
+	  if (feld->index != -1)
 	  {
-	    bsh_bild_t *bsh = stadtfld_bsh[vergroesserung]->gib_bsh_bild(feld.index);
-	    int x_auf_karte = x - xpos;
-	    int y_auf_karte = y - ypos;
-	    bs.zeichne_bsh_bild(bsh, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] - feld.grundhoehe * grundhoehe[vergroesserung] + bs.hoehe / 2, 1);
+	    bsh_bild_t *bsh = stadtfld_bsh[vergroesserung]->gib_bsh_bild(feld->index);
+	    bs.zeichne_bsh_bild(bsh, start_x, start_y - feld->grundhoehe * grundhoehe[vergroesserung], 1);
 	  }
-	  /*else
-	    std::cout << insel->schicht2[y * insel->breite + x].bebauung << " ";*/
+	  start_x += 2 * x_raster[vergroesserung];
 	}
+	start_y += y_raster[vergroesserung];
+	Nordoststreifen nos2(welt, xpos + 1 + y - radius, ypos + y, radius);
+	start_x = (-radius) * x_raster[vergroesserung] + bs.breite / 2;
+	for (feld_t *feld : nos2)
+	{
+	  /*feld_t feld2;
+	  insel->grafik_boden(&feld2, x, y, 0);*/
+	  if (feld->index != -1)
+	  {
+	    bsh_bild_t *bsh = stadtfld_bsh[vergroesserung]->gib_bsh_bild(feld->index);
+	    bs.zeichne_bsh_bild(bsh, start_x, start_y - feld->grundhoehe * grundhoehe[vergroesserung], 1);
+	  }
+	  start_x += 2 * x_raster[vergroesserung];
+	}
+	start_y += y_raster[vergroesserung];
       }
       
       for (Ship *schiff : welt.schiffe)
