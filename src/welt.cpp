@@ -78,7 +78,7 @@ void Welt::feld_an_pos(feld_t& feld, int x, int y)
     insel->grafik_bebauung(&feld, x - insel->xpos, y - insel->ypos, 0);
   else
   {
-    feld.index = meer.index + (y + x * 3 + ani) % meer.ani_schritte;
+    feld.index = meer.index + (0x80000000 + y + x * 3 + ani) % meer.ani_schritte;
     feld.grundhoehe = meer.grundhoehe;
   }
 }
