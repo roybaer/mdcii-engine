@@ -43,6 +43,10 @@ class Kamera
   Bsh_leser* stadtfld_bsh[3];
   Bsh_leser* tiere_bsh[3];
   Bsh_leser* traeger_bsh[3];
+  
+  void auf_bildschirm(Bildspeicher& bs, int karte_x, int karte_y, int& bildschirm_x, int& bildschirm_y);
+  void auf_karte(Bildspeicher& bs, int bildschirm_x, int bildschirm_y, int& karte_x, int& karte_y);
+  
 public:
   Kamera();
   void gehe_zu(uint16_t x, uint16_t y);

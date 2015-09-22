@@ -228,6 +228,23 @@ void Kamera::rechts_drehen()
   drehung = (drehung + 1) % 4;
 }
 
+void Kamera::auf_bildschirm(Bildspeicher& bs, int karte_x, int karte_y, int& bildschirm_x, int& bildschirm_y)
+{
+  // Für Drehung 0
+  bildschirm_x = bs.breite / 2 + ((karte_x - xpos) - (karte_y - ypos) - 1) * x_raster[vergroesserung];
+  bildschirm_y = bs.hoehe / 2 + ((karte_x - xpos) + (karte_y - ypos)) * y_raster[vergroesserung];
+}
+
+void Kamera::auf_karte(Bildspeicher& bs, int bildschirm_x, int bildschirm_y, int& karte_x, int& karte_y)
+{
+  // Für Drehung 0
+  int temp1 = (bildschirm_x - (int)bs.breite / 2) / x_raster[vergroesserung];
+  int temp2 = (bildschirm_y - (int)bs.hoehe / 2) / y_raster[vergroesserung];
+  int temp3 = (temp2 - temp1 + 1) / 2;
+  karte_x = temp1 + temp3 + xpos;
+  karte_y = temp3 + ypos;
+}
+
 
 void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 {
@@ -235,12 +252,17 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
   {
     case 0:
     {
-      int radius = bs.breite / x_raster[vergroesserung] / 2 + bs.hoehe / y_raster[vergroesserung] / 2;
-      int start_y = (-radius) * y_raster[vergroesserung] + bs.hoehe / 2;
-      for (int y = 0; y < radius; y++)
+      int karte_x, karte_y;
+      auf_karte(bs, -x_raster[vergroesserung], -2 * y_raster[vergroesserung], karte_x, karte_y);
+      int bildschirm_x, bildschirm_y;
+      auf_bildschirm(bs, karte_x, karte_y, bildschirm_x, bildschirm_y);
+      int felder_horizontal = bs.breite / x_raster[vergroesserung] / 2 + 2;
+      int felder_vertikal = bs.hoehe / y_raster[vergroesserung] / 2 + 8;
+      int start_y = bildschirm_y;
+      for (int y = 0; y < felder_vertikal; y++)
       {
-	Nordoststreifen nos1(welt, xpos + y - radius, ypos + y, radius);
-	int start_x = (-radius - 1) * x_raster[vergroesserung] + bs.breite / 2;
+	Nordoststreifen nos1(welt, karte_x + y, karte_y + y, felder_horizontal);
+	int start_x = bildschirm_x;
 	for (feld_t *feld : nos1)
 	{
 	  /*feld_t feld2;
@@ -253,8 +275,8 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	  start_x += 2 * x_raster[vergroesserung];
 	}
 	start_y += y_raster[vergroesserung];
-	Nordoststreifen nos2(welt, xpos + 1 + y - radius, ypos + y, radius);
-	start_x = (-radius) * x_raster[vergroesserung] + bs.breite / 2;
+	Nordoststreifen nos2(welt, karte_x + 1 + y, karte_y + y, felder_horizontal);
+	start_x = bildschirm_x + x_raster[vergroesserung];
 	for (feld_t *feld : nos2)
 	{
 	  /*feld_t feld2;
