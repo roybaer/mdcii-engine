@@ -259,25 +259,11 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
       int felder_horizontal = bs.breite / x_raster[vergroesserung] / 2 + 2;
       int felder_vertikal = bs.hoehe / y_raster[vergroesserung] / 2 + 8;
       int start_y = bildschirm_y;
-      for (int y = 0; y < felder_vertikal; y++)
+      for (int y = 0; y < felder_vertikal * 2; y++)
       {
-	Nordoststreifen nos1(welt, karte_x + y, karte_y + y, felder_horizontal);
-	int start_x = bildschirm_x;
-	for (feld_t *feld : nos1)
-	{
-	  /*feld_t feld2;
-	  insel->grafik_boden(&feld2, x, y, 0);*/
-	  if (feld->index != -1)
-	  {
-	    bsh_bild_t *bsh = stadtfld_bsh[vergroesserung]->gib_bsh_bild(feld->index);
-	    bs.zeichne_bsh_bild(bsh, start_x, start_y - feld->grundhoehe * grundhoehe[vergroesserung], 1);
-	  }
-	  start_x += 2 * x_raster[vergroesserung];
-	}
-	start_y += y_raster[vergroesserung];
-	Nordoststreifen nos2(welt, karte_x + 1 + y, karte_y + y, felder_horizontal);
-	start_x = bildschirm_x + x_raster[vergroesserung];
-	for (feld_t *feld : nos2)
+	Nordoststreifen nos(welt, karte_x + (y & 1) + (y >> 1), karte_y + (y >> 1), felder_horizontal);
+	int start_x = bildschirm_x + ((y & 1) ? x_raster[vergroesserung] : 0);
+	for (feld_t *feld : nos)
 	{
 	  /*feld_t feld2;
 	  insel->grafik_boden(&feld2, x, y, 0);*/
