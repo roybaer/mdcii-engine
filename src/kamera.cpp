@@ -38,10 +38,10 @@ Kamera::Kamera()
   drehung = 0;
   vergroesserung = 1;
   
-//   effekte_bsh[0] = new Bsh_leser(SGFX + "effekte.bsh");
-//   effekte_bsh[1] = new Bsh_leser(MGFX + "EFFEKTE.BSH");
-//   effekte_bsh[2] = new Bsh_leser(GFX + "EFFEKTE.BSH");
-//   
+  effekte_bsh[0] = new Bsh_leser(SGFX + "effekte.bsh");
+  effekte_bsh[1] = new Bsh_leser(MGFX + "EFFEKTE.BSH");
+  effekte_bsh[2] = new Bsh_leser(GFX + "EFFEKTE.BSH");
+  
 //   maeher_bsh[0] = new Bsh_leser(SGFX + "maeher.bsh");
 //   maeher_bsh[1] = new Bsh_leser(MGFX + "MAEHER.BSH");
 //   maeher_bsh[2] = new Bsh_leser(GFX + "MAEHER.BSH");
@@ -339,6 +339,22 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	int x_auf_karte = soldat->x_pos_2 / 2 - xpos;
 	int y_auf_karte = soldat->y_pos_2 / 2 - ypos;
 	bs.zeichne_bsh_bild(bsh, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] - grundhoehe[vergroesserung] + bs.hoehe / 2, 1);
+      }
+      
+      for (Prodlist *prod : welt.prodlist)
+      {
+	int x, y;
+	auf_bildschirm(bs, prod->x_pos + welt.inseln[prod->inselnummer]->xpos, prod->y_pos + welt.inseln[prod->inselnummer]->ypos, x, y);
+	if (! ((prod->modus & 1) != 0))
+	{
+	  bsh_bild_t *bsh = effekte_bsh[vergroesserung]->gib_bsh_bild(350);
+	  bs.zeichne_bsh_bild(bsh, x, y - grundhoehe[vergroesserung], 1);
+	}
+	if ((prod->ani & 0x0f) == 0x0f)
+	{
+	  bsh_bild_t *bsh = effekte_bsh[vergroesserung]->gib_bsh_bild(382);
+	  bs.zeichne_bsh_bild(bsh, x, y - grundhoehe[vergroesserung], 1);
+	}
       }
       
     }

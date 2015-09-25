@@ -48,6 +48,11 @@ Welt::Welt(std::istream& f)
       for (int j = 0; j < (*i)->laenge / sizeof(Soldat); j++)
 	soldaten.push_back(new Soldat((Soldat&)(*i)->daten[j * sizeof(Soldat)]));
     }
+    else if (strcmp((*i)->kennung, prodlist2_kennung) == 0)
+    {
+      for (int j = 0; j < (*i)->laenge / sizeof(Prodlist); j++)
+	prodlist.push_back(new Prodlist((Prodlist&)(*i)->daten[j * sizeof(Prodlist)]));
+    }
     i++;
   }
 }
