@@ -132,7 +132,7 @@ struct Prodlist // 24 bytes
   uint8_t unbekannt;        ///< 0x07, 0x05, 0x00 (irgendetwas, pro prodlist konstant)
   uint16_t produkt_menge;   ///< Lagerstand des von diesem Betrieb hergestellten Produkts
   uint8_t leer2;            ///< immer 0
-  uint16_t warteschritt; //? 0x00 bis 0x1b, einmal 0x4e: wird heruntergezählt, bei 0 kommt der neue Lagerstand
+  uint16_t warteschritt; //? 0x00 bis 0x1b, einmal 0x4e: wird heruntergezählt, bei 0 kommt der neue Lagerstand und die Auslastung wird aktualisiert
   uint16_t rohstoff2_menge; ///< Lagerstand des zweiten Rohstoffs dieses Betriebes
   uint16_t rohstoff1_menge; ///< Lagerstand des ersten Rohstoffs dieses Betriebes
   uint8_t leer3;            ///< immer 0
@@ -159,12 +159,28 @@ struct Werft // 24 bytes
   uint8_t leer3[10];    ///< immer 0
 } __attribute__((packed));
 
-struct Militar // 112 bytes
+struct Einheit // 8 bytes     TODO: Wo ist gespeichert, ob die Einheit schon bewaffnet ist?
 {
-  uint8_t inselnummer;
-  uint8_t x_pos; //Vermutung
-  uint8_t y_pos;
-  uint8_t unbekannt[109];
+  uint8_t typ;          ///< Typ und Uniformfarbe. 1-4: Infanterist, 5-8: Kavallerist, 9-12: Musketier, 13-16: Kanonier, (vmtl. 33: Eingeborener)
+  uint8_t flags;        ///< Flag 0x10: Einheit kann noch nicht ausgesendet werden
+  uint16_t unbekannt1; // im Szenario immer 0
+  uint16_t fortschritt; ///< Fortschritt in Lebenspunkten: max. 0x280 (Infanterist), 0x240 (Kavallerist), 0x1e0 (Musketier), 0x180 (Kanonier)
+  uint16_t unbekannt2; // im Szenario immer 0
+};
+
+struct Militar // 112 bytes     TODO: Wo ist das Nicht-bewaffnen-Flag?
+{
+  uint8_t inselnummer;  ///< Insel, auf der die Burg/große Burg/Festung steht
+  uint8_t x_pos;        ///< X-Position auf der Insel
+  uint8_t y_pos;        ///< Y-Position auf der Insel
+  uint8_t leer1;        ///< vermutlich immer 0
+  uint32_t leer2;       ///< vermutlich immer 0
+  uint16_t schwerter;   ///< Lagerstand Schwerter
+  uint16_t musketen;    ///< Lagerstand Musketen
+  uint16_t kanonen;     ///< Lagerstand Kanonen
+  uint16_t leer3;       ///< vermutlich immer 0
+  Einheit einheiten[8]; ///< Einheiten in der Burg (max. 3), großen Burg (max. 5) oder Festung (max. 8); 0, falls leer
+  uint8_t leer4[32];    ///< vermutlich immer 0
 } __attribute__((packed));
 
 struct Stadt // 168 bytes
