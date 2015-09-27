@@ -71,6 +71,15 @@ struct Insel3
   uint8_t bytes1[28];
 } __attribute__((packed));
 
+struct Erzvorkommen // 8 bytes
+{
+  uint8_t typ;          ///< 2: Eisen, 3: Gold
+  uint8_t x_pos;        ///< X-Position auf der Insel
+  uint8_t y_pos;        ///< Y-Position auf der Insel
+  uint8_t leer;         ///< immer 0
+  uint32_t unbekannt; // (neues) kleines Eisenerzvorkommen: 0x0a000001, großes Eisenerzvorkommen: 0x1e000000, Goldvorkommen: 0x06400001
+};
+
 struct Insel5
 {
   uint8_t inselnummer;  ///< Identifikationsnummer für diese Insel (pro Spiel)
@@ -81,7 +90,10 @@ struct Insel5
   uint16_t y_pos;       ///< Y-Position der Insel auf der Karte
   uint16_t b;
   uint16_t c;
-  uint8_t bytes1[80];
+  uint8_t bytes0[14];
+  uint16_t erzvorkommen;///< Anzahl an Erzvorkommen (Eisen, Gold) auf dieser Insel (0, 1 oder 2)
+  Erzvorkommen erze[2]; ///< Erzvorkommen auf dieser Insel (Daten, ggf. 0)
+  uint8_t bytes1[48];
   uint8_t fruchtbarkeit;   ///< Zeigt an, was auf dieser Insel wie gut wächst
   uint8_t d; // immer 0x11?
   uint16_t e;
