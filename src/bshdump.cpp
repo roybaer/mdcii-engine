@@ -16,22 +16,74 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+#include <iostream>
+#include <boost/format.hpp>
+#include <boost/program_options.hpp>
+
 #include "bsh_leser.hpp"
 #include "bildspeicher.hpp"
-#include <boost/format.hpp>
+
+namespace po = boost::program_options;
 
 int main(int argc, char **argv)
 {
-  if (argc != 2)
-    exit(EXIT_FAILURE);
+  std::string input_name;
+  std::string file_format;
+  std::string prefix;
+  int color;
+  int bpp;
   
-  Bsh_leser bsh(argv[1]);
+  po::options_description desc("Zulässige Optionen");
+  desc.add_options()
+    ("input,i", po::value<std::string>(&input_name), "Eingabedatei (*.bsh)")
+    ("format,f", po::value<std::string>(&file_format)->default_value("pnm"), "Format (bmp oder pnm)")
+    ("bpp,b", po::value<int>(&bpp)->default_value(24), "Bits pro Pixel (8 oder 24)")
+    ("prefix,p", po::value<std::string>(&prefix)->default_value("g_"), "Präfix (inklusive Pfad) für die Zieldateinamen")
+    ("color,c", po::value<int>(&color)->default_value(0), "Hintergrundfarbe für transparente Bereiche")
+    ("help,h", "Gibt diesen Hilfetext aus")
+  ;
+  
+  po::variables_map vm;
+  po::store(po::parse_command_line(argc, argv, desc), vm);
+  po::notify(vm);
+  
+  if (vm.count("help"))
+  {
+    std::cout << desc << std::endl;
+    exit(EXIT_SUCCESS);
+  }
+  
+  if (vm.count("input") != 1)
+  {
+    std::cout << "Keine Eingabedatei angegeben" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+  
+  if (bpp != 8 && bpp != 24)
+  {
+    std::cout << "Ungültige Angabe für die Anzahl an Bits pro Pixel" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+  
+  if (file_format != "bmp" && file_format != "pnm")
+  {
+    std::cout << "Gültige Werte für --format sind bmp und pnm" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+  
+  Bsh_leser bsh(input_name);
   for (uint32_t i = 0; i < bsh.anzahl(); i++)
   {
     bsh_bild_t *bild = bsh.gib_bsh_bild(i);
-    Bildspeicher bs(bild->breite, bild->hoehe, 3, 0xff00ff);
+    Bildspeicher bs(bild->breite, bild->hoehe, bpp / 8, color);
     bs.bild_loeschen();
     bs.zeichne_bsh_bild(bild, 0, 0, 0);
-    bs.exportiere_pnm(boost::str(boost::format("g_%04d.ppm") % i).c_str());
+    
+    if (bpp == 24 && file_format == "pnm")
+      bs.exportiere_pnm((prefix + boost::str(boost::format("%04d.ppm") % i)).c_str());
+    else if (bpp == 8 && file_format == "pnm")
+      bs.exportiere_pnm((prefix + boost::str(boost::format("%04d.pgm") % i)).c_str());
+    else if (file_format == "bmp")
+      bs.exportiere_bmp((prefix + boost::str(boost::format("%04d.bmp") % i)).c_str());
   }
 }
