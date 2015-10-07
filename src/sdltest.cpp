@@ -19,9 +19,14 @@
 #include <stdlib.h>
 #include <inttypes.h>
 #include <SDL/SDL.h>
+#include <iostream>
+#include <string>
+#include <boost/program_options.hpp>
 
 #include "palette.hpp"
 #include "kamera.hpp"
+
+namespace po = boost::program_options;
 
 Uint32 timer_callback(Uint32 interval, void *param)
 {
@@ -44,14 +49,33 @@ Uint32 timer_callback(Uint32 interval, void *param)
 
 int main(int argc, char **argv)
 {
+  int screen_width;
+  int screen_height;
+  std::string gam_name;
+  
+  po::options_description desc("Zulässige Optionen");
+  desc.add_options()
+    ("width,W", po::value<int>(&screen_width)->default_value(800), "Bildschirmbreite")
+    ("height,H", po::value<int>(&screen_height)->default_value(600), "Bildschirmhöhe")
+    ("load,l", po::value<std::string>(&gam_name)->default_value("game00.gam"), "Lädt den angegebenen Spielstand (*.gam)")
+    ("help,h", "Gibt diesen Hilfetext aus")
+  ;
+  
+  po::variables_map vm;
+  po::store(po::parse_command_line(argc, argv, desc), vm);
+  po::notify(vm);
+  
+  if (vm.count("help"))
+  {
+    std::cout << desc << std::endl;
+    exit(EXIT_SUCCESS);
+  }
+  
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0)
   {
     exit(EXIT_FAILURE);
   }
   atexit(SDL_Quit);
-  
-  int screen_width = 800;
-  int screen_height = 600;
   
   SDL_Surface *screen;
   screen = SDL_SetVideoMode(screen_width, screen_height, 8, SDL_SWSURFACE);
@@ -70,7 +94,7 @@ int main(int argc, char **argv)
   
   
   std::ifstream f;
-  f.open("game00.gam");
+  f.open(gam_name);
   
   Welt welt = Welt(f);
   
