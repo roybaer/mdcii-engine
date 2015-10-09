@@ -21,7 +21,8 @@
 #include <boost/program_options.hpp>
 
 #include "bsh_leser.hpp"
-#include "bildspeicher.hpp"
+#include "bildspeicher_rgb24.hpp"
+#include "bildspeicher_pal8.hpp"
 
 namespace po = boost::program_options;
 
@@ -72,18 +73,34 @@ int main(int argc, char **argv)
   }
   
   Bsh_leser bsh(input_name);
-  for (uint32_t i = 0; i < bsh.anzahl(); i++)
+  if (bpp == 24)
   {
-    bsh_bild_t *bild = bsh.gib_bsh_bild(i);
-    Bildspeicher bs(bild->breite, bild->hoehe, bpp / 8, color);
-    bs.bild_loeschen();
-    bs.zeichne_bsh_bild(bild, 0, 0, 0);
-    
-    if (bpp == 24 && file_format == "pnm")
-      bs.exportiere_pnm((prefix + boost::str(boost::format("%04d.ppm") % i)).c_str());
-    else if (bpp == 8 && file_format == "pnm")
-      bs.exportiere_pnm((prefix + boost::str(boost::format("%04d.pgm") % i)).c_str());
-    else if (file_format == "bmp")
-      bs.exportiere_bmp((prefix + boost::str(boost::format("%04d.bmp") % i)).c_str());
+    for (uint32_t i = 0; i < bsh.anzahl(); i++)
+    {
+      bsh_bild_t *bild = bsh.gib_bsh_bild(i);
+      Bildspeicher_rgb24 bs(bild->breite, bild->hoehe, color);
+      bs.bild_loeschen();
+      bs.zeichne_bsh_bild(bild, 0, 0, 0);
+      
+      if (file_format == "pnm")
+	bs.exportiere_pnm((prefix + boost::str(boost::format("%04d.ppm") % i)).c_str());
+      else if (file_format == "bmp")
+	bs.exportiere_bmp((prefix + boost::str(boost::format("%04d.bmp") % i)).c_str());
+    }
+  }
+  else if (bpp == 8)
+  {
+    for (uint32_t i = 0; i < bsh.anzahl(); i++)
+    {
+      bsh_bild_t *bild = bsh.gib_bsh_bild(i);
+      Bildspeicher_pal8 bs(bild->breite, bild->hoehe, color);
+      bs.bild_loeschen();
+      bs.zeichne_bsh_bild(bild, 0, 0, 0);
+      
+      if (file_format == "pnm")
+	bs.exportiere_pnm((prefix + boost::str(boost::format("%04d.pgm") % i)).c_str());
+      else if (file_format == "bmp")
+	bs.exportiere_bmp((prefix + boost::str(boost::format("%04d.bmp") % i)).c_str());
+    }
   }
 }

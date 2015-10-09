@@ -24,7 +24,7 @@
 #include <fstream>
 
 #include "bsh_leser.hpp"
-#include "bildspeicher.hpp"
+#include "bildspeicher_pal8.hpp"
 
 
 //#include "stadtfld_bsh.hpp"
@@ -57,7 +57,7 @@ int main(int argc, char **argv)
   
   Bsh_leser *bsh_reader = new Bsh_leser("../STADTFLD_BIG.BSH");
   
-  Bildspeicher *fb = new Bildspeicher((width + height) * XRASTER, (width + height) * YRASTER, 1, 0);
+  Bildspeicher_pal8 *fb = new Bildspeicher_pal8((width + height) * XRASTER, (width + height) * YRASTER, 0);
   
   int x, y;
   for (y = 0; y < height; y++)

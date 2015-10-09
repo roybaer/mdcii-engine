@@ -25,7 +25,7 @@
 #include <iostream>
 
 #include "bsh_leser.hpp"
-#include "bildspeicher.hpp"
+#include "bildspeicher_pal8.hpp"
 
 
 //#include "stadtfld_bsh.hpp"
@@ -58,7 +58,7 @@ int main(int argc, char **argv)
   
   Bsh_leser *bsh_reader = new Bsh_leser("Mgfx/STADTFLD.BSH");
   
-  Bildspeicher *fb = new Bildspeicher((KARTENBREITE + KARTENHOEHE) * XRASTER, (KARTENBREITE + KARTENHOEHE) * YRASTER, 1, 0);
+  Bildspeicher_pal8 *fb = new Bildspeicher_pal8((KARTENBREITE + KARTENHOEHE) * XRASTER, (KARTENBREITE + KARTENHOEHE) * YRASTER, 0);
   
   for (int y = 0; y < KARTENHOEHE; y++)
   {
