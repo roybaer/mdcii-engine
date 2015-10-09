@@ -51,12 +51,14 @@ int main(int argc, char **argv)
 {
   int screen_width;
   int screen_height;
+  bool fullscreen;
   std::string gam_name;
   
   po::options_description desc("Zulässige Optionen");
   desc.add_options()
     ("width,W", po::value<int>(&screen_width)->default_value(800), "Bildschirmbreite")
     ("height,H", po::value<int>(&screen_height)->default_value(600), "Bildschirmhöhe")
+    ("fullscreen,F", po::value<bool>(&fullscreen)->default_value(false), "Vollbildmodus (true/false)")
     ("load,l", po::value<std::string>(&gam_name)->default_value("game00.gam"), "Lädt den angegebenen Spielstand (*.gam)")
     ("help,h", "Gibt diesen Hilfetext aus")
   ;
@@ -78,7 +80,7 @@ int main(int argc, char **argv)
   atexit(SDL_Quit);
   
   SDL_Surface *screen;
-  screen = SDL_SetVideoMode(screen_width, screen_height, 8, SDL_SWSURFACE);
+  screen = SDL_SetVideoMode(screen_width, screen_height, 8, SDL_SWSURFACE | (fullscreen ? SDL_FULLSCREEN : 0));
   
   SDL_Color colors[256];
   int i, j;
@@ -164,6 +166,10 @@ int main(int argc, char **argv)
 	if (e.key.keysym.sym == SDLK_y)
 	{
 	  kamera.links_drehen();
+	}
+	if (e.key.keysym.sym == SDLK_ESCAPE)
+	{
+	  exit(EXIT_SUCCESS);
 	}
 	break;
     }
