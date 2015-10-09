@@ -74,6 +74,11 @@ void Welt::simulationsschritt()
   {
     insel->bewege_wasser();
   }
+  for (Prodlist *prod : prodlist)
+  {
+    if (prod->modus & 1 && prod->rohstoff1_menge >= 16 && prod->produkt_menge < 320)
+      inseln[prod->inselnummer]->animiere_gebaeude(prod->x_pos, prod->y_pos);
+  }
 }
 
 void Welt::feld_an_pos(feld_t& feld, int x, int y)

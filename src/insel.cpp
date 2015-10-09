@@ -245,3 +245,9 @@ void Insel::bewege_wasser() // FIXME
     }
   }
 }
+
+void Insel::animiere_gebaeude(uint8_t x, uint8_t y)
+{
+  inselfeld_t *feld = &schicht2[y * breite + x];
+  feld->ani = (feld->ani + 1) % GRAFIK(feld->bebauung)->ani_schritte;
+}
