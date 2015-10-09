@@ -102,7 +102,7 @@ int main(int argc, char **argv)
   
   f.close();
   
-  Bildspeicher bs(screen_width, screen_height, 1, 0, (uint8_t *)screen->pixels);
+  Bildspeicher bs(screen_width, screen_height, 1, 0, (uint8_t *)screen->pixels, screen->pitch);
   
   Kamera kamera;
   kamera.zeichne_bild(bs, welt);

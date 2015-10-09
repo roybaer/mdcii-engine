@@ -26,6 +26,7 @@ class Bildspeicher
 {
   uint8_t *puffer;
   uint8_t puffer_freigeben;
+  uint32_t pufferbreite;
   
   void zeichne_bsh_bild_ganz(bsh_bild_t *bild, int x, int y);
   void zeichne_bsh_bild_partiell(bsh_bild_t *bild, int x, int y);
@@ -35,7 +36,7 @@ public:
   uint32_t format;
   uint32_t farbe;
   
-  Bildspeicher(uint32_t breite, uint32_t hoehe, uint32_t format = 1, uint32_t farbe = 0, uint8_t *puffer = NULL);
+  Bildspeicher(uint32_t breite, uint32_t hoehe, uint32_t format = 1, uint32_t farbe = 0, uint8_t *puffer = NULL, uint32_t pufferbreite = 0);
   ~Bildspeicher();
   void zeichne_bsh_bild(bsh_bild_t *bild, int x, int y, int ausrichtung);
   void exportiere_pnm(const char *pfadname);

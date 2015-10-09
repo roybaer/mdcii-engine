@@ -21,15 +21,16 @@
 #include "bildspeicher.hpp"
 #include "palette.hpp"
 
-Bildspeicher::Bildspeicher(uint32_t breite, uint32_t hoehe, uint32_t format, uint32_t farbe, uint8_t* puffer)
+Bildspeicher::Bildspeicher(uint32_t breite, uint32_t hoehe, uint32_t format, uint32_t farbe, uint8_t* puffer, uint32_t pufferbreite)
 {
   this->breite = breite;
   this->hoehe = hoehe;
   this->format = format;
   this->farbe = farbe;
+  this->pufferbreite = (pufferbreite >= breite * format) ? pufferbreite : (breite * format);
   if (puffer == NULL)
   {
-    this->puffer = new uint8_t[breite * hoehe * format];
+    this->puffer = new uint8_t[pufferbreite * hoehe];
     puffer_freigeben = 1;
   }
   else
@@ -55,8 +56,8 @@ void Bildspeicher::zeichne_bsh_bild_ganz(bsh_bild_t *bild, int x, int y)
   
   if (this->format == 1)
   {
-    ziel = zielzeile = this->puffer + y * this->breite + x;
-    int restbreite = this->breite;
+    ziel = zielzeile = this->puffer + y * this->pufferbreite + x;
+    int restbreite = this->pufferbreite;
     
     while ((ch = *(quelle++)) != 0xff)
     {
@@ -75,8 +76,8 @@ void Bildspeicher::zeichne_bsh_bild_ganz(bsh_bild_t *bild, int x, int y)
   }
   else if (this->format == 3)
   {
-    ziel = zielzeile = this->puffer + (y * this->breite + x) * 3;
-    int restbreite = this->breite * 3;
+    ziel = zielzeile = this->puffer + y * this->pufferbreite + x * 3;
+    int restbreite = this->pufferbreite;
     
     while ((ch = *(quelle++)) != 0xff)
     {
@@ -111,13 +112,13 @@ void Bildspeicher::zeichne_bsh_bild_partiell(bsh_bild_t *bild, int x, int y)
   {
     uint8_t *quelle = bild->puffer;
     uint8_t *zielzeile;
-    uint8_t *ziel = zielzeile = this->puffer + y * (int)this->breite + x;
-    int restbreite = this->breite;
+    uint8_t *ziel = zielzeile = this->puffer + y * (int)this->pufferbreite + x;
+    int restbreite = this->pufferbreite;
     
     if (x >= 0 && x + bild->breite < this->breite)
     {
       uint8_t *anfang = this->puffer;
-      uint8_t *ende = this->puffer + this->breite * this->hoehe;
+      uint8_t *ende = this->puffer + this->pufferbreite * this->hoehe;
       
       while (ziel < anfang)
       {
@@ -209,9 +210,9 @@ void Bildspeicher::zeichne_bsh_bild_partiell(bsh_bild_t *bild, int x, int y)
 	  if (y + v >= 0 && y + v < this->hoehe && x + u >= 0 && x + u < this->breite)
 	  {
 	    unsigned char a = bild->puffer[i];
-	    this->puffer[((y + v) * this->breite + x + u) * 3] = palette[a * 3];
-	    this->puffer[((y + v) * this->breite + x + u) * 3 + 1] = palette[a * 3 + 1];
-	    this->puffer[((y + v) * this->breite + x + u) * 3 + 2] = palette[a * 3 + 2];
+	    this->puffer[(y + v) * this->pufferbreite + (x + u) * 3] = palette[a * 3];
+	    this->puffer[(y + v) * this->pufferbreite + (x + u) * 3 + 1] = palette[a * 3 + 1];
+	    this->puffer[(y + v) * this->pufferbreite + (x + u) * 3 + 2] = palette[a * 3 + 2];
 	  }
 	}
       }
