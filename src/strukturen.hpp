@@ -145,15 +145,15 @@ struct Prodlist // 24 bytes
   uint8_t unbekannt;        ///< 0x07, 0x05, 0x00 (irgendetwas, pro prodlist konstant)
   uint16_t produkt_menge;   ///< Lagerstand des von diesem Betrieb hergestellten Produkts
   uint8_t leer2;            ///< immer 0
-  uint16_t warteschritt; //? 0x00 bis 0x1b, einmal 0x4e: wird heruntergezählt, bei 0 kommt der neue Lagerstand und die Auslastung wird aktualisiert
+  uint16_t warteschritt; //? verbleibende Sekunden: bei 0 werden Lagerstand und Auslastung aktualisiert. 0x00 bis 0x1b, einmal 0x4e
   uint16_t rohstoff2_menge; ///< Lagerstand des zweiten Rohstoffs dieses Betriebes
   uint16_t rohstoff1_menge; ///< Lagerstand des ersten Rohstoffs dieses Betriebes
   uint8_t leer3;            ///< immer 0
-  uint8_t arbeitsschritt; // 0x00, 0x80, seltener 0x56, 0x60, 0x40
+  uint8_t arbeitsschritt; // 0x00, 0x80, seltener 0x56, 0x60, 0x40; arbeitsschritt und ani niemals gleichzeitig != 0
   uint16_t auslastung_zaehler; // Auslastung in Prozent etwa = (200 * zaehler) / (256 * nenner) abgerundet
   uint16_t auslastung_nenner;
   uint8_t modus; // 0x00, 0x01, 0x05, 0x15, 0x2d, 0x35, 0x25, 0x19, 0x03, 0x11, 0x29, 0x21, 0x31, 0x39, 0x28  Flag 0x01 = aktiv, 0x40 = nicht abholen
-  uint8_t ani; // vermutlich auch Modus ? 0x00 bis 0x0f  Animationsschritt???  0x0f = Rohstoffmangel oder öffentlich
+  uint8_t ani; // vermutlich auch Modus ? 0x00 bis 0x0f  Animationsschritt???  0x0f = Rohstoffmangel oder öffentlich; arbeitsschritt und ani niemals gleichzeitig != 0
   uint16_t leer4;           ///< immer 0
 } __attribute__((packed));
 
@@ -315,7 +315,7 @@ struct Ship // 436 bytes
   uint32_t f;
   uint16_t typ;         ///< Schiffstyp
   uint8_t spieler;      ///< Spieler, dem das Schiff gehört, z.B. 0x01, 0x02, 0x05
-  uint8_t g; // 0, 1, 2, 4
+  uint8_t g; // 0, 1, 2, 4    ändert die Flaggenfarbe 0: rot, 1: blau, 2: gelb?, 3: weiß? 5: Piraten
   uint8_t h1; // 0 bis 6
   uint8_t h2; // 0xff, 0x10, 0x0d, 0x01, 0x06, 0x0e, 0x0b, 0x11, 0x07, 0x0a
   uint8_t h3; // 0, selten 1
