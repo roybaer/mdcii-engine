@@ -81,14 +81,15 @@ void Welt::simulationsschritt()
   }
 }
 
-void Welt::feld_an_pos(feld_t& feld, int x, int y)
+void Welt::feld_an_pos(inselfeld_t& feld, int x, int y)
 {
   Insel* insel = insel_an_pos(x, y);
   if (insel != NULL)
-    insel->grafik_bebauung(&feld, x - insel->xpos, y - insel->ypos, 0);
+    insel->inselfeld_bebauung(feld, x - insel->xpos, y - insel->ypos);
   else
   {
-    feld.index = meer.index + (0x80000000 + y + x * 3 + ani) % meer.ani_schritte;
-    feld.grundhoehe = meer.grundhoehe;
+    memset(&feld, 0, sizeof(inselfeld_t));
+    feld.bebauung = 1201;
+    feld.ani = (0x80000000 + y + x * 3 + ani) % meer.ani_schritte;
   }
 }

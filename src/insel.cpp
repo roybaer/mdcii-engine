@@ -26,54 +26,51 @@
 
 void Insel::insel_rastern(inselfeld_t *a, uint32_t laenge, inselfeld_t *b, uint8_t breite, uint8_t hoehe)
 {
-  int x, y;
-  for (y = 0; y < hoehe; y++)
+  for (int y = 0; y < hoehe; y++)
   {
-    for (x = 0; x < breite; x++)
+    for (int x = 0; x < breite; x++)
     {
       b[y * breite + x].bebauung = 0xffff;
     }
   }
-  int i;
-  for (i = 0; i < laenge; i++)
+  
+  for (int i = 0; i < laenge; i++)
   {
-    inselfeld_t *feld = &a[i];
-    if ((a[i].x_pos < breite) && (a[i].y_pos < hoehe))
-      b[a[i].y_pos * breite + a[i].x_pos] = *feld;
+    inselfeld_t& feld = a[i];
     
-    g_t *grafik = GRAFIK(feld->bebauung);
+    if (feld.x_pos >= breite || feld.y_pos >= hoehe)
+      continue;
+    
+    g_t *grafik = GRAFIK(feld.bebauung);
     if (grafik != NULL)
     {
       int x, y, u, v;
-      if (feld->rot % 2 == 0)
+      if (feld.rot % 2 == 0)
       {
 	u = grafik->breite;
 	v = grafik->hoehe;
       }
-      else{
+      else
+      {
 	u = grafik->hoehe;
 	v = grafik->breite;
       }
       
-	for (y = 0; y < v; y++)
+      for (int y = 0; y < v && feld.y_pos + y < hoehe; y++)
+      {
+	for (int x = 0; x < u && feld.x_pos + x < breite; x++)
 	{
-	  if (feld->y_pos + y >= hoehe)
-	    break;
-	  for (x = 0; x < u; x++)
-	  {
-	    if (feld->x_pos + x >= breite)
-	      break;
-	    b[(feld->y_pos + y) * breite + feld->x_pos + x].x_pos = x;
-	    b[(feld->y_pos + y) * breite + feld->x_pos + x].y_pos = y;
-	    b[(feld->y_pos + y) * breite + feld->x_pos + x].bebauung = feld->bebauung;
-	  }
+	  b[(feld.y_pos + y) * breite + feld.x_pos + x] = feld;
+	  b[(feld.y_pos + y) * breite + feld.x_pos + x].x_pos = x;
+	  b[(feld.y_pos + y) * breite + feld.x_pos + x].y_pos = y;
 	}
+      }
     }
     else
     {
-      b[(feld->y_pos) * breite + feld->x_pos].x_pos = 0;
-      b[(feld->y_pos) * breite + feld->x_pos].y_pos = 0;
-      b[(feld->y_pos) * breite + feld->x_pos].bebauung = feld->bebauung;
+      b[feld.y_pos * breite + feld.x_pos] = feld;
+      b[feld.y_pos * breite + feld.x_pos].x_pos = 0;
+      b[feld.y_pos * breite + feld.x_pos].y_pos = 0;
     }
   }
 }
@@ -179,28 +176,30 @@ void Insel::grafik_boden(feld_t* ziel, uint8_t x, uint8_t y, uint8_t r)
   ziel->grundhoehe = 1;
 }
 
-void Insel::grafik_bebauung(feld_t *ziel, uint8_t x, uint8_t y, uint8_t r)
+void Insel::inselfeld_bebauung(inselfeld_t& ziel, uint8_t x, uint8_t y)
 {
-  if (schicht2[y * breite + x].bebauung == 0xffff)
-  {
-    ziel->index = -1;
-    ziel->grundhoehe = 0;
-    return;
-  }
-  inselfeld_t *feld;
-  uint8_t xp, yp;
-  
-  xp = schicht2[y * breite + x].x_pos;
-  yp = schicht2[y * breite + x].y_pos;
+  uint8_t xp = schicht2[y * breite + x].x_pos;
+  uint8_t yp = schicht2[y * breite + x].y_pos;
   if ((yp > y) || (xp > x))
   {
+    // TODO "ziel" auf einen sinnvollen Wert setzen
+    return;
+  }
+  ziel = schicht2[(y - yp) * breite + x - xp];
+  ziel.x_pos = xp;
+  ziel.y_pos = yp;
+}
+
+void Insel::grafik_bebauung_inselfeld(feld_t *ziel, inselfeld_t& feld, uint8_t r)
+{
+  if (feld.bebauung == 0xffff)
+  {
     ziel->index = -1;
     ziel->grundhoehe = 0;
     return;
   }
-  feld = &schicht2[(y - yp) * breite + x - xp];
   
-  g_t *g = GRAFIK(feld->bebauung);
+  g_t *g = GRAFIK(feld.bebauung);
   if ((g == NULL) /*|| (g->bauhoehe == 0)*/)
   {
     ziel->index = -1;
@@ -208,25 +207,32 @@ void Insel::grafik_bebauung(feld_t *ziel, uint8_t x, uint8_t y, uint8_t r)
     return;
   }
   int16_t index = g->index;
-  index += g->breite * g->hoehe * ((r + feld->rot) % g->richtungen);
-  switch (feld->rot)
+  index += g->breite * g->hoehe * ((r + feld.rot) % g->richtungen);
+  switch (feld.rot)
   {
     case 0:
-      index += yp * g->breite + xp;
+      index += feld.y_pos * g->breite + feld.x_pos;
       break;
     case 1:
-      index += (g->hoehe - xp - 1) * g->breite + yp;
+      index += (g->hoehe - feld.x_pos - 1) * g->breite + feld.y_pos;
       break;
     case 2:
-      index += (g->hoehe - yp - 1) * g->breite + (g->breite - xp - 1);
+      index += (g->hoehe - feld.y_pos - 1) * g->breite + (g->breite - feld.x_pos - 1);
       break;
     case 3:
-      index += xp * g->breite + (g->breite - yp - 1);
+      index += feld.x_pos * g->breite + (g->breite - feld.y_pos - 1);
       break;
   }
-  index += g->breite * g->hoehe * g->richtungen * (feld->ani % g->ani_schritte);
+  index += g->breite * g->hoehe * g->richtungen * (feld.ani % g->ani_schritte);
   ziel->index = index;
   ziel->grundhoehe = g->grundhoehe;
+}
+
+void Insel::grafik_bebauung(feld_t *ziel, uint8_t x, uint8_t y, uint8_t r)
+{
+  inselfeld_t feld;
+  inselfeld_bebauung(feld, x, y);
+  grafik_bebauung_inselfeld(ziel, feld, r);
 }
 
 void Insel::bewege_wasser() // FIXME

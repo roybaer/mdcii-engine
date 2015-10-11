@@ -25,7 +25,7 @@ class Nordostiterator : public std::iterator<std::input_iterator_tag, feld_t*>
 {
   Welt& welt;
   int x, y;
-  feld_t feld;
+  inselfeld_t feld;
   
 public:
   Nordostiterator(Welt& welt, int x, int y) : welt(welt), x(x), y(y) { }
@@ -34,7 +34,7 @@ public:
   Nordostiterator operator++(int) { Nordostiterator temp(*this); operator++(); return temp; }
   bool operator==(const Nordostiterator& r) { return &welt == &r.welt && x == r.x && y == r.y; }
   bool operator!=(const Nordostiterator& r) { return &welt != &r.welt || x != r.x || y != r.y; }
-  feld_t* operator*() { welt.feld_an_pos(feld, x, y); return &feld; }
+  inselfeld_t* operator*() { welt.feld_an_pos(feld, x, y); return &feld; }
 };
 
 class Nordoststreifen

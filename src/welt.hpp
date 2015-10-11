@@ -39,7 +39,7 @@ public:
   std::vector<Prodlist *> prodlist;
   Welt(std::istream& f);
   void simulationsschritt();
-  void feld_an_pos(feld_t& feld, int x, int y);
+  void feld_an_pos(inselfeld_t& feld, int x, int y);
 };
 
 #endif
