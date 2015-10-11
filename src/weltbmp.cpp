@@ -67,7 +67,7 @@ int main(int argc, char **argv)
       Insel* insel = welt.insel_an_pos(x, y);
       feld_t feld;
       if (insel != NULL)
-	insel->grafik_bebauung(&feld, x - insel->xpos, y - insel->ypos, 0);
+	insel->grafik_bebauung(feld, x - insel->xpos, y - insel->ypos, 0);
       else
       {
 	feld.index = meer.index + (y + x * 3) % 12;

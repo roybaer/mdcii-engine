@@ -266,7 +266,7 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	for (inselfeld_t *feld : nos)
 	{
 	  feld_t feld2;
-	  Insel::grafik_bebauung_inselfeld(&feld2, *feld, 0);
+	  Insel::grafik_bebauung_inselfeld(feld2, *feld, 0);
 	  if (feld2.index != -1)
 	  {
 	    bsh_bild_t *bsh = stadtfld_bsh[vergroesserung]->gib_bsh_bild(feld2.index);

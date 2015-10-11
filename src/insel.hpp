@@ -56,10 +56,10 @@ public:
   std::string basisname(uint8_t breite, uint8_t num, uint8_t sued);
   Block *inselX;
   Insel(Block *inselX, Block *inselhaus);
-  void grafik_boden(feld_t *ziel, uint8_t x, uint8_t y, uint8_t r);
+  void grafik_boden(feld_t& ziel, uint8_t x, uint8_t y, uint8_t r);
   void inselfeld_bebauung(inselfeld_t& ziel, uint8_t x, uint8_t y);
-  static void grafik_bebauung_inselfeld(feld_t *ziel, inselfeld_t& feld, uint8_t r);
-  void grafik_bebauung(feld_t *ziel, uint8_t x, uint8_t y, uint8_t r);
+  static void grafik_bebauung_inselfeld(feld_t& ziel, inselfeld_t& feld, uint8_t r);
+  void grafik_bebauung(feld_t& ziel, uint8_t x, uint8_t y, uint8_t r);
   void bewege_wasser();
   void animiere_gebaeude(uint8_t x, uint8_t y);
 };

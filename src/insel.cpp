@@ -148,7 +148,7 @@ Insel::Insel(Block *inselX, Block *inselhaus)
   }
 }
 
-void Insel::grafik_boden(feld_t* ziel, uint8_t x, uint8_t y, uint8_t r)
+void Insel::grafik_boden(feld_t& ziel, uint8_t x, uint8_t y, uint8_t r)
 {
   inselfeld_t *feld;
   g_t *g;
@@ -157,8 +157,8 @@ void Insel::grafik_boden(feld_t* ziel, uint8_t x, uint8_t y, uint8_t r)
     g = GRAFIK(schicht2[y * breite + x].bebauung);
     if ((g != NULL) && (g->bauhoehe == 0))
     {
-      ziel->index = g->index;
-      ziel->grundhoehe = g->grundhoehe;
+      ziel.index = g->index;
+      ziel.grundhoehe = g->grundhoehe;
       return;
     }
   }
@@ -167,13 +167,13 @@ void Insel::grafik_boden(feld_t* ziel, uint8_t x, uint8_t y, uint8_t r)
     g = GRAFIK(schicht1[y * breite + x].bebauung);
     if ((g != NULL) && (g->bauhoehe == 0))
     {
-      ziel->index = g->index;
-      ziel->grundhoehe = g->grundhoehe;
+      ziel.index = g->index;
+      ziel.grundhoehe = g->grundhoehe;
       return;
     }
   }
-  ziel->index = 0;
-  ziel->grundhoehe = 1;
+  ziel.index = 0;
+  ziel.grundhoehe = 1;
 }
 
 void Insel::inselfeld_bebauung(inselfeld_t& ziel, uint8_t x, uint8_t y)
@@ -190,20 +190,20 @@ void Insel::inselfeld_bebauung(inselfeld_t& ziel, uint8_t x, uint8_t y)
   ziel.y_pos = yp;
 }
 
-void Insel::grafik_bebauung_inselfeld(feld_t *ziel, inselfeld_t& feld, uint8_t r)
+void Insel::grafik_bebauung_inselfeld(feld_t& ziel, inselfeld_t& feld, uint8_t r)
 {
   if (feld.bebauung == 0xffff)
   {
-    ziel->index = -1;
-    ziel->grundhoehe = 0;
+    ziel.index = -1;
+    ziel.grundhoehe = 0;
     return;
   }
   
   g_t *g = GRAFIK(feld.bebauung);
   if ((g == NULL) /*|| (g->bauhoehe == 0)*/)
   {
-    ziel->index = -1;
-    ziel->grundhoehe = 0;
+    ziel.index = -1;
+    ziel.grundhoehe = 0;
     return;
   }
   int16_t index = g->index;
@@ -224,11 +224,11 @@ void Insel::grafik_bebauung_inselfeld(feld_t *ziel, inselfeld_t& feld, uint8_t r
       break;
   }
   index += g->breite * g->hoehe * g->richtungen * (feld.ani % g->ani_schritte);
-  ziel->index = index;
-  ziel->grundhoehe = g->grundhoehe;
+  ziel.index = index;
+  ziel.grundhoehe = g->grundhoehe;
 }
 
-void Insel::grafik_bebauung(feld_t *ziel, uint8_t x, uint8_t y, uint8_t r)
+void Insel::grafik_bebauung(feld_t& ziel, uint8_t x, uint8_t y, uint8_t r)
 {
   inselfeld_t feld;
   inselfeld_bebauung(feld, x, y);

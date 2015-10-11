@@ -65,7 +65,7 @@ int main(int argc, char **argv)
     for (x = 0; x < width; x++)
     {
       feld_t feld;
-      insel.grafik_bebauung(&feld, x, y, 0);
+      insel.grafik_bebauung(feld, x, y, 0);
       if (feld.index != -1)
       {
 	bsh_bild_t *bsh = bsh_reader->gib_bsh_bild(feld.index);
