@@ -31,9 +31,9 @@ typedef struct
   uint32_t rot : 2;
   uint32_t ani : 4;
   uint32_t a : 8;
-  uint32_t spieler : 3;
+  uint32_t status : 3;  // 7: frei, 0: von spieler besiedelt, 1: von spieler erobert (?)
   uint32_t zufall : 5;
-  uint32_t spieler_ : 3;
+  uint32_t spieler : 3;
   uint32_t c : 7;
 } inselfeld_t;
 
