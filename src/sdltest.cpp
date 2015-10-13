@@ -26,6 +26,7 @@
 #include "palette.hpp"
 #include "kamera.hpp"
 #include "bildspeicher_pal8.hpp"
+#include "karte.hpp"
 
 namespace po = boost::program_options;
 
@@ -107,6 +108,8 @@ int main(int argc, char **argv)
   
   Kamera kamera;
   kamera.zeichne_bild(bs, welt);
+  Karte karte;
+  karte.zeichne_bild(bs, welt);
   
   SDL_UpdateRect(screen, 0, 0, screen_width, screen_height);
   
@@ -145,6 +148,8 @@ int main(int argc, char **argv)
 	
 	welt.simulationsschritt();
 	kamera.zeichne_bild(bs, welt);
+	karte.zeichne_bild(bs, welt);
+	karte.zeichne_kameraposition(bs, kamera);
 	SDL_UpdateRect(screen, 0, 0, screen_width, screen_height);
 	break;
       case SDL_KEYDOWN:
