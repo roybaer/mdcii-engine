@@ -82,13 +82,13 @@ void Karte::zeichne_kameraposition(Bildspeicher& bs, Kamera& kamera)
   x11 = xpos + x11 * breite / KARTENBREITE;
   y11 = ypos + y11 * hoehe / KARTENHOEHE;
   
-  bs.zeichne_linie(x00, y00 + 1, x01, y01 + 1, 252);
-  bs.zeichne_linie(x01, y01 + 1, x11, y11 + 1, 252);
-  bs.zeichne_linie(x00, y00 + 1, x10, y10 + 1, 252);
-  bs.zeichne_linie(x10, y10 + 1, x11, y11 + 1, 252);
+  bs.zeichne_linie(x00, y00 + 1, x01, y01 + 1, 252, 0x33);
+  bs.zeichne_linie(x01, y01 + 1, x11, y11 + 1, 252, 0x33);
+  bs.zeichne_linie(x00, y00 + 1, x10, y10 + 1, 252, 0x33);
+  bs.zeichne_linie(x10, y10 + 1, x11, y11 + 1, 252, 0x33);
   
-  bs.zeichne_linie(x00, y00, x01, y01, 255);
-  bs.zeichne_linie(x01, y01, x11, y11, 255);
-  bs.zeichne_linie(x00, y00, x10, y10, 255);
-  bs.zeichne_linie(x10, y10, x11, y11, 255);
+  bs.zeichne_linie(x00, y00, x01, y01, 255, 0x33);
+  bs.zeichne_linie(x01, y01, x11, y11, 255, 0x33);
+  bs.zeichne_linie(x00, y00, x10, y10, 255, 0x33);
+  bs.zeichne_linie(x10, y10, x11, y11, 255, 0x33);
 }

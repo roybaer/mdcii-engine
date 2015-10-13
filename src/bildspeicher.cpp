@@ -69,7 +69,7 @@ void Bildspeicher::zeichne_rechteck(int x1, int y1, int x2, int y2, uint8_t farb
   }
 }
 
-void Bildspeicher::zeichne_linie(int x1, int y1, int x2, int y2, uint8_t farbe)
+void Bildspeicher::zeichne_linie(int x1, int y1, int x2, int y2, uint8_t farbe, uint8_t muster)
 {
   int xdiff = abs(x2 - x1);
   int ydiff = abs(y2 - y1);
@@ -85,7 +85,8 @@ void Bildspeicher::zeichne_linie(int x1, int y1, int x2, int y2, uint8_t farbe)
     int s = xdiff >> 1;
     do
     {
-      zeichne_pixel(cx, cy, farbe);
+      if ((muster = muster >> 1 | muster << 7) & 0x80)
+	zeichne_pixel(cx, cy, farbe);
       cx += ix;
       s -= ydiff;
       if (s <= 0)
@@ -101,7 +102,8 @@ void Bildspeicher::zeichne_linie(int x1, int y1, int x2, int y2, uint8_t farbe)
     int s = ydiff >> 1;
     do
     {
-      zeichne_pixel(cx, cy, farbe);
+      if ((muster = muster >> 1 | muster << 7) & 0x80)
+	zeichne_pixel(cx, cy, farbe);
       cy += iy;
       s -= xdiff;
       if (s <= 0)
@@ -113,7 +115,8 @@ void Bildspeicher::zeichne_linie(int x1, int y1, int x2, int y2, uint8_t farbe)
     while (cy != y2);
   }
   
-  zeichne_pixel(x2, y2, farbe);
+  if ((muster = muster >> 1 | muster << 7) & 0x80)
+    zeichne_pixel(x2, y2, farbe);
 }
 
 void Bildspeicher::exportiere_pnm(const char* pfadname)

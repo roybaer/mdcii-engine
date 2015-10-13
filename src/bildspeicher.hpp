@@ -40,7 +40,7 @@ public:
   virtual void zeichne_bsh_bild(bsh_bild_t *bild, int x, int y, int ausrichtung);
   virtual void zeichne_pixel(int x, int y, uint8_t farbe) = 0;
   virtual void zeichne_rechteck(int x1, int y1, int x2, int y2, uint8_t farbe);
-  virtual void zeichne_linie(int x1, int y1, int x2, int y2, uint8_t farbe);
+  virtual void zeichne_linie(int x1, int y1, int x2, int y2, uint8_t farbe, uint8_t muster = 0xff);
   virtual void exportiere_pnm(const char *pfadname);
   virtual void exportiere_bmp(const char *pfadname);
   virtual void bild_loeschen();
