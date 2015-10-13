@@ -49,6 +49,73 @@ void Bildspeicher::zeichne_bsh_bild(bsh_bild_t *bild, int x, int y, int ausricht
   // in einer Unterklasse implementiert
 }
 
+void Bildspeicher::zeichne_rechteck(int x1, int y1, int x2, int y2, uint8_t farbe)
+{
+  if (x1 < 0)
+    x1 = 0;
+  if (y1 < 0)
+    y1 = 0;
+  if (x2 >= breite)
+    x2 = breite - 1;
+  if (y2 >= hoehe)
+    y2 = hoehe - 1;
+  
+  for (int y = y1; y <= y2; y++)
+  {
+    for (int x = x1; x <= x2; x++)
+    {
+      zeichne_pixel(x, y, farbe);
+    }
+  }
+}
+
+void Bildspeicher::zeichne_linie(int x1, int y1, int x2, int y2, uint8_t farbe)
+{
+  int xdiff = abs(x2 - x1);
+  int ydiff = abs(y2 - y1);
+  
+  int ix = (x2 > x1) - (x2 < x1);
+  int iy = (y2 > y1) - (y2 < y1);
+  
+  int cx = x1;
+  int cy = y1;
+  
+  if (xdiff >= ydiff)
+  {
+    int s = xdiff >> 1;
+    do
+    {
+      zeichne_pixel(cx, cy, farbe);
+      cx += ix;
+      s -= ydiff;
+      if (s <= 0)
+      {
+	s += xdiff;
+	cy += iy;
+      }
+    }
+    while (cx != x2);
+  }
+  else
+  {
+    int s = ydiff >> 1;
+    do
+    {
+      zeichne_pixel(cx, cy, farbe);
+      cy += iy;
+      s -= xdiff;
+      if (s <= 0)
+      {
+	s += ydiff;
+	cx += ix;
+      }
+    }
+    while (cy != y2);
+  }
+  
+  zeichne_pixel(x2, y2, farbe);
+}
+
 void Bildspeicher::exportiere_pnm(const char* pfadname)
 {
   // in einer Unterklasse implementiert

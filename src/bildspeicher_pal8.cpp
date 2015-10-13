@@ -160,6 +160,13 @@ void Bildspeicher_pal8::zeichne_bsh_bild(bsh_bild_t *bild, int x, int y, int aus
     zeichne_bsh_bild_ganz(bild, x, y);
 }
 
+void Bildspeicher_pal8::zeichne_pixel(int x, int y, uint8_t farbe)
+{
+  if (x < 0 || y < 0 || x >= breite || y >= hoehe)
+    return;
+  puffer[y * pufferbreite + x] = farbe;
+}
+
 void Bildspeicher_pal8::exportiere_pnm(const char* pfadname)
 {
   std::ofstream pnm;

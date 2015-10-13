@@ -107,6 +107,15 @@ void Bildspeicher_rgb24::zeichne_bsh_bild(bsh_bild_t *bild, int x, int y, int au
     zeichne_bsh_bild_ganz(bild, x, y);
 }
 
+void Bildspeicher_rgb24::zeichne_pixel(int x, int y, uint8_t farbe)
+{
+  if (x < 0 || y < 0 || x >= breite || y >= hoehe)
+    return;
+  puffer[y * pufferbreite + 3 * x] = palette[3 * farbe];
+  puffer[y * pufferbreite + 3 * x + 1] = palette[3 * farbe + 1];
+  puffer[y * pufferbreite + 3 * x + 2] = palette[3 * farbe + 2];
+}
+
 void Bildspeicher_rgb24::exportiere_pnm(const char* pfadname)
 {
   std::ofstream pnm;
