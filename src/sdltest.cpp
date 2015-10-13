@@ -108,7 +108,7 @@ int main(int argc, char **argv)
   
   Kamera kamera;
   kamera.zeichne_bild(bs, welt);
-  Karte karte;
+  Karte karte(screen_width - 182, 0, 182, 156);
   karte.zeichne_bild(bs, welt);
   
   SDL_UpdateRect(screen, 0, 0, screen_width, screen_height);

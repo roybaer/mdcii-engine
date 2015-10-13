@@ -18,6 +18,17 @@
 
 #include "karte.hpp"
 
+#define KARTENBREITE 500
+#define KARTENHOEHE 350
+
+Karte::Karte(int xpos, int ypos, int breite, int hoehe)
+{
+  this->xpos = xpos;
+  this->ypos = ypos;
+  this->breite = breite;
+  this->hoehe = hoehe;
+}
+
 void Karte::zeichne_bild(Bildspeicher& bs, Welt& welt)
 {
   for (Insel* insel : welt.inseln)
@@ -38,15 +49,18 @@ void Karte::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	  case 6: farbe = 2; break;   // Eingeborene
 	  case 7: farbe = 182; break; // frei
 	}
+	// FIXME: Ineffizient! Zu viele Divisionen
 	if (!(feld.bebauung >= 1201 && feld.bebauung <= 1221 || feld.bebauung >= 1251 && feld.bebauung <= 1259))
-	  bs.zeichne_pixel(insel->xpos + x, insel->ypos + y, farbe);
+	  bs.zeichne_pixel(xpos + (insel->xpos + x) * breite / KARTENBREITE, ypos + (insel->ypos + y) * hoehe / KARTENHOEHE, farbe);
       }
     }
   }
   
   for (Ship* schiff : welt.schiffe)
   {
-    bs.zeichne_rechteck(schiff->x_pos, schiff->y_pos, schiff->x_pos + 1, schiff->y_pos + 1, 252);
+    int x = xpos + schiff->x_pos * breite / KARTENBREITE;
+    int y = ypos + schiff->y_pos * hoehe / KARTENHOEHE;
+    bs.zeichne_rechteck(x, y, x + 1, y + 1, 252);
   }
 }
 
@@ -58,6 +72,15 @@ void Karte::zeichne_kameraposition(Bildspeicher& bs, Kamera& kamera)
   kamera.auf_karte(bs, bs.breite, 0, x01, y01);
   kamera.auf_karte(bs, 0, bs.hoehe, x10, y10);
   kamera.auf_karte(bs, bs.breite, bs.hoehe, x11, y11);
+  
+  x00 = xpos + x00 * breite / KARTENBREITE;
+  y00 = ypos + y00 * hoehe / KARTENHOEHE;
+  x01 = xpos + x01 * breite / KARTENBREITE;
+  y01 = ypos + y01 * hoehe / KARTENHOEHE;
+  x10 = xpos + x10 * breite / KARTENBREITE;
+  y10 = ypos + y10 * hoehe / KARTENHOEHE;
+  x11 = xpos + x11 * breite / KARTENBREITE;
+  y11 = ypos + y11 * hoehe / KARTENHOEHE;
   
   bs.zeichne_linie(x00, y00 + 1, x01, y01 + 1, 252);
   bs.zeichne_linie(x01, y01 + 1, x11, y11 + 1, 252);
