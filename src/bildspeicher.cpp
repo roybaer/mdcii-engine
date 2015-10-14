@@ -119,6 +119,42 @@ void Bildspeicher::zeichne_linie(int x1, int y1, int x2, int y2, uint8_t farbe, 
     zeichne_pixel(x2, y2, farbe);
 }
 
+void Bildspeicher::zeichne_zei_zeichen(Zei_zeichen* zeichen, int x, int y)
+{
+  int u = 0;
+  int v = 0;
+  int i = 0;
+  unsigned char ch;
+  
+  while ((ch = zeichen->puffer[i++]) != 0xff)
+  {
+    if (ch == 0xfe)
+    {
+      u = 0;
+      v++;
+    }
+    else
+    {
+      u += ch;
+      
+      for (ch = zeichen->puffer[i++]; ch > 0; ch--, u++, i++)
+      {
+	zeichne_pixel(x + u, y + v, zeichen->puffer[i]);
+      }
+    }
+  }
+}
+
+void Bildspeicher::zeichne_string(Zei_leser& zei_leser, std::string s, int x, int y)
+{
+  for (char ch : s)
+  {
+    Zei_zeichen *zz = zei_leser.gib_bsh_bild(ch - ' ');
+    zeichne_zei_zeichen(zz, x, y);
+    x += zz->breite;
+  }
+}
+
 void Bildspeicher::exportiere_pnm(const char* pfadname)
 {
   // in einer Unterklasse implementiert

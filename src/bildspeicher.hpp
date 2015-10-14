@@ -21,6 +21,7 @@
 
 #include <inttypes.h>
 #include "bsh_leser.hpp"
+#include "zei_leser.hpp"
 
 class Bildspeicher
 {
@@ -41,6 +42,8 @@ public:
   virtual void zeichne_pixel(int x, int y, uint8_t farbe) = 0;
   virtual void zeichne_rechteck(int x1, int y1, int x2, int y2, uint8_t farbe);
   virtual void zeichne_linie(int x1, int y1, int x2, int y2, uint8_t farbe, uint8_t muster = 0xff);
+  virtual void zeichne_zei_zeichen(Zei_zeichen *zeichen, int x, int y);
+  void zeichne_string(Zei_leser& zei_leser, std::string s, int x, int y);
   virtual void exportiere_pnm(const char *pfadname);
   virtual void exportiere_bmp(const char *pfadname);
   virtual void bild_loeschen();
