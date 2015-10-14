@@ -43,6 +43,7 @@ class Kamera
   Bsh_leser* stadtfld_bsh[3];
   Bsh_leser* tiere_bsh[3];
   Bsh_leser* traeger_bsh[3];
+  Zei_leser* zei;
   
 public:
   Kamera();

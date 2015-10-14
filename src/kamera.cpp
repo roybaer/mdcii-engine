@@ -69,6 +69,8 @@ Kamera::Kamera()
 //   traeger_bsh[0] = new Bsh_leser(SGFX + "traeger.bsh");
 //   traeger_bsh[1] = new Bsh_leser(MGFX + "TRAEGER.BSH");
 //   traeger_bsh[2] = new Bsh_leser(GFX + "TRAEGER.BSH");
+  
+  zei = new Zei_leser("TOOLGFX/ZEI16G.ZEI");
 }
 
 void Kamera::gehe_zu(uint16_t x, uint16_t y)
@@ -356,6 +358,9 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	  bs.zeichne_bsh_bild(bsh, x, y - grundhoehe[vergroesserung], 1);
 	}
       }
+      
+      bs.zeichne_string(*zei, "aktuelle Position:", 10, 10);
+      bs.zeichne_string(*zei, "(" + std::to_string(xpos) + ", " + std::to_string(ypos) + ")", 10, 30);
       
     }
   }
