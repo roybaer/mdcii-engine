@@ -336,9 +336,9 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	else if (soldat->typ == 33)
 	  index = 3744;
 	bsh_bild_t *bsh = soldat_bsh[vergroesserung]->gib_bsh_bild(index + soldat->richtung * 8);  // FIXME
-	int x_auf_karte = soldat->x_pos_2 / 2 - xpos;
-	int y_auf_karte = soldat->y_pos_2 / 2 - ypos;
-	bs.zeichne_bsh_bild(bsh, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] - grundhoehe[vergroesserung] + bs.hoehe / 2, 1);
+	int x_auf_karte_mal_2 = soldat->x_pos_2 - 2 * xpos;
+	int y_auf_karte_mal_2 = soldat->y_pos_2 - 2 * ypos;
+	bs.zeichne_bsh_bild(bsh, (x_auf_karte_mal_2 - y_auf_karte_mal_2 - 1) * (x_raster[vergroesserung] / 2) + bs.breite / 2, (x_auf_karte_mal_2 + y_auf_karte_mal_2) * (y_raster[vergroesserung] / 2) - grundhoehe[vergroesserung] + bs.hoehe / 2, 1);
       }
       
       for (Prodlist *prod : welt.prodlist)
