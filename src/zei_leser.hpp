@@ -16,19 +16,19 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef BSH_LESER_HPP
-#define BSH_LESER_HPP
+#ifndef ZEI_LESER_HPP
+#define ZEI_LESER_HPP
 
 #include <boost/iostreams/device/mapped_file.hpp>
 
 #include "generischer_bsh_leser.hpp"
 
-struct bsh_bild_t : public Generisches_bsh_bild<0> {};
+struct Zei_zeichen : public Generisches_bsh_bild<3> {};
 
-class Bsh_leser : public Generischer_bsh_leser<bsh_bild_t>
+class Zei_leser : public Generischer_bsh_leser<Zei_zeichen>
 {
 public:
-  Bsh_leser(std::string pfadname) : Generischer_bsh_leser< bsh_bild_t >(pfadname, "BSH") {}
+  Zei_leser(std::string pfadname) : Generischer_bsh_leser< Zei_zeichen >(pfadname, "ZEI") {}
 };
 
 
