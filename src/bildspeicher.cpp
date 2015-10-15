@@ -36,6 +36,10 @@ Bildspeicher::Bildspeicher(uint32_t breite, uint32_t hoehe, uint32_t format, uin
     puffer_freigeben = 0;
   }
   //memset
+  
+  // initialisiere die Indextabelle, in der an Positionen 1 und 7 die Schrift- bzw. Schattenfarbe erwartet wird
+  for (int i = 0; i < 256; i++)
+    indextabelle_schriftfarbe[i] = i;
 }
 
 Bildspeicher::~Bildspeicher()
@@ -139,7 +143,7 @@ void Bildspeicher::zeichne_zei_zeichen(Zei_zeichen* zeichen, int x, int y)
       
       for (ch = zeichen->puffer[i++]; ch > 0; ch--, u++, i++)
       {
-	zeichne_pixel(x + u, y + v, zeichen->puffer[i]);
+	zeichne_pixel(x + u, y + v, indextabelle_schriftfarbe[zeichen->puffer[i]]);
       }
     }
   }
@@ -153,6 +157,12 @@ void Bildspeicher::zeichne_string(Zei_leser& zei_leser, std::string s, int x, in
     zeichne_zei_zeichen(zz, x, y);
     x += zz->breite;
   }
+}
+
+void Bildspeicher::setze_schriftfarbe(uint8_t schrift, uint8_t schatten)
+{
+  indextabelle_schriftfarbe[1] = schrift;
+  indextabelle_schriftfarbe[7] = schatten;
 }
 
 void Bildspeicher::exportiere_pnm(const char* pfadname)

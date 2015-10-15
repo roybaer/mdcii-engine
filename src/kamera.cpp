@@ -359,6 +359,7 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	}
       }
       
+      bs.setze_schriftfarbe(245, 0);
       bs.zeichne_string(*zei, "aktuelle Position:", 10, 10);
       bs.zeichne_string(*zei, "(" + std::to_string(xpos) + ", " + std::to_string(ypos) + ")", 10, 30);
       

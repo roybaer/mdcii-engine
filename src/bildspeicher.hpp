@@ -32,6 +32,8 @@ protected:
   uint32_t format;
   uint32_t farbe;
   
+  uint8_t indextabelle_schriftfarbe[256];
+  
 public:
   uint32_t breite;
   uint32_t hoehe;
@@ -44,6 +46,7 @@ public:
   virtual void zeichne_linie(int x1, int y1, int x2, int y2, uint8_t farbe, uint8_t muster = 0xff);
   virtual void zeichne_zei_zeichen(Zei_zeichen *zeichen, int x, int y);
   void zeichne_string(Zei_leser& zei_leser, std::string s, int x, int y);
+  void setze_schriftfarbe(uint8_t schrift, uint8_t schatten);
   virtual void exportiere_pnm(const char *pfadname);
   virtual void exportiere_bmp(const char *pfadname);
   virtual void bild_loeschen();
