@@ -26,7 +26,7 @@
 #include "palette.hpp"
 #include "kamera.hpp"
 #include "bildspeicher_pal8.hpp"
-#include "karte.hpp"
+#include "spielbildschirm.hpp"
 
 namespace po = boost::program_options;
 
@@ -106,10 +106,8 @@ int main(int argc, char **argv)
   
   Bildspeicher_pal8 bs(screen_width, screen_height, 0, (uint8_t *)screen->pixels, screen->pitch);
   
-  Kamera kamera;
-  kamera.zeichne_bild(bs, welt);
-  Karte karte(screen_width - 182, 0, 182, 156);
-  karte.zeichne_bild(bs, welt);
+  Spielbildschirm spielbildschirm(bs);
+  spielbildschirm.zeichne_bild(welt);
   
   SDL_UpdateRect(screen, 0, 0, screen_width, screen_height);
   
@@ -131,47 +129,45 @@ int main(int argc, char **argv)
       case SDL_USEREVENT:
 	if (keystate[SDLK_LEFT])
 	{
-	  kamera.nach_links();
+	  spielbildschirm.kamera.nach_links();
 	}
 	if (keystate[SDLK_RIGHT])
 	{
-	  kamera.nach_rechts();
+	  spielbildschirm.kamera.nach_rechts();
 	}
 	if (keystate[SDLK_UP])
 	{
-	  kamera.nach_oben();
+	  spielbildschirm.kamera.nach_oben();
 	}
 	if (keystate[SDLK_DOWN])
 	{
-	  kamera.nach_unten();
+	  spielbildschirm.kamera.nach_unten();
 	}
 	
 	welt.simulationsschritt();
-	kamera.zeichne_bild(bs, welt);
-	karte.zeichne_bild(bs, welt);
-	karte.zeichne_kameraposition(bs, kamera);
+	spielbildschirm.zeichne_bild(welt);
 	SDL_UpdateRect(screen, 0, 0, screen_width, screen_height);
 	break;
       case SDL_KEYDOWN:
 	if (e.key.keysym.sym == SDLK_F2)
 	{
-	  kamera.setze_vergroesserung(0);
+	  spielbildschirm.kamera.setze_vergroesserung(0);
 	}
 	if (e.key.keysym.sym == SDLK_F3)
 	{
-	  kamera.setze_vergroesserung(1);
+	  spielbildschirm.kamera.setze_vergroesserung(1);
 	}
 	if (e.key.keysym.sym == SDLK_F4)
 	{
-	  kamera.setze_vergroesserung(2);
+	  spielbildschirm.kamera.setze_vergroesserung(2);
 	}
 	if (e.key.keysym.sym == SDLK_x)
 	{
-	  kamera.rechts_drehen();
+	  spielbildschirm.kamera.rechts_drehen();
 	}
 	if (e.key.keysym.sym == SDLK_y)
 	{
-	  kamera.links_drehen();
+	  spielbildschirm.kamera.links_drehen();
 	}
 	if (e.key.keysym.sym == SDLK_ESCAPE)
 	{
