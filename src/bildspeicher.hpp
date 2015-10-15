@@ -40,14 +40,14 @@ public:
   
   Bildspeicher(uint32_t breite, uint32_t hoehe, uint32_t format = 1, uint32_t farbe = 0, uint8_t *puffer = NULL, uint32_t pufferbreite = 0);
   ~Bildspeicher();
-  virtual void zeichne_bsh_bild(bsh_bild_t *bild, int x, int y);
-  void zeichne_bsh_bild_oz(bsh_bild_t *bild, int x, int y);
-  virtual void zeichne_bsh_bild_sp(bsh_bild_t *bild, int x, int y, int sx, int sy, bool& schnitt);
-  void zeichne_bsh_bild_sp_oz(bsh_bild_t *bild, int x, int y, int sx, int sy, bool& schnitt);
+  virtual void zeichne_bsh_bild(Bsh_bild& bild, int x, int y);
+  void zeichne_bsh_bild_oz(Bsh_bild& bild, int x, int y);
+  virtual void zeichne_bsh_bild_sp(Bsh_bild& bild, int x, int y, int sx, int sy, bool& schnitt);
+  void zeichne_bsh_bild_sp_oz(Bsh_bild& bild, int x, int y, int sx, int sy, bool& schnitt);
   virtual void zeichne_pixel(int x, int y, uint8_t farbe) = 0;
   virtual void zeichne_rechteck(int x1, int y1, int x2, int y2, uint8_t farbe);
   virtual void zeichne_linie(int x1, int y1, int x2, int y2, uint8_t farbe, uint8_t muster = 0xff);
-  virtual void zeichne_zei_zeichen(Zei_zeichen *zeichen, int x, int y);
+  virtual void zeichne_zei_zeichen(Zei_zeichen& zeichen, int x, int y);
   void zeichne_string(Zei_leser& zei_leser, std::string s, int x, int y);
   void setze_schriftfarbe(uint8_t schrift, uint8_t schatten);
   virtual void exportiere_pnm(const char *pfadname);

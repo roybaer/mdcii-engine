@@ -77,7 +77,7 @@ int main(int argc, char **argv)
       insel->grafik_boden(&feld2, x, y, 0);*/
       if (feld.index != -1)
       {
-	bsh_bild_t *bsh = bsh_reader->gib_bsh_bild(feld.index);
+	Bsh_bild& bsh = bsh_reader->gib_bsh_bild(feld.index);
 	uint16_t x_auf_karte = x /*- insel->breite / 2*/;
 	uint16_t y_auf_karte = y /*- insel->hoehe / 2*/;
 	fb->zeichne_bsh_bild_oz(bsh, (x_auf_karte - y_auf_karte + KARTENHOEHE) * XRASTER, (x_auf_karte + y_auf_karte) * YRASTER + 2 * YRASTER - feld.grundhoehe * ELEVATION);

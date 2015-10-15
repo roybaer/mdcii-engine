@@ -48,19 +48,19 @@ Bildspeicher::~Bildspeicher()
     delete puffer;
 }
 
-void Bildspeicher::zeichne_bsh_bild(bsh_bild_t *bild, int x, int y)
+void Bildspeicher::zeichne_bsh_bild(Bsh_bild& bild, int x, int y)
 {
   // in einer Unterklasse implementiert
 }
 
-void Bildspeicher::zeichne_bsh_bild_oz(bsh_bild_t* bild, int x, int y)
+void Bildspeicher::zeichne_bsh_bild_oz(Bsh_bild& bild, int x, int y)
 {
-  zeichne_bsh_bild(bild, x - bild->breite / 2, y - bild->hoehe);
+  zeichne_bsh_bild(bild, x - bild.breite / 2, y - bild.hoehe);
 }
 
-void Bildspeicher::zeichne_bsh_bild_sp(bsh_bild_t* bild, int x, int y, int sx, int sy, bool& schnitt)
+void Bildspeicher::zeichne_bsh_bild_sp(Bsh_bild& bild, int x, int y, int sx, int sy, bool& schnitt)
 {
-  if (sx < x || sy < y || sx >= x + bild->breite || sy >= y + bild->hoehe)
+  if (sx < x || sy < y || sx >= x + bild.breite || sy >= y + bild.hoehe)
   {
     zeichne_bsh_bild(bild, x, y);
     schnitt = false;
@@ -73,9 +73,9 @@ void Bildspeicher::zeichne_bsh_bild_sp(bsh_bild_t* bild, int x, int y, int sx, i
   }
 }
 
-void Bildspeicher::zeichne_bsh_bild_sp_oz(bsh_bild_t* bild, int x, int y, int sx, int sy, bool& schnitt)
+void Bildspeicher::zeichne_bsh_bild_sp_oz(Bsh_bild& bild, int x, int y, int sx, int sy, bool& schnitt)
 {
-  zeichne_bsh_bild_sp(bild, x - bild->breite / 2, y - bild->hoehe, sx, sy, schnitt);
+  zeichne_bsh_bild_sp(bild, x - bild.breite / 2, y - bild.hoehe, sx, sy, schnitt);
 }
 
 void Bildspeicher::zeichne_rechteck(int x1, int y1, int x2, int y2, uint8_t farbe)
@@ -148,14 +148,14 @@ void Bildspeicher::zeichne_linie(int x1, int y1, int x2, int y2, uint8_t farbe, 
     zeichne_pixel(x2, y2, farbe);
 }
 
-void Bildspeicher::zeichne_zei_zeichen(Zei_zeichen* zeichen, int x, int y)
+void Bildspeicher::zeichne_zei_zeichen(Zei_zeichen& zeichen, int x, int y)
 {
   int u = 0;
   int v = 0;
   int i = 0;
   unsigned char ch;
   
-  while ((ch = zeichen->puffer[i++]) != 0xff)
+  while ((ch = zeichen.puffer[i++]) != 0xff)
   {
     if (ch == 0xfe)
     {
@@ -166,9 +166,9 @@ void Bildspeicher::zeichne_zei_zeichen(Zei_zeichen* zeichen, int x, int y)
     {
       u += ch;
       
-      for (ch = zeichen->puffer[i++]; ch > 0; ch--, u++, i++)
+      for (ch = zeichen.puffer[i++]; ch > 0; ch--, u++, i++)
       {
-	zeichne_pixel(x + u, y + v, indextabelle_schriftfarbe[zeichen->puffer[i]]);
+	zeichne_pixel(x + u, y + v, indextabelle_schriftfarbe[zeichen.puffer[i]]);
       }
     }
   }
@@ -178,9 +178,9 @@ void Bildspeicher::zeichne_string(Zei_leser& zei_leser, std::string s, int x, in
 {
   for (char ch : s)
   {
-    Zei_zeichen *zz = zei_leser.gib_bsh_bild(ch - ' ');
+    Zei_zeichen& zz = zei_leser.gib_bsh_bild(ch - ' ');
     zeichne_zei_zeichen(zz, x, y);
-    x += zz->breite;
+    x += zz.breite;
   }
 }
 

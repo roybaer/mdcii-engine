@@ -44,10 +44,10 @@ Bildspeicher_pal8::Bildspeicher_pal8(uint32_t breite, uint32_t hoehe, uint32_t f
   }
 }
 
-void Bildspeicher_pal8::zeichne_bsh_bild_ganz(bsh_bild_t *bild, int x, int y)
+void Bildspeicher_pal8::zeichne_bsh_bild_ganz(Bsh_bild& bild, int x, int y)
 {
   uint8_t ch;
-  uint8_t *quelle = bild->puffer;
+  uint8_t *quelle = bild.puffer;
   uint8_t *zielzeile;
   uint8_t *ziel;
   
@@ -70,19 +70,19 @@ void Bildspeicher_pal8::zeichne_bsh_bild_ganz(bsh_bild_t *bild, int x, int y)
   }
 }
 
-void Bildspeicher_pal8::zeichne_bsh_bild_partiell(bsh_bild_t *bild, int x, int y)
+void Bildspeicher_pal8::zeichne_bsh_bild_partiell(Bsh_bild& bild, int x, int y)
 {
   int u = 0;
   int v = 0;
   int i = 0;
   unsigned char ch;
   
-  uint8_t *quelle = bild->puffer;
+  uint8_t *quelle = bild.puffer;
   uint8_t *zielzeile;
   uint8_t *ziel = zielzeile = this->puffer + y * (int)this->pufferbreite + x;
   int restbreite = this->pufferbreite;
   
-  if (x >= 0 && x + bild->breite < this->breite)
+  if (x >= 0 && x + bild.breite < this->breite)
   {
     uint8_t *anfang = this->puffer;
     uint8_t *ende = this->puffer + this->pufferbreite * this->hoehe;
@@ -160,13 +160,11 @@ void Bildspeicher_pal8::zeichne_bsh_bild_partiell(bsh_bild_t *bild, int x, int y
   }
 }
 
-void Bildspeicher_pal8::zeichne_bsh_bild(bsh_bild_t *bild, int x, int y)
+void Bildspeicher_pal8::zeichne_bsh_bild(Bsh_bild& bild, int x, int y)
 {
-  if (bild == NULL)
+  if (x >= (int)this->breite || y >= (int)this->hoehe || x + (int)bild.breite < 0 || y + (int)bild.hoehe < 0)
     return;
-  if (x >= (int)this->breite || y >= (int)this->hoehe || x + (int)bild->breite < 0 || y + (int)bild->hoehe < 0)
-    return;
-  if ((x < 0) || (y < 0) || (x + (int)bild->breite > (int)this->breite) || (y + (int)bild->hoehe > (int)this->hoehe))
+  if ((x < 0) || (y < 0) || (x + (int)bild.breite > (int)this->breite) || (y + (int)bild.hoehe > (int)this->hoehe))
     zeichne_bsh_bild_partiell(bild, x, y);
   else
     zeichne_bsh_bild_ganz(bild, x, y);

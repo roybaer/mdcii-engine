@@ -271,7 +271,7 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	  Insel::grafik_bebauung_inselfeld(feld2, *feld, 0);
 	  if (feld2.index != -1)
 	  {
-	    bsh_bild_t *bsh = stadtfld_bsh[vergroesserung]->gib_bsh_bild(feld2.index);
+	    Bsh_bild& bsh = stadtfld_bsh[vergroesserung]->gib_bsh_bild(feld2.index);
 	    bs.zeichne_bsh_bild_oz(bsh, start_x, start_y - feld2.grundhoehe * grundhoehe[vergroesserung]);
 	  }
 	  start_x += 2 * x_raster[vergroesserung];
@@ -292,11 +292,11 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	  index = 64;
 	if (schiff->typ == 0x25)
 	  index = 80;
-	bsh_bild_t *bsh = ship_bsh[vergroesserung]->gib_bsh_bild(index + schiff->richtung);  // FIXME
+	Bsh_bild& bsh = ship_bsh[vergroesserung]->gib_bsh_bild(index + schiff->richtung);  // FIXME
 	int x_auf_karte = schiff->x_pos - xpos;
 	int y_auf_karte = schiff->y_pos - ypos;
 	bs.zeichne_bsh_bild_oz(bsh, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] + bs.hoehe / 2);
-	bsh_bild_t *flagge = ship_bsh[vergroesserung]->gib_bsh_bild(192 + (schiff->spieler - 1) * 8);
+	Bsh_bild& flagge = ship_bsh[vergroesserung]->gib_bsh_bild(192 + (schiff->spieler - 1) * 8);
 	bs.zeichne_bsh_bild_oz(flagge, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] + bs.hoehe / 2);
       }
       
@@ -337,7 +337,7 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	  index = 3608;
 	else if (soldat->typ == 33)
 	  index = 3744;
-	bsh_bild_t *bsh = soldat_bsh[vergroesserung]->gib_bsh_bild(index + soldat->richtung * 8);  // FIXME
+	Bsh_bild& bsh = soldat_bsh[vergroesserung]->gib_bsh_bild(index + soldat->richtung * 8);  // FIXME
 	int x_auf_karte_mal_2 = soldat->x_pos_2 - 2 * xpos;
 	int y_auf_karte_mal_2 = soldat->y_pos_2 - 2 * ypos;
 	bs.zeichne_bsh_bild_oz(bsh, (x_auf_karte_mal_2 - y_auf_karte_mal_2 - 1) * (x_raster[vergroesserung] / 2) + bs.breite / 2, (x_auf_karte_mal_2 + y_auf_karte_mal_2) * (y_raster[vergroesserung] / 2) - grundhoehe[vergroesserung] + bs.hoehe / 2);
@@ -349,12 +349,12 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	auf_bildschirm(bs, prod->x_pos + welt.inseln[prod->inselnummer]->xpos, prod->y_pos + welt.inseln[prod->inselnummer]->ypos, x, y);
 	if (! ((prod->modus & 1) != 0))
 	{
-	  bsh_bild_t *bsh = effekte_bsh[vergroesserung]->gib_bsh_bild(350);
+	  Bsh_bild& bsh = effekte_bsh[vergroesserung]->gib_bsh_bild(350);
 	  bs.zeichne_bsh_bild_oz(bsh, x, y - grundhoehe[vergroesserung]);
 	}
 	if ((prod->ani & 0x0f) == 0x0f)
 	{
-	  bsh_bild_t *bsh = effekte_bsh[vergroesserung]->gib_bsh_bild(382);
+	  Bsh_bild& bsh = effekte_bsh[vergroesserung]->gib_bsh_bild(382);
 	  bs.zeichne_bsh_bild_oz(bsh, x, y - grundhoehe[vergroesserung]);
 	}
       }

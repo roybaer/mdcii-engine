@@ -27,10 +27,10 @@ Bildspeicher_rgb24::Bildspeicher_rgb24(uint32_t breite, uint32_t hoehe, uint32_t
   // leer
 }
 
-void Bildspeicher_rgb24::zeichne_bsh_bild_ganz(bsh_bild_t *bild, int x, int y)
+void Bildspeicher_rgb24::zeichne_bsh_bild_ganz(Bsh_bild& bild, int x, int y)
 {
   uint8_t ch;
-  uint8_t *quelle = bild->puffer;
+  uint8_t *quelle = bild.puffer;
   uint8_t *zielzeile;
   uint8_t *ziel;
   
@@ -58,14 +58,14 @@ void Bildspeicher_rgb24::zeichne_bsh_bild_ganz(bsh_bild_t *bild, int x, int y)
   }
 }
 
-void Bildspeicher_rgb24::zeichne_bsh_bild_partiell(bsh_bild_t *bild, int x, int y)
+void Bildspeicher_rgb24::zeichne_bsh_bild_partiell(Bsh_bild& bild, int x, int y)
 {
   int u = 0;
   int v = 0;
   int i = 0;
   unsigned char ch;
   
-  while ((ch = bild->puffer[i++]) != 0xff)
+  while ((ch = bild.puffer[i++]) != 0xff)
   {
     if (ch == 0xfe)
     {
@@ -76,11 +76,11 @@ void Bildspeicher_rgb24::zeichne_bsh_bild_partiell(bsh_bild_t *bild, int x, int 
     {
       u += ch;
       
-      for (ch = bild->puffer[i++]; ch > 0; ch--, u++, i++)
+      for (ch = bild.puffer[i++]; ch > 0; ch--, u++, i++)
       {
 	if (y + v >= 0 && y + v < this->hoehe && x + u >= 0 && x + u < this->breite)
 	{
-	  unsigned char a = bild->puffer[i];
+	  unsigned char a = bild.puffer[i];
 	  this->puffer[(y + v) * this->pufferbreite + (x + u) * 3] = palette[a * 3];
 	  this->puffer[(y + v) * this->pufferbreite + (x + u) * 3 + 1] = palette[a * 3 + 1];
 	  this->puffer[(y + v) * this->pufferbreite + (x + u) * 3 + 2] = palette[a * 3 + 2];
@@ -90,13 +90,11 @@ void Bildspeicher_rgb24::zeichne_bsh_bild_partiell(bsh_bild_t *bild, int x, int 
   }
 }
 
-void Bildspeicher_rgb24::zeichne_bsh_bild(bsh_bild_t *bild, int x, int y)
+void Bildspeicher_rgb24::zeichne_bsh_bild(Bsh_bild& bild, int x, int y)
 {
-  if (bild == NULL)
+  if (x >= (int)this->breite || y >= (int)this->hoehe || x + (int)bild.breite < 0 || y + (int)bild.hoehe < 0)
     return;
-  if (x >= (int)this->breite || y >= (int)this->hoehe || x + (int)bild->breite < 0 || y + (int)bild->hoehe < 0)
-    return;
-  if ((x < 0) || (y < 0) || (x + (int)bild->breite > (int)this->breite) || (y + (int)bild->hoehe > (int)this->hoehe))
+  if ((x < 0) || (y < 0) || (x + (int)bild.breite > (int)this->breite) || (y + (int)bild.hoehe > (int)this->hoehe))
     zeichne_bsh_bild_partiell(bild, x, y);
   else
     zeichne_bsh_bild_ganz(bild, x, y);

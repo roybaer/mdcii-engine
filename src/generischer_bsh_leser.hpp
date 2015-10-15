@@ -45,21 +45,21 @@ class Generischer_bsh_leser
   
   bool ist_bild_fehlerfrei(uint32_t index)
   {
-    BILD_T *bild = gib_bsh_bild(index);
+    BILD_T& bild = gib_bsh_bild(index);
     
-    if (bild->breite == 0 || bild->hoehe == 0)
+    if (bild.breite == 0 || bild.hoehe == 0)
       return false;
     
-    uint32_t breite = bild->breite + BILD_T::extraspalten;
+    uint32_t breite = bild.breite + BILD_T::extraspalten;
     
     uint8_t ch;
     int i = 0;
     int x = 0;
     int y = 0;
     
-    while (i < bild->laenge - 16)
+    while (i < bild.laenge - 16)
     {
-      ch = bild->puffer[i++];
+      ch = bild.puffer[i++];
       
       if (ch == 0xff)
       {
@@ -69,7 +69,7 @@ class Generischer_bsh_leser
       {
 	x = 0;
 	y++;
-	if (y == bild->hoehe)
+	if (y == bild.hoehe)
 	  return false;
       }
       else
@@ -78,15 +78,15 @@ class Generischer_bsh_leser
 	if (x > breite)
 	  return false;
 	
-	if (i >= bild->laenge - 16)
+	if (i >= bild.laenge - 16)
 	  return false;
-	ch = bild->puffer[i++];
+	ch = bild.puffer[i++];
 	
 	x += ch;
 	if (x > breite)
 	  return false;
 	i += ch;
-	if (i > bild->laenge - 16)
+	if (i > bild.laenge - 16)
 	  return false;
       }
     }
@@ -151,13 +151,13 @@ protected:
   }
   
 public:
-  BILD_T *gib_bsh_bild(uint32_t index)
+  BILD_T& gib_bsh_bild(uint32_t index)
   {
     if (index >= anzahl_bilder)
       throw std::range_error("index out of range");
     const char *ptr = bsh.data();
     uint32_t offs = bilderindex[index] + 20;
-    return (BILD_T *) (ptr + offs);
+    return *((BILD_T *) (ptr + offs));
   }
 
   uint32_t anzahl()

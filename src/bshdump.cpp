@@ -77,8 +77,8 @@ int main(int argc, char **argv)
   {
     for (uint32_t i = 0; i < bsh.anzahl(); i++)
     {
-      bsh_bild_t *bild = bsh.gib_bsh_bild(i);
-      Bildspeicher_rgb24 bs(bild->breite, bild->hoehe, color);
+      Bsh_bild& bild = bsh.gib_bsh_bild(i);
+      Bildspeicher_rgb24 bs(bild.breite, bild.hoehe, color);
       bs.bild_loeschen();
       bs.zeichne_bsh_bild(bild, 0, 0);
       
@@ -92,8 +92,8 @@ int main(int argc, char **argv)
   {
     for (uint32_t i = 0; i < bsh.anzahl(); i++)
     {
-      bsh_bild_t *bild = bsh.gib_bsh_bild(i);
-      Bildspeicher_pal8 bs(bild->breite, bild->hoehe, color);
+      Bsh_bild& bild = bsh.gib_bsh_bild(i);
+      Bildspeicher_pal8 bs(bild.breite, bild.hoehe, color);
       bs.bild_loeschen();
       bs.zeichne_bsh_bild(bild, 0, 0);
       

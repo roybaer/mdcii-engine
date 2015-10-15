@@ -23,12 +23,12 @@
 
 #include "generischer_bsh_leser.hpp"
 
-struct bsh_bild_t : public Generisches_bsh_bild<0> {};
+struct Bsh_bild : public Generisches_bsh_bild<0> {};
 
-class Bsh_leser : public Generischer_bsh_leser<bsh_bild_t>
+class Bsh_leser : public Generischer_bsh_leser<Bsh_bild>
 {
 public:
-  Bsh_leser(std::string pfadname) : Generischer_bsh_leser< bsh_bild_t >(pfadname, "BSH") {}
+  Bsh_leser(std::string pfadname) : Generischer_bsh_leser< Bsh_bild >(pfadname, "BSH") {}
 };
 
 
