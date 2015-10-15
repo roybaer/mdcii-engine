@@ -58,6 +58,26 @@ void Bildspeicher::zeichne_bsh_bild_oz(bsh_bild_t* bild, int x, int y)
   zeichne_bsh_bild(bild, x - bild->breite / 2, y - bild->hoehe);
 }
 
+void Bildspeicher::zeichne_bsh_bild_sp(bsh_bild_t* bild, int x, int y, int sx, int sy, bool& schnitt)
+{
+  if (sx < x || sy < y || sx >= x + bild->breite || sy >= y + bild->hoehe)
+  {
+    zeichne_bsh_bild(bild, x, y);
+    schnitt = false;
+  }
+  else
+  {
+    // FIXME: An transparenten Stellen soll schnitt = false gesetzt werden
+    zeichne_bsh_bild(bild, x, y);
+    schnitt = true;
+  }
+}
+
+void Bildspeicher::zeichne_bsh_bild_sp_oz(bsh_bild_t* bild, int x, int y, int sx, int sy, bool& schnitt)
+{
+  zeichne_bsh_bild_sp(bild, x - bild->breite / 2, y - bild->hoehe, sx, sy, schnitt);
+}
+
 void Bildspeicher::zeichne_rechteck(int x1, int y1, int x2, int y2, uint8_t farbe)
 {
   if (x1 < 0)

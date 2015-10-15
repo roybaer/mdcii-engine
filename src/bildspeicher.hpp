@@ -42,6 +42,8 @@ public:
   ~Bildspeicher();
   virtual void zeichne_bsh_bild(bsh_bild_t *bild, int x, int y);
   void zeichne_bsh_bild_oz(bsh_bild_t *bild, int x, int y);
+  virtual void zeichne_bsh_bild_sp(bsh_bild_t *bild, int x, int y, int sx, int sy, bool& schnitt);
+  void zeichne_bsh_bild_sp_oz(bsh_bild_t *bild, int x, int y, int sx, int sy, bool& schnitt);
   virtual void zeichne_pixel(int x, int y, uint8_t farbe) = 0;
   virtual void zeichne_rechteck(int x1, int y1, int x2, int y2, uint8_t farbe);
   virtual void zeichne_linie(int x1, int y1, int x2, int y2, uint8_t farbe, uint8_t muster = 0xff);
