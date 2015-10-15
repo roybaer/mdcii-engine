@@ -56,9 +56,9 @@ int main(int argc, char **argv)
   
   f.close();
   
-  Bsh_leser *bsh_reader = new Bsh_leser("Mgfx/STADTFLD.BSH");
+  Bsh_leser bsh_leser("Mgfx/STADTFLD.BSH");
   
-  Bildspeicher_pal8 *fb = new Bildspeicher_pal8((KARTENBREITE + KARTENHOEHE) * XRASTER, (KARTENBREITE + KARTENHOEHE) * YRASTER, 0);
+  Bildspeicher_pal8 bs((KARTENBREITE + KARTENHOEHE) * XRASTER, (KARTENBREITE + KARTENHOEHE) * YRASTER, 0);
   
   for (int y = 0; y < KARTENHOEHE; y++)
   {
@@ -77,19 +77,16 @@ int main(int argc, char **argv)
       insel->grafik_boden(&feld2, x, y, 0);*/
       if (feld.index != -1)
       {
-	Bsh_bild& bsh = bsh_reader->gib_bsh_bild(feld.index);
+	Bsh_bild& bsh = bsh_leser.gib_bsh_bild(feld.index);
 	uint16_t x_auf_karte = x /*- insel->breite / 2*/;
 	uint16_t y_auf_karte = y /*- insel->hoehe / 2*/;
-	fb->zeichne_bsh_bild_oz(bsh, (x_auf_karte - y_auf_karte + KARTENHOEHE) * XRASTER, (x_auf_karte + y_auf_karte) * YRASTER + 2 * YRASTER - feld.grundhoehe * ELEVATION);
+	bs.zeichne_bsh_bild_oz(bsh, (x_auf_karte - y_auf_karte + KARTENHOEHE) * XRASTER, (x_auf_karte + y_auf_karte) * YRASTER + 2 * YRASTER - feld.grundhoehe * ELEVATION);
       }
       /*else
         std::cout << insel->schicht2[y * insel->breite + x].bebauung << " ";*/
     }
   }
   
-  fb->exportiere_bmp(argv[2]);
-  delete fb;
-  
-  delete bsh_reader;
+  bs.exportiere_bmp(argv[2]);
   
 }

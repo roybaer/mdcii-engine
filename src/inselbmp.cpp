@@ -55,9 +55,9 @@ int main(int argc, char **argv)
   uint8_t width = insel.breite;
   uint8_t height = insel.hoehe;
   
-  Bsh_leser *bsh_reader = new Bsh_leser("../STADTFLD_BIG.BSH");
+  Bsh_leser bsh_leser("../STADTFLD_BIG.BSH");
   
-  Bildspeicher_pal8 *fb = new Bildspeicher_pal8((width + height) * XRASTER, (width + height) * YRASTER, 0);
+  Bildspeicher_pal8 bs((width + height) * XRASTER, (width + height) * YRASTER, 0);
   
   int x, y;
   for (y = 0; y < height; y++)
@@ -68,16 +68,13 @@ int main(int argc, char **argv)
       insel.grafik_bebauung(feld, x, y, 0);
       if (feld.index != -1)
       {
-	Bsh_bild& bsh = bsh_reader->gib_bsh_bild(feld.index);
-	fb->zeichne_bsh_bild_oz(bsh, (x - y + height) * XRASTER, (x + y) * YRASTER + 2 * YRASTER - feld.grundhoehe * ELEVATION);
+	Bsh_bild& bsh = bsh_leser.gib_bsh_bild(feld.index);
+	bs.zeichne_bsh_bild_oz(bsh, (x - y + height) * XRASTER, (x + y) * YRASTER + 2 * YRASTER - feld.grundhoehe * ELEVATION);
       }
     }
   }
   
   
-  fb->exportiere_bmp(argv[2]);
-  delete fb;
-  
-  delete bsh_reader;
+  bs.exportiere_bmp(argv[2]);
   
 }
