@@ -24,7 +24,24 @@
 Bildspeicher_pal8::Bildspeicher_pal8(uint32_t breite, uint32_t hoehe, uint32_t farbe, uint8_t* puffer, uint32_t pufferbreite)
   : Bildspeicher(breite, hoehe, 1, farbe, puffer, pufferbreite)
 {
-  // leer
+  // erzeuge Index der Paletteneinträge mit der jeweils halben Helligkeit
+  for (int i = 0; i < 256; i++)
+  {
+    uint8_t r = palette[3 * i] >> 1;
+    uint8_t g = palette[3 * i + 1] >> 1;
+    uint8_t b = palette[3 * i + 2] >> 1;
+    
+    int mindiff = 0x7fffffff;
+    for (int j = 0; j < 256; j++)
+    {
+      int diff = abs((int)palette[3 * j] - r) + abs((int)palette[3 * j + 1] - g) + abs((int)palette[3 * j + 2] - b);
+      if (diff < mindiff)
+      {
+	dunkel[i] = j;
+	mindiff = diff;
+      }
+    }
+  }
 }
 
 void Bildspeicher_pal8::zeichne_bsh_bild_ganz(bsh_bild_t *bild, int x, int y)
