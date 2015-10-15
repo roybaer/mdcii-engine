@@ -80,7 +80,7 @@ int main(int argc, char **argv)
       bsh_bild_t *bild = bsh.gib_bsh_bild(i);
       Bildspeicher_rgb24 bs(bild->breite, bild->hoehe, color);
       bs.bild_loeschen();
-      bs.zeichne_bsh_bild(bild, 0, 0, 0);
+      bs.zeichne_bsh_bild(bild, 0, 0);
       
       if (file_format == "pnm")
 	bs.exportiere_pnm((prefix + boost::str(boost::format("%04d.ppm") % i)).c_str());
@@ -95,7 +95,7 @@ int main(int argc, char **argv)
       bsh_bild_t *bild = bsh.gib_bsh_bild(i);
       Bildspeicher_pal8 bs(bild->breite, bild->hoehe, color);
       bs.bild_loeschen();
-      bs.zeichne_bsh_bild(bild, 0, 0, 0);
+      bs.zeichne_bsh_bild(bild, 0, 0);
       
       if (file_format == "pnm")
 	bs.exportiere_pnm((prefix + boost::str(boost::format("%04d.pgm") % i)).c_str());

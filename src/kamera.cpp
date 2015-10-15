@@ -272,7 +272,7 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	  if (feld2.index != -1)
 	  {
 	    bsh_bild_t *bsh = stadtfld_bsh[vergroesserung]->gib_bsh_bild(feld2.index);
-	    bs.zeichne_bsh_bild(bsh, start_x, start_y - feld2.grundhoehe * grundhoehe[vergroesserung], 1);
+	    bs.zeichne_bsh_bild_oz(bsh, start_x, start_y - feld2.grundhoehe * grundhoehe[vergroesserung]);
 	  }
 	  start_x += 2 * x_raster[vergroesserung];
 	}
@@ -295,9 +295,9 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	bsh_bild_t *bsh = ship_bsh[vergroesserung]->gib_bsh_bild(index + schiff->richtung);  // FIXME
 	int x_auf_karte = schiff->x_pos - xpos;
 	int y_auf_karte = schiff->y_pos - ypos;
-	bs.zeichne_bsh_bild(bsh, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] + bs.hoehe / 2, 1);
+	bs.zeichne_bsh_bild_oz(bsh, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] + bs.hoehe / 2);
 	bsh_bild_t *flagge = ship_bsh[vergroesserung]->gib_bsh_bild(192 + (schiff->spieler - 1) * 8);
-	bs.zeichne_bsh_bild(flagge, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] + bs.hoehe / 2, 1);
+	bs.zeichne_bsh_bild_oz(flagge, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] + bs.hoehe / 2);
       }
       
       for (Soldat *soldat : welt.soldaten)
@@ -340,7 +340,7 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	bsh_bild_t *bsh = soldat_bsh[vergroesserung]->gib_bsh_bild(index + soldat->richtung * 8);  // FIXME
 	int x_auf_karte_mal_2 = soldat->x_pos_2 - 2 * xpos;
 	int y_auf_karte_mal_2 = soldat->y_pos_2 - 2 * ypos;
-	bs.zeichne_bsh_bild(bsh, (x_auf_karte_mal_2 - y_auf_karte_mal_2 - 1) * (x_raster[vergroesserung] / 2) + bs.breite / 2, (x_auf_karte_mal_2 + y_auf_karte_mal_2) * (y_raster[vergroesserung] / 2) - grundhoehe[vergroesserung] + bs.hoehe / 2, 1);
+	bs.zeichne_bsh_bild_oz(bsh, (x_auf_karte_mal_2 - y_auf_karte_mal_2 - 1) * (x_raster[vergroesserung] / 2) + bs.breite / 2, (x_auf_karte_mal_2 + y_auf_karte_mal_2) * (y_raster[vergroesserung] / 2) - grundhoehe[vergroesserung] + bs.hoehe / 2);
       }
       
       for (Prodlist *prod : welt.prodlist)
@@ -350,12 +350,12 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	if (! ((prod->modus & 1) != 0))
 	{
 	  bsh_bild_t *bsh = effekte_bsh[vergroesserung]->gib_bsh_bild(350);
-	  bs.zeichne_bsh_bild(bsh, x, y - grundhoehe[vergroesserung], 1);
+	  bs.zeichne_bsh_bild_oz(bsh, x, y - grundhoehe[vergroesserung]);
 	}
 	if ((prod->ani & 0x0f) == 0x0f)
 	{
 	  bsh_bild_t *bsh = effekte_bsh[vergroesserung]->gib_bsh_bild(382);
-	  bs.zeichne_bsh_bild(bsh, x, y - grundhoehe[vergroesserung], 1);
+	  bs.zeichne_bsh_bild_oz(bsh, x, y - grundhoehe[vergroesserung]);
 	}
       }
       

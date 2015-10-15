@@ -143,15 +143,10 @@ void Bildspeicher_pal8::zeichne_bsh_bild_partiell(bsh_bild_t *bild, int x, int y
   }
 }
 
-void Bildspeicher_pal8::zeichne_bsh_bild(bsh_bild_t *bild, int x, int y, int ausrichtung)
+void Bildspeicher_pal8::zeichne_bsh_bild(bsh_bild_t *bild, int x, int y)
 {
   if (bild == NULL)
     return;
-  if (ausrichtung == 1)
-  {
-    x -= bild->breite / 2;
-    y -= bild->hoehe;
-  }
   if (x >= (int)this->breite || y >= (int)this->hoehe || x + (int)bild->breite < 0 || y + (int)bild->hoehe < 0)
     return;
   if ((x < 0) || (y < 0) || (x + (int)bild->breite > (int)this->breite) || (y + (int)bild->hoehe > (int)this->hoehe))

@@ -69,7 +69,7 @@ int main(int argc, char **argv)
       if (feld.index != -1)
       {
 	bsh_bild_t *bsh = bsh_reader->gib_bsh_bild(feld.index);
-	fb->zeichne_bsh_bild(bsh, (x - y + height) * XRASTER, (x + y) * YRASTER + 2 * YRASTER - feld.grundhoehe * ELEVATION, 1);
+	fb->zeichne_bsh_bild_oz(bsh, (x - y + height) * XRASTER, (x + y) * YRASTER + 2 * YRASTER - feld.grundhoehe * ELEVATION);
       }
     }
   }

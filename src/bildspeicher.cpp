@@ -48,9 +48,14 @@ Bildspeicher::~Bildspeicher()
     delete puffer;
 }
 
-void Bildspeicher::zeichne_bsh_bild(bsh_bild_t *bild, int x, int y, int ausrichtung)
+void Bildspeicher::zeichne_bsh_bild(bsh_bild_t *bild, int x, int y)
 {
   // in einer Unterklasse implementiert
+}
+
+void Bildspeicher::zeichne_bsh_bild_oz(bsh_bild_t* bild, int x, int y)
+{
+  zeichne_bsh_bild(bild, x - bild->breite / 2, y - bild->hoehe);
 }
 
 void Bildspeicher::zeichne_rechteck(int x1, int y1, int x2, int y2, uint8_t farbe)
