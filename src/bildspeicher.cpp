@@ -178,6 +178,8 @@ void Bildspeicher::zeichne_string(Zei_leser& zei_leser, std::string s, int x, in
 {
   for (char ch : s)
   {
+    if (ch - ' ' < 0 || ch - ' ' >= zei_leser.anzahl())
+      continue;
     Zei_zeichen& zz = zei_leser.gib_bsh_bild(ch - ' ');
     zeichne_zei_zeichen(zz, x, y);
     x += zz.breite;
