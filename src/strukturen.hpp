@@ -315,8 +315,8 @@ struct Ship // 436 bytes
   uint16_t preis;       ///< Verkaufspreis = 18,75 * `preis`.  `preis` reicht von 0x0000 bis 0x0180
   uint16_t id;          ///< aufsteigender Wert, beginnend bei 0, gesunkene Schiffe eingeschlossen
   uint16_t typ;         ///< Schiffstyp
-  uint8_t spieler;      ///< Spieler, dem das Schiff gehört, z.B. 0x01, 0x02, 0x05
-  uint8_t g; // 0, 1, 2, 4    ändert die Flaggenfarbe 0: rot, 1: blau, 2: gelb?, 3: weiß? 5: Piraten
+  uint8_t g; // 1, 2, 5
+  uint8_t spieler;      ///< Spieler, dem das Schiff gehört.  0: rot, 1: blau, 2: gelb, 3: grau, 4: fliegender Händler, 5: Piraten
   uint8_t h1; // 0 bis 6
   uint8_t h2; // 0xff, 0x10, 0x0d, 0x01, 0x06, 0x0e, 0x0b, 0x11, 0x07, 0x0a
   uint8_t h3; // 0, selten 1

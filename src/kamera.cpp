@@ -284,10 +284,12 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	int index = 0;
 	if (schiff->typ == 0x15)
 	  index = 0;
+	if (schiff->typ == 0x17)
+	  index = 32;
 	if (schiff->typ == 0x1b)
 	  index = 48;
 	if (schiff->typ == 0x1d)
-	  index = 32;
+	  index = 16;
 	if (schiff->typ == 0x19)
 	  index = 64;
 	if (schiff->typ == 0x25)
@@ -296,8 +298,11 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	int x_auf_karte = schiff->x_pos - xpos;
 	int y_auf_karte = schiff->y_pos - ypos;
 	bs.zeichne_bsh_bild_oz(bsh, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] + bs.hoehe / 2);
-	Bsh_bild& flagge = ship_bsh[vergroesserung]->gib_bsh_bild(192 + (schiff->spieler - 1) * 8);
-	bs.zeichne_bsh_bild_oz(flagge, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] + bs.hoehe / 2);
+	if (schiff->spieler != 4)
+	{
+	  Bsh_bild& flagge = ship_bsh[vergroesserung]->gib_bsh_bild(192 + schiff->spieler * 8);
+	  bs.zeichne_bsh_bild_oz(flagge, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] + bs.hoehe / 2);
+	}
       }
       
       for (Soldat *soldat : welt.soldaten)
