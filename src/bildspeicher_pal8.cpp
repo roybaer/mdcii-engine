@@ -142,7 +142,7 @@ void Bildspeicher_pal8::zeichne_bsh_bild_partiell(Bsh_bild& bild, int x, int y)
 	ziel += ch;
 	
 	ch = *(quelle++);
-	if (y + v >= 0 || x + u + ch > 0 || x + u + ch < this->breite)
+	if (y + v >= 0)
 	{
 	  for (; ch > 0; ch--, u++, quelle++, ziel++)
 	    if (x + u >= 0 && x + u < this->breite)
