@@ -4,8 +4,6 @@ Fehlende Informationen
 Schiffe
 -------
 - Weiße Flagge
-- Schiff wird zum Verkauf angeboten
-- Verkaufspreis
 - Patrouille (Punkt 1, Punkt 2)
 - Im Angriff
 - Animationsschritt?
