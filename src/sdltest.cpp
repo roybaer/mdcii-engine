@@ -107,7 +107,7 @@ int main(int argc, char **argv)
   Bildspeicher_pal8 bs(screen_width, screen_height, 0, (uint8_t *)screen->pixels, screen->pitch);
   
   Spielbildschirm spielbildschirm(bs);
-  spielbildschirm.zeichne_bild(welt);
+  spielbildschirm.zeichne_bild(welt, 0, 0);
   
   SDL_UpdateRect(screen, 0, 0, screen_width, screen_height);
   
@@ -144,8 +144,11 @@ int main(int argc, char **argv)
 	  spielbildschirm.kamera.nach_unten();
 	}
 	
+	int x, y;
+	SDL_GetMouseState(&x, &y);
+	
 	welt.simulationsschritt();
-	spielbildschirm.zeichne_bild(welt);
+	spielbildschirm.zeichne_bild(welt, x, y);
 	SDL_UpdateRect(screen, 0, 0, screen_width, screen_height);
 	break;
       case SDL_KEYDOWN:

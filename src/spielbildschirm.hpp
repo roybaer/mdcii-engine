@@ -34,7 +34,7 @@ public:
   
   Spielbildschirm(Bildspeicher& bs);
   
-  void zeichne_bild(Welt& welt);
+  void zeichne_bild(Welt& welt, int maus_x, int maus_y);
 };
 
 #endif

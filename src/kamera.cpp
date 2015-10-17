@@ -248,8 +248,10 @@ void Kamera::auf_karte(Bildspeicher& bs, int bildschirm_x, int bildschirm_y, int
 }
 
 
-void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
+void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
 {
+  inselfeld_t feld_unter_maus;
+  
   switch (drehung)
   {
     case 0:
@@ -272,7 +274,12 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	  if (feld2.index != -1)
 	  {
 	    Bsh_bild& bsh = stadtfld_bsh[vergroesserung]->gib_bsh_bild(feld2.index);
-	    bs.zeichne_bsh_bild_oz(bsh, start_x, start_y - feld2.grundhoehe * grundhoehe[vergroesserung]);
+	    bool ist_unter_maus;
+	    bs.zeichne_bsh_bild_sp_oz(bsh, start_x, start_y - feld2.grundhoehe * grundhoehe[vergroesserung], maus_x, maus_y, ist_unter_maus);
+	    if (ist_unter_maus)
+	    {
+	      feld_unter_maus = *feld;
+	    }
 	  }
 	  start_x += 2 * x_raster[vergroesserung];
 	}
@@ -364,10 +371,12 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	}
       }
       
-      bs.setze_schriftfarbe(245, 0);
-      bs.zeichne_string(*zei, "aktuelle Position:", 10, 10);
-      bs.zeichne_string(*zei, "(" + std::to_string(xpos) + ", " + std::to_string(ypos) + ")", 10, 30);
-      
     }
   }
+      
+  bs.setze_schriftfarbe(245, 0);
+  bs.zeichne_string(*zei, "aktuelle Position:", 10, 10);
+  bs.zeichne_string(*zei, "(" + std::to_string(xpos) + ", " + std::to_string(ypos) + ")", 10, 30);
+  bs.zeichne_string(*zei, "Bebauung unter Mauszeiger:", 10, 60);
+  bs.zeichne_string(*zei, std::to_string(feld_unter_maus.bebauung), 10, 80);
 }

@@ -25,9 +25,9 @@ Spielbildschirm::Spielbildschirm(Bildspeicher& bs)
   // leer
 }
 
-void Spielbildschirm::zeichne_bild(Welt& welt)
+void Spielbildschirm::zeichne_bild(Welt& welt, int maus_x, int maus_y)
 {
-  kamera.zeichne_bild(bs, welt);
+  kamera.zeichne_bild(bs, welt, maus_x, maus_y);
   karte.zeichne_bild(bs, welt);
   karte.zeichne_kameraposition(bs, kamera);
 }

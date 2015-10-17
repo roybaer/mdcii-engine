@@ -61,7 +61,7 @@ public:
   void auf_bildschirm(Bildspeicher& bs, int karte_x, int karte_y, int& bildschirm_x, int& bildschirm_y);
   void auf_karte(Bildspeicher& bs, int bildschirm_x, int bildschirm_y, int& karte_x, int& karte_y);
   
-  void zeichne_bild(Bildspeicher& bs, Welt& welt);
+  void zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y);
 };
 
 #endif
