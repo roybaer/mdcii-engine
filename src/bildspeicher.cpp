@@ -88,7 +88,7 @@ void Bildspeicher::zeichne_bsh_bild_sp(Bsh_bild& bild, int x, int y, int sx, int
 	
 	for (ch = bild.puffer[i++]; ch > 0; ch--, u++, i++)
 	{
-	  zeichne_pixel(x + u, y + v, indextabelle_schriftfarbe[bild.puffer[i]]);
+	  zeichne_pixel(x + u, y + v, bild.puffer[i]);
 	  if (u == sx && v == sy)
 	    schnitt = true;
 	}
