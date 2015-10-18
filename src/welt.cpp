@@ -53,6 +53,11 @@ Welt::Welt(std::istream& f)
       for (int j = 0; j < (*i)->laenge / sizeof(Prodlist); j++)
 	prodlist.push_back(new Prodlist((Prodlist&)(*i)->daten[j * sizeof(Prodlist)]));
     }
+    else if (strcmp((*i)->kennung, player4_kennung) == 0)
+    {
+      for (int j = 0; j < (*i)->laenge / sizeof(Player); j++)
+	spieler.push_back(new Player((Player&)(*i)->daten[j * sizeof(Player)]));
+    }
     i++;
   }
 }

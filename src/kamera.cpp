@@ -307,7 +307,8 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
 	bs.zeichne_bsh_bild_oz(bsh, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] + bs.hoehe / 2);
 	if (schiff->spieler != 4)
 	{
-	  Bsh_bild& flagge = ship_bsh[vergroesserung]->gib_bsh_bild(192 + schiff->spieler * 8);
+	  uint8_t nummer = (schiff->spieler < 4) ? welt.spieler[schiff->spieler]->farbe : schiff->spieler;
+	  Bsh_bild& flagge = ship_bsh[vergroesserung]->gib_bsh_bild(192 + nummer * 8);
 	  bs.zeichne_bsh_bild_oz(flagge, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] + bs.hoehe / 2);
 	}
       }

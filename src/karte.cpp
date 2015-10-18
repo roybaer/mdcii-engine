@@ -40,7 +40,8 @@ void Karte::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	inselfeld_t feld;
 	insel->inselfeld_bebauung(feld, x, y);
 	uint8_t farbe = 0;
-	switch (feld.spieler) // FIXME: Dies ist die Spielernummer, nicht die Farbe!
+	uint8_t nummer = (feld.spieler < 4) ? welt.spieler[feld.spieler]->farbe : feld.spieler;
+	switch (nummer)
 	{
 	  case 0: farbe = 183; break; // rot
 	  case 1: farbe = 97; break;  // blau
