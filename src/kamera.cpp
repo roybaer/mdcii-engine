@@ -267,10 +267,10 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
       {
 	Nordoststreifen nos(welt, karte_x + (y & 1) + (y >> 1), karte_y + (y >> 1), felder_horizontal);
 	int start_x = bildschirm_x + ((y & 1) ? x_raster[vergroesserung] : 0);
-	for (inselfeld_t *feld : nos)
+	for (inselfeld_t feld : nos)
 	{
 	  feld_t feld2;
-	  Insel::grafik_bebauung_inselfeld(feld2, *feld, 0);
+	  Insel::grafik_bebauung_inselfeld(feld2, feld, 0);
 	  if (feld2.index != -1)
 	  {
 	    Bsh_bild& bsh = stadtfld_bsh[vergroesserung]->gib_bsh_bild(feld2.index);
@@ -278,7 +278,7 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
 	    bs.zeichne_bsh_bild_sp_oz(bsh, start_x, start_y - feld2.grundhoehe * grundhoehe[vergroesserung], maus_x, maus_y, ist_unter_maus);
 	    if (ist_unter_maus)
 	    {
-	      feld_unter_maus = *feld;
+	      feld_unter_maus = feld;
 	    }
 	  }
 	  start_x += 2 * x_raster[vergroesserung];
