@@ -30,6 +30,9 @@ class Welt
 {
   int ani;
 public:
+  enum { KARTENBREITE = 500 };
+  enum { KARTENHOEHE = 350 };
+  
   Insel* insel_an_pos(uint16_t x, uint16_t y);
   std::vector<Block *> bloecke;
   std::vector<Insel *> inseln;

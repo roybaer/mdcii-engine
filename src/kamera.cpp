@@ -20,9 +20,6 @@
 #include "kamera.hpp"
 #include "iteratoren.hpp"
 
-#define KARTENBREITE 500
-#define KARTENHOEHE 350
-
 #define SGFX std::string("Sgfx/")
 #define MGFX std::string("Mgfx/")
 #define GFX std::string("Gfx/")
@@ -33,8 +30,8 @@ const int Kamera::grundhoehe[3] = {5, 10, 20};
   
 Kamera::Kamera()
 {
-  xpos = KARTENBREITE / 2;
-  ypos = KARTENHOEHE / 2;
+  xpos = Welt::KARTENBREITE / 2;
+  ypos = Welt::KARTENHOEHE / 2;
   drehung = 0;
   vergroesserung = 1;
   
@@ -75,8 +72,8 @@ Kamera::Kamera()
 
 void Kamera::gehe_zu(uint16_t x, uint16_t y)
 {
-  xpos = (x < 0) ? 0 : ((x >= KARTENBREITE) ? KARTENBREITE - 1 : x);
-  ypos = (y < 0) ? 0 : ((y >= KARTENHOEHE) ? KARTENHOEHE - 1 : y);
+  xpos = (x < 0) ? 0 : ((x >= Welt::KARTENBREITE) ? Welt::KARTENBREITE - 1 : x);
+  ypos = (y < 0) ? 0 : ((y >= Welt::KARTENHOEHE) ? Welt::KARTENHOEHE - 1 : y);
 }
 
 void Kamera::nach_links()
@@ -86,17 +83,17 @@ void Kamera::nach_links()
     case 0:
       if (xpos > 0)
 	xpos--;
-      if (ypos < KARTENHOEHE - 1)
+      if (ypos < Welt::KARTENHOEHE - 1)
 	ypos++;
       break;
     case 1:
-      if (xpos < KARTENBREITE - 1)
+      if (xpos < Welt::KARTENBREITE - 1)
 	xpos++;
-      if (ypos < KARTENHOEHE - 1)
+      if (ypos < Welt::KARTENHOEHE - 1)
 	ypos++;
       break;
     case 2:
-      if (xpos < KARTENBREITE - 1)
+      if (xpos < Welt::KARTENBREITE - 1)
 	xpos++;
       if (ypos > 0)
 	ypos--;
@@ -115,7 +112,7 @@ void Kamera::nach_rechts()
   switch (drehung)
   {
     case 0:
-      if (xpos < KARTENBREITE - 1)
+      if (xpos < Welt::KARTENBREITE - 1)
 	xpos++;
       if (ypos > 0)
 	ypos--;
@@ -129,13 +126,13 @@ void Kamera::nach_rechts()
     case 2:
       if (xpos > 0)
 	xpos--;
-      if (ypos < KARTENHOEHE - 1)
+      if (ypos < Welt::KARTENHOEHE - 1)
 	ypos++;
       break;
     case 3:
-      if (xpos < KARTENBREITE - 1)
+      if (xpos < Welt::KARTENBREITE - 1)
 	xpos++;
-      if (ypos < KARTENHOEHE - 1)
+      if (ypos < Welt::KARTENHOEHE - 1)
 	ypos++;
       break;
   }
@@ -154,17 +151,17 @@ void Kamera::nach_oben()
     case 1:
       if (xpos > 0)
 	xpos--;
-      if (ypos < KARTENHOEHE - 1)
+      if (ypos < Welt::KARTENHOEHE - 1)
 	ypos++;
       break;
     case 2:
-      if (xpos < KARTENBREITE - 1)
+      if (xpos < Welt::KARTENBREITE - 1)
 	xpos++;
-      if (ypos < KARTENHOEHE - 1)
+      if (ypos < Welt::KARTENHOEHE - 1)
 	ypos++;
       break;
     case 3:
-      if (xpos < KARTENBREITE - 1)
+      if (xpos < Welt::KARTENBREITE - 1)
 	xpos++;
       if (ypos > 0)
 	ypos--;
@@ -177,13 +174,13 @@ void Kamera::nach_unten()
   switch (drehung)
   {
     case 0:
-      if (xpos < KARTENBREITE - 1)
+      if (xpos < Welt::KARTENBREITE - 1)
 	xpos++;
-      if (ypos < KARTENHOEHE - 1)
+      if (ypos < Welt::KARTENHOEHE - 1)
 	ypos++;
       break;
     case 1:
-      if (xpos < KARTENBREITE - 1)
+      if (xpos < Welt::KARTENBREITE - 1)
 	xpos++;
       if (ypos > 0)
 	ypos--;
@@ -197,7 +194,7 @@ void Kamera::nach_unten()
     case 3:
       if (xpos > 0)
 	xpos--;
-      if (ypos < KARTENHOEHE - 1)
+      if (ypos < Welt::KARTENHOEHE - 1)
 	ypos++;
       break;
   }

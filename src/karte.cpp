@@ -18,9 +18,6 @@
 
 #include "karte.hpp"
 
-#define KARTENBREITE 500
-#define KARTENHOEHE 350
-
 Karte::Karte(int xpos, int ypos, int breite, int hoehe)
 {
   this->xpos = xpos;
@@ -52,15 +49,15 @@ void Karte::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	}
 	// FIXME: Ineffizient! Zu viele Divisionen
 	if (!(feld.bebauung >= 1201 && feld.bebauung <= 1221 || feld.bebauung >= 1251 && feld.bebauung <= 1259))
-	  bs.zeichne_pixel(xpos + (insel->xpos + x) * breite / KARTENBREITE, ypos + (insel->ypos + y) * hoehe / KARTENHOEHE, farbe);
+	  bs.zeichne_pixel(xpos + (insel->xpos + x) * breite / Welt::KARTENBREITE, ypos + (insel->ypos + y) * hoehe / Welt::KARTENHOEHE, farbe);
       }
     }
   }
   
   for (Ship* schiff : welt.schiffe)
   {
-    int x = xpos + schiff->x_pos * breite / KARTENBREITE;
-    int y = ypos + schiff->y_pos * hoehe / KARTENHOEHE;
+    int x = xpos + schiff->x_pos * breite / Welt::KARTENBREITE;
+    int y = ypos + schiff->y_pos * hoehe / Welt::KARTENHOEHE;
     bs.zeichne_rechteck(x, y, x + 1, y + 1, 252);
   }
 }
@@ -74,14 +71,14 @@ void Karte::zeichne_kameraposition(Bildspeicher& bs, Kamera& kamera)
   kamera.auf_karte(bs, 0, bs.hoehe, x10, y10);
   kamera.auf_karte(bs, bs.breite, bs.hoehe, x11, y11);
   
-  x00 = xpos + x00 * breite / KARTENBREITE;
-  y00 = ypos + y00 * hoehe / KARTENHOEHE;
-  x01 = xpos + x01 * breite / KARTENBREITE;
-  y01 = ypos + y01 * hoehe / KARTENHOEHE;
-  x10 = xpos + x10 * breite / KARTENBREITE;
-  y10 = ypos + y10 * hoehe / KARTENHOEHE;
-  x11 = xpos + x11 * breite / KARTENBREITE;
-  y11 = ypos + y11 * hoehe / KARTENHOEHE;
+  x00 = xpos + x00 * breite / Welt::KARTENBREITE;
+  y00 = ypos + y00 * hoehe / Welt::KARTENHOEHE;
+  x01 = xpos + x01 * breite / Welt::KARTENBREITE;
+  y01 = ypos + y01 * hoehe / Welt::KARTENHOEHE;
+  x10 = xpos + x10 * breite / Welt::KARTENBREITE;
+  y10 = ypos + y10 * hoehe / Welt::KARTENHOEHE;
+  x11 = xpos + x11 * breite / Welt::KARTENBREITE;
+  y11 = ypos + y11 * hoehe / Welt::KARTENHOEHE;
   
   bs.zeichne_linie(x00, y00 + 1, x01, y01 + 1, 252, 0x33);
   bs.zeichne_linie(x01, y01 + 1, x11, y11 + 1, 252, 0x33);

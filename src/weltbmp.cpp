@@ -40,9 +40,6 @@
 #define YRASTER 8
 #define ELEVATION 10
 
-#define KARTENBREITE 500
-#define KARTENHOEHE 350
-
 
 int main(int argc, char **argv)
 {
@@ -58,11 +55,11 @@ int main(int argc, char **argv)
   
   Bsh_leser bsh_leser("Mgfx/STADTFLD.BSH");
   
-  Bildspeicher_pal8 bs((KARTENBREITE + KARTENHOEHE) * XRASTER, (KARTENBREITE + KARTENHOEHE) * YRASTER, 0);
+  Bildspeicher_pal8 bs((Welt::KARTENBREITE + Welt::KARTENHOEHE) * XRASTER, (Welt::KARTENBREITE + Welt::KARTENHOEHE) * YRASTER, 0);
   
-  for (int y = 0; y < KARTENHOEHE; y++)
+  for (int y = 0; y < Welt::KARTENHOEHE; y++)
   {
-    for (int x = 0; x < KARTENBREITE; x++)
+    for (int x = 0; x < Welt::KARTENBREITE; x++)
     {
       Insel* insel = welt.insel_an_pos(x, y);
       feld_t feld;
@@ -80,7 +77,7 @@ int main(int argc, char **argv)
 	Bsh_bild& bsh = bsh_leser.gib_bsh_bild(feld.index);
 	uint16_t x_auf_karte = x /*- insel->breite / 2*/;
 	uint16_t y_auf_karte = y /*- insel->hoehe / 2*/;
-	bs.zeichne_bsh_bild_oz(bsh, (x_auf_karte - y_auf_karte + KARTENHOEHE) * XRASTER, (x_auf_karte + y_auf_karte) * YRASTER + 2 * YRASTER - feld.grundhoehe * ELEVATION);
+	bs.zeichne_bsh_bild_oz(bsh, (x_auf_karte - y_auf_karte + Welt::KARTENHOEHE) * XRASTER, (x_auf_karte + y_auf_karte) * YRASTER + 2 * YRASTER - feld.grundhoehe * ELEVATION);
       }
       /*else
         std::cout << insel->schicht2[y * insel->breite + x].bebauung << " ";*/
