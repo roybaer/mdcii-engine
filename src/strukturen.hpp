@@ -21,25 +21,7 @@
 
 #include <inttypes.h>
 
-extern char insel3_kennung[];
-extern char insel5_kennung[];
 extern char inselhaus_kennung[];
-extern char hirsch2_kennung[];
-extern char prodlist2_kennung[];
-extern char werft_kennung[];
-extern char militar_kennung[];
-extern char siedler_kennung[];
-extern char rohwachs2_kennung[];
-extern char stadt4_kennung[];
-extern char kontor2_kennung[];
-extern char markt2_kennung[];
-extern char player4_kennung[];
-extern char auftrag2_kennung[];
-extern char handler_kennung[];
-extern char ship4_kennung[];
-extern char soldat3_kennung[];
-extern char turm_kennung[];
-extern char timers_kennung[];
 extern char wiff_kennung[];
 
 struct Ware// 20 bytes
@@ -69,6 +51,8 @@ struct Insel3
   uint16_t b;
   uint16_t c;
   uint8_t bytes1[28];
+  
+  static constexpr char kennung[] = "INSEL3";
 } __attribute__((packed));
 
 struct Erzvorkommen // 8 bytes
@@ -103,6 +87,8 @@ struct Insel5
   uint8_t sued;         ///< 0x00 = nord, 0x01 = süd
   uint8_t diff;         ///< 0x00 = eigenständig, 0x01 = basiert auf "basis"
   uint8_t bytes2[14];
+  
+  static constexpr char kennung[] = "INSEL5";
 } __attribute__((packed));
 
 struct Hirsch2 // 8 bytes
@@ -112,6 +98,8 @@ struct Hirsch2 // 8 bytes
   uint8_t y_pos;        ///< Y-Position auf der Insel
   uint8_t a; // 0x00
   uint32_t typ; // 0x00000561
+  
+  static constexpr char kennung[] = "HIRSCH2";
 };
 
 struct Siedler // 16 bytes
@@ -125,6 +113,8 @@ struct Siedler // 16 bytes
   uint16_t nummer; //der Grafik? (eher nicht); 0x01 bis 0x06
   uint32_t flags;       ///< Zeigt den Zustand der Bewohner an und welche Bedürfnisse befriedigt werden
   uint32_t leer;
+  
+  static constexpr char kennung[] = "SIEDLER";
 } __attribute__((packed));
 
 struct Rohwachs // 8 bytes
@@ -134,6 +124,8 @@ struct Rohwachs // 8 bytes
   uint8_t y_pos;        ///< Y-Position auf der Insel
   uint8_t schritt;      ///< Wachstumsschritt (sichtbar)
   uint32_t ani; //+Typ des Feldes?   0x01/0x07  0x00 bis 0x04   im szenario immer 0x00000000
+  
+  static constexpr char kennung[] = "ROHWACHS2";
 } __attribute__((packed));
 
 struct Prodlist // 24 bytes
@@ -155,6 +147,8 @@ struct Prodlist // 24 bytes
   uint8_t modus; // 0x00, 0x01, 0x05, 0x15, 0x2d, 0x35, 0x25, 0x19, 0x03, 0x11, 0x29, 0x21, 0x31, 0x39, 0x28  Flag 0x01 = aktiv, 0x40 = nicht abholen
   uint8_t ani; // vermutlich auch Modus ? 0x00 bis 0x0f  Animationsschritt???  0x0f = Rohstoffmangel oder öffentlich; arbeitsschritt und ani niemals gleichzeitig != 0
   uint16_t leer4;           ///< immer 0
+  
+  static constexpr char kennung[] = "PRODLIST2";
 } __attribute__((packed));
 
 struct Werft // 24 bytes
@@ -170,6 +164,8 @@ struct Werft // 24 bytes
   uint16_t holz;        ///< Lagerstand Holz (Bug: Lagerstand Stoffe wird nicht mitgespeichert)
   uint16_t ffff;        ///< immer 0xffff
   uint8_t leer3[10];    ///< immer 0
+  
+  static constexpr char kennung[] = "WERFT";
 } __attribute__((packed));
 
 struct Einheit // 8 bytes     TODO: Wo ist gespeichert, ob die Einheit schon bewaffnet ist?
@@ -194,6 +190,8 @@ struct Militar // 112 bytes     TODO: Wo ist das Nicht-bewaffnen-Flag?
   uint16_t leer3;       ///< vermutlich immer 0
   Einheit einheiten[8]; ///< Einheiten in der Burg (max. 3), großen Burg (max. 5) oder Festung (max. 8); 0, falls leer
   uint8_t leer4[32];    ///< vermutlich immer 0
+  
+  static constexpr char kennung[] = "MILITAR";
 } __attribute__((packed));
 
 struct Stadt // 168 bytes
@@ -208,6 +206,8 @@ struct Stadt // 168 bytes
   uint8_t steuersatz[5];    ///< Steuersatz für jede Entwicklungsstufe (jeweils zwischen 0x40 und 0xc0)
   uint8_t unbekannt3[3];
   char name[33];            ///< Name der Stadt
+  
+  static constexpr char kennung[] = "STADT4";
 } __attribute__((packed));
 
 struct Kontor // 1004 bytes
@@ -217,6 +217,8 @@ struct Kontor // 1004 bytes
   uint8_t y_pos;        ///< Y-Position auf der Insel
   uint8_t spieler;
   Ware waren[50]; // 23 Waren ab index 2
+  
+  static constexpr char kennung[] = "KONTOR2";
 } __attribute__((packed));
 
 struct Markt_intern // 16 bytes
@@ -237,6 +239,8 @@ struct Markt // 260 bytes
   uint8_t spieler;
   uint16_t a; // 0x0000
   Markt_intern unbekannt[16];
+  
+  static constexpr char kennung[] = "MARKT2";
 } __attribute__((packed));
 
 struct Player // 1072 bytes
@@ -256,6 +260,8 @@ struct Player // 1072 bytes
   uint16_t zufriedenheit;       ///< Zufriedenheit der Bevölkerung (Anzahl Denkmäler)
   uint8_t unbekannt3[902];
   char name[112];               ///< Name dieses Spielers
+  
+  static constexpr char kennung[] = "PLAYER4";
 } __attribute__((packed));
 
 struct Auftrag // 1684
@@ -263,6 +269,8 @@ struct Auftrag // 1684
   uint32_t spieler;     ///< Spieler, für den dieser Auftrag bestimmt ist
   char text[13][128];   ///< 13 Zeilen Text
   char padding[16];
+  
+  static constexpr char kennung[] = "AUFTRAG2";
 };
 
 struct Ware_handler
@@ -278,6 +286,8 @@ struct Handler // 604 bytes
   uint32_t leer[5];
   Ware_handler waren[24];
   uint8_t leer2[292];
+  
+  static constexpr char kennung[] = "HANDLER";
 };
 
 struct Laderaum
@@ -328,6 +338,8 @@ struct Ship // 436 bytes
   Handelsroute handelsrouten[8];
   uint16_t j;
   Laderaum ladung[8];
+  
+  static constexpr char kennung[] = "SHIP4";
 } __attribute__((packed));
 
 struct Soldat // 68 bytes
@@ -352,6 +364,8 @@ struct Soldat // 68 bytes
   uint8_t kurs2[4];     ///< 4 Bytes Kurs
   uint8_t kurs3[4];     ///< 4 Bytes Kurs
   uint8_t leer[30];     ///< Füllbytes
+  
+  static constexpr char kennung[] = "SOLDAT3";
 };
 
 struct Turm // 36 bytes
@@ -372,11 +386,15 @@ struct Turm // 36 bytes
   uint32_t spieler;         ///< Spieler, dem der Turm gehört
   uint32_t h; // 0x00000000
   uint32_t i; // 0x00000000
+  
+  static constexpr char kennung[] = "TURM";
 };
 
 // struct Timer // (Vielfaches von) 4 bytes
 // {
 //   uint32_t a;
+//   
+//   static constexpr char kennung[] = "TIMERS";
 // };
 
 #endif

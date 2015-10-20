@@ -28,32 +28,32 @@ Welt::Welt(std::istream& f)
   std::vector<Block *>::iterator i = bloecke.begin();
   while (i < bloecke.end())
   {
-    if (strcmp((*i)->kennung, "INSEL5") == 0)
+    if (strcmp((*i)->kennung, Insel5::kennung) == 0)
     {
       inseln.push_back(new Insel(*i, *(i + 1)));
       i++;
     }
-    else if (strcmp((*i)->kennung, kontor2_kennung) == 0)
+    else if (strcmp((*i)->kennung, Kontor::kennung) == 0)
     {
       for (int j = 0; j < (*i)->laenge / sizeof(Kontor); j++)
 	kontore.push_back(new Kontor((Kontor&)(*i)->daten[j * sizeof(Kontor)]));
     }
-    else if (strcmp((*i)->kennung, ship4_kennung) == 0)
+    else if (strcmp((*i)->kennung, Ship::kennung) == 0)
     {
       for (int j = 0; j < (*i)->laenge / sizeof(Ship); j++)
 	schiffe.push_back(new Ship((Ship&)(*i)->daten[j * sizeof(Ship)]));
     }
-    else if (strcmp((*i)->kennung, soldat3_kennung) == 0)
+    else if (strcmp((*i)->kennung, Soldat::kennung) == 0)
     {
       for (int j = 0; j < (*i)->laenge / sizeof(Soldat); j++)
 	soldaten.push_back(new Soldat((Soldat&)(*i)->daten[j * sizeof(Soldat)]));
     }
-    else if (strcmp((*i)->kennung, prodlist2_kennung) == 0)
+    else if (strcmp((*i)->kennung, Prodlist::kennung) == 0)
     {
       for (int j = 0; j < (*i)->laenge / sizeof(Prodlist); j++)
 	prodlist.push_back(new Prodlist((Prodlist&)(*i)->daten[j * sizeof(Prodlist)]));
     }
-    else if (strcmp((*i)->kennung, player4_kennung) == 0)
+    else if (strcmp((*i)->kennung, Player::kennung) == 0)
     {
       for (int j = 0; j < (*i)->laenge / sizeof(Player); j++)
 	spieler.push_back(new Player((Player&)(*i)->daten[j * sizeof(Player)]));

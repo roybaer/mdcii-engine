@@ -103,7 +103,7 @@ std::string Insel::basisname(uint8_t breite, uint8_t num, uint8_t sued)
 Insel::Insel(Block *inselX, Block *inselhaus)
 {
   //Kennung prüfen
-  if (strcmp(inselX->kennung, insel5_kennung) == 0)
+  if (strcmp(inselX->kennung, Insel5::kennung) == 0)
   {
     this->inselX = inselX;
     this->breite = ((Insel5 *)inselX->daten)->breite;
@@ -134,7 +134,7 @@ Insel::Insel(Block *inselX, Block *inselhaus)
       }
     }
   }
-  else if (strcmp(inselX->kennung, insel3_kennung) == 0)
+  else if (strcmp(inselX->kennung, Insel3::kennung) == 0)
   {
     this->inselX = inselX;
     this->breite = ((Insel3 *)inselX->daten)->breite;
