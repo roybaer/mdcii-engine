@@ -243,6 +243,12 @@ struct Markt // 260 bytes
   static constexpr char kennung[] = "MARKT2";
 } __attribute__((packed));
 
+struct Vertrag // 8 bytes
+{
+  uint32_t status; // 0: nicht vorhanden, 1: biete anderem Spieler an, 2: wird vom anderen Spieler angeboten, 3: besteht
+  uint32_t unbekannt; // immer 0?
+};
+
 struct Player // 1072 bytes
 {
   int32_t kontostand;           ///< Kontostand dieses Spielers
@@ -258,7 +264,10 @@ struct Player // 1072 bytes
   uint16_t schiffe_versenkt;    ///< Anzahl Schiffe, die dieser Spieler versenkt hat
   uint8_t unbekannt2[28];
   uint16_t zufriedenheit;       ///< Zufriedenheit der Bevölkerung (Anzahl Denkmäler)
-  uint8_t unbekannt3[902];
+  uint8_t unbekannt3[270];
+  Vertrag handelsvertraege[3];  ///< Handelsverträge mit den drei anderen Spielern
+  Vertrag friedensvertraege[3]; ///< Friedensverträge mit den drei anderen Spielern
+  uint8_t unbekannt4[584];
   char name[112];               ///< Name dieses Spielers
   
   static constexpr char kennung[] = "PLAYER4";
