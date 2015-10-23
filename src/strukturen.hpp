@@ -262,7 +262,8 @@ struct Player // 1072 bytes
   uint16_t soldaten_gefallen;   ///< Anzahl gefallener Soldaten
   uint16_t schiffe_gesunken;    ///< Anzahl gesunkener Schiffe
   uint16_t schiffe_versenkt;    ///< Anzahl Schiffe, die dieser Spieler versenkt hat
-  uint8_t unbekannt2[28];
+  uint8_t unbekannt2[24];
+  uint32_t freigeschaltet;      ///< Bitflags für Gruppen freigeschalteter Gebäude
   uint16_t zufriedenheit;       ///< Zufriedenheit der Bevölkerung (Anzahl Denkmäler)
   uint8_t unbekannt3[270];
   Vertrag handelsvertraege[3];  ///< Handelsverträge mit den drei anderen Spielern

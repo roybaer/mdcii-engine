@@ -72,3 +72,43 @@ Die Bits geben an, was zu 100% statt zu 50% wächst.
 |   5 | 100% Wein       |
 |   6 | 100% Kakao      |
 |   7 | (immer 1)       |
+
+Bits im `freigeschaltet`-Attribut der `Player`-Struktur
+-------------------------------------------------------
+
+Ein gesetztes Bit bedeutet, dass die entsprechenden Gebäude gebaut werden können.
+
+| Bit | Bedeutung
+|----:|:------------------
+|   0 | (ignoriert)
+|   1 | (ignoriert)
+|   2 | Schule
+|   3 | Wirtshaus
+|   4 | Kirche
+|   5 | Badehaus
+|   6 | Theater
+|   7 | Hochschule
+|   8 | Arzt
+|   9 | Galgen
+|  10 | Schloss
+|  11 | Kathedrale
+|  12 | (nichts)
+|  13 | (nichts)
+|  14 | Fleischerei, Rinderfarm
+|  15 | Pflasterstraße, Steinbrücke, Steinbruch, Steinmetz, Feuerwehr
+|  16 | Palisade, Holztor, Kontor II
+|  17 | Tabakwarenladen, Rumbrennerei, Weingut, Weinstöcke, Zuckerrohrplantage, Zuckerrohrfeld, Tabakplantage, Tabakfeld, Gewürzplantage, Gewürzfeld
+|  18 | Windmühle, Bäckerei, Getreidefarm, Getreidefeld
+|  19 | Werkzeugschmiede
+|  20 | Erzmine, Werft, Erzschmelze
+|  21 | kleine Burg, Steinwall, Steintor, Wachturm, Stadttor, Platz I, Schwertschmiede
+|  22 | Kontor III
+|  23 | Goldmine
+|  24 | Schneiderei, Weberei, Baumwollplantage, Baumwollfeld, Kakaoplantage, Kakaofeld
+|  25 | (nichts)
+|  26 | Kanonengießerei
+|  27 | tiefe Erzmine
+|  28 | Platz II, Platz III, Zierbaum, Goldschmiede, Kontor IV
+|  29 | große Burg, Musketenbauer
+|  30 | große Werft
+|  31 | Festung
