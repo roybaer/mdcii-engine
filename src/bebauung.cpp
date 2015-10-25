@@ -16,37 +16,22 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef WELT_HPP
-#define WELT_HPP
-
-#include <vector>
 #include <fstream>
-#include <inttypes.h>
-#include "insel.hpp"
-#include "block.hpp"
-#include "strukturen.hpp"
+#include <sstream>
+
 #include "bebauung.hpp"
 
-class Welt
+Bebauung::Bebauung(std::string dateiname)
 {
-  int ani;
-public:
-  enum { KARTENBREITE = 500 };
-  enum { KARTENHOEHE = 350 };
-  
-  Bebauung* bebauung;
-  
-  Insel* insel_an_pos(uint16_t x, uint16_t y);
-  std::vector<Block *> bloecke;
-  std::vector<Insel *> inseln;
-  std::vector<Kontor *> kontore;
-  std::vector<Ship *> schiffe;
-  std::vector<Soldat *> soldaten;
-  std::vector<Prodlist *> prodlist;
-  std::vector<Player *> spieler;
-  Welt(std::istream& f);
-  void simulationsschritt();
-  void feld_an_pos(inselfeld_t& feld, int x, int y);
-};
-
-#endif
+  std::ifstream datei(dateiname.c_str());
+  std::string zeile;
+  while (datei.good())
+  {
+    std::getline(datei, zeile);
+    std::stringstream ss(zeile, std::ios_base::in);
+    uint16_t bebauung, breite, hoehe, richtungen, ani_schritte, grundhoehe, bauhoehe;
+    ss >> bebauung >> breite >> hoehe >> richtungen >> ani_schritte >> grundhoehe >> bauhoehe;
+    if (datei.good())
+      index[bebauung] = { (uint8_t)breite, (uint8_t)hoehe, (uint8_t)richtungen, (uint8_t)ani_schritte, (uint8_t)grundhoehe, (uint8_t)bauhoehe };
+  }
+}

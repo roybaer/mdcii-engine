@@ -21,6 +21,8 @@
 
 Welt::Welt(std::istream& f)
 {
+  bebauung = new Bebauung("bebauung.txt");
+  
   while (!f.eof())
   {
     bloecke.push_back(new Block(f));

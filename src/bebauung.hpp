@@ -16,37 +16,28 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef WELT_HPP
-#define WELT_HPP
+#ifndef BEBAUUNG_HPP
+#define BEBAUUNG_HPP
 
-#include <vector>
-#include <fstream>
-#include <inttypes.h>
-#include "insel.hpp"
-#include "block.hpp"
-#include "strukturen.hpp"
-#include "bebauung.hpp"
+#include <string>
+#include <map>
 
-class Welt
+class Bebauung
 {
-  int ani;
+  struct Bebauungsinfo
+  {
+    uint8_t breite;
+    uint8_t hoehe;
+    uint8_t richtungen;
+    uint8_t ani_schritte;
+    uint8_t grundhoehe;
+    uint8_t bauhoehe;
+  };
+public: // temporär public
+  std::map<uint16_t, Bebauungsinfo> index;
+  
 public:
-  enum { KARTENBREITE = 500 };
-  enum { KARTENHOEHE = 350 };
-  
-  Bebauung* bebauung;
-  
-  Insel* insel_an_pos(uint16_t x, uint16_t y);
-  std::vector<Block *> bloecke;
-  std::vector<Insel *> inseln;
-  std::vector<Kontor *> kontore;
-  std::vector<Ship *> schiffe;
-  std::vector<Soldat *> soldaten;
-  std::vector<Prodlist *> prodlist;
-  std::vector<Player *> spieler;
-  Welt(std::istream& f);
-  void simulationsschritt();
-  void feld_an_pos(inselfeld_t& feld, int x, int y);
+  Bebauung(std::string dateiname);
 };
 
 #endif
