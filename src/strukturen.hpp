@@ -196,11 +196,10 @@ struct Militar // 112 bytes     TODO: Wo ist das Nicht-bewaffnen-Flag?
 
 struct Stadt // 168 bytes
 {
-  uint8_t inselnummer;      ///< Insel, auf der die Stadt steht
-  uint8_t spieler;          ///< Spieler, dem die Stadt gehört
-  uint8_t a; // 0x00, 0x02, 0x06
-  uint8_t b; // 0x00
-  uint8_t unbekannt1[88];
+  uint16_t inselnummer;     ///< Insel, auf der die Stadt steht
+  uint16_t spieler;         ///< Spieler, dem die Stadt gehört
+  uint8_t baumaterialien_entziehen; ///< 0: Dem Volk Baumaterialien überlassen, 1: Dem Volk keine Baumaterialien überlassen
+  uint8_t unbekannt1[87];
   uint32_t einwohner[5];    ///< Anzahl der Einwohner mit entsprechender Entwicklungsstufe
   uint8_t unbekannt2[15];
   uint8_t steuersatz[5];    ///< Steuersatz für jede Entwicklungsstufe (jeweils zwischen 0x40 und 0xc0)
