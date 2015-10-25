@@ -34,6 +34,9 @@ public:
   bool operator==(const Nordostiterator& r) { return &welt == &r.welt && x == r.x && y == r.y; }
   bool operator!=(const Nordostiterator& r) { return &welt != &r.welt || x != r.x || y != r.y; }
   inselfeld_t operator*() { inselfeld_t feld; welt.feld_an_pos(feld, x, y); return feld; }
+  
+  int gib_x() { return x; }
+  int gib_y() { return y; }
 };
 
 class Nordoststreifen
