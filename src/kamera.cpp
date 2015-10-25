@@ -250,7 +250,7 @@ void Kamera::auf_karte(Bildspeicher& bs, int bildschirm_x, int bildschirm_y, int
 
 void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
 {
-  inselfeld_t feld_unter_maus;
+  Nordostiterator feld_unter_maus;
   
   switch (drehung)
   {
@@ -267,8 +267,9 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
       {
 	Nordoststreifen nos(welt, karte_x + (y & 1) + (y >> 1), karte_y + (y >> 1), felder_horizontal);
 	int start_x = bildschirm_x + ((y & 1) ? x_raster[vergroesserung] : 0);
-	for (inselfeld_t feld : nos)
+	for (Nordostiterator it = nos.begin(); it != nos.end(); ++it)
 	{
+	  inselfeld_t feld = *it;
 	  feld_t feld2;
 	  Insel::grafik_bebauung_inselfeld(feld2, feld, 0, *welt.bebauung, *stadtfld_grafiken);
 	  if (feld2.index != -1)
@@ -278,7 +279,7 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
 	    bs.zeichne_bsh_bild_sp_oz(bsh, start_x, start_y - feld2.grundhoehe * grundhoehe[vergroesserung], maus_x, maus_y, ist_unter_maus);
 	    if (ist_unter_maus)
 	    {
-	      feld_unter_maus = feld;
+	      feld_unter_maus = it;
 	    }
 	  }
 	  start_x += 2 * x_raster[vergroesserung];
@@ -379,5 +380,7 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
   bs.zeichne_string(*zei, "aktuelle Position:", 10, 10);
   bs.zeichne_string(*zei, "(" + std::to_string(xpos) + ", " + std::to_string(ypos) + ")", 10, 30);
   bs.zeichne_string(*zei, "Bebauung unter Mauszeiger:", 10, 60);
-  bs.zeichne_string(*zei, std::to_string(feld_unter_maus.bebauung), 10, 80);
+  bs.zeichne_string(*zei, std::to_string(feld_unter_maus->bebauung), 10, 80);
+  bs.zeichne_string(*zei, "Position und Insel unter Mauszeiger:", 10, 110);
+  bs.zeichne_string(*zei, "(" + std::to_string(feld_unter_maus.gib_x()) + ", " + std::to_string(feld_unter_maus.gib_y()) + ")  Insel " + std::to_string(welt.inselnummer_an_pos(feld_unter_maus.gib_x(), feld_unter_maus.gib_y())), 10, 130);
 }
