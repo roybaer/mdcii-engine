@@ -36,6 +36,7 @@ public:
   
   Bebauung* bebauung;
   
+  int inselnummer_an_pos(uint16_t x, uint16_t y);
   Insel* insel_an_pos(uint16_t x, uint16_t y);
   std::vector<Block *> bloecke;
   std::vector<Insel *> inseln;

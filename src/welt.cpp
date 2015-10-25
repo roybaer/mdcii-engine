@@ -64,6 +64,16 @@ Welt::Welt(std::istream& f)
   }
 }
 
+int Welt::inselnummer_an_pos(uint16_t x, uint16_t y)
+{
+  for (int i = 0; i < inseln.size(); i++)
+  {
+    if ((x >= inseln[i]->xpos) && (y >= inseln[i]->ypos) && (x < inseln[i]->xpos + inseln[i]->breite) && (y < inseln[i]->ypos + inseln[i]->hoehe))
+      return i;
+  }
+  return -1;
+}
+
 Insel* Welt::insel_an_pos(uint16_t x, uint16_t y)
 {
   for (Insel* insel : inseln)
