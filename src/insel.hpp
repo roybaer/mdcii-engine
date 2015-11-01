@@ -21,7 +21,6 @@
 
 #include <inttypes.h>
 #include "block.hpp"
-#include "grafikinfo.hpp"
 
 class Grafiken;
 class Bebauung;

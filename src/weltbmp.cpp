@@ -26,11 +26,7 @@
 
 #include "bsh_leser.hpp"
 #include "bildspeicher_pal8.hpp"
-
-
-//#include "stadtfld_bsh.hpp"
 #include "insel.hpp"
-#include "grafikinfo.hpp"
 #include "welt.hpp"
 #include "grafiken.hpp"
 
@@ -69,8 +65,8 @@ int main(int argc, char **argv)
 	insel->grafik_bebauung(feld, x - insel->xpos, y - insel->ypos, 0, stadtfld_grafiken);
       else
       {
-	feld.index = meer.index + (y + x * 3) % 12;
-	feld.grundhoehe = meer.grundhoehe;
+	feld.index = stadtfld_grafiken.grafik_zu(1201) + (y + x * 3) % 12;
+	feld.grundhoehe = 0;
       }
       /*feld_t feld2;
       insel->grafik_boden(&feld2, x, y, 0);*/

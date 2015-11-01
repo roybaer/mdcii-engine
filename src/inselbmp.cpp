@@ -25,11 +25,7 @@
 
 #include "bsh_leser.hpp"
 #include "bildspeicher_pal8.hpp"
-
-
-//#include "stadtfld_bsh.hpp"
 #include "insel.hpp"
-#include "grafikinfo.hpp"
 #include "bebauung.hpp"
 #include "grafiken.hpp"
 
