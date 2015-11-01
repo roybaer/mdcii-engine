@@ -31,6 +31,7 @@
 #include "insel.hpp"
 #include "grafikinfo.hpp"
 #include "bebauung.hpp"
+#include "grafiken.hpp"
 
 
   
@@ -53,6 +54,7 @@ int main(int argc, char **argv)
   f.close();
   
   Bebauung bebauung("bebauung.txt");
+  Grafiken stadtfld_grafiken("grafiken.txt");
   
   Insel insel = Insel(&inselX, &inselhaus, bebauung);
   uint8_t width = insel.breite;
@@ -68,7 +70,7 @@ int main(int argc, char **argv)
     for (x = 0; x < width; x++)
     {
       feld_t feld;
-      insel.grafik_bebauung(feld, x, y, 0);
+      insel.grafik_bebauung(feld, x, y, 0, stadtfld_grafiken);
       if (feld.index != -1)
       {
 	Bsh_bild& bsh = bsh_leser.gib_bsh_bild(feld.index);

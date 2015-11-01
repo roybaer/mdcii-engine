@@ -19,6 +19,7 @@
 #include "strukturen.hpp"
 #include "insel.hpp"
 #include "bebauung.hpp"
+#include "grafiken.hpp"
 #include <string.h>
 #include <fstream>
 #include <boost/format.hpp>
@@ -150,27 +151,29 @@ Insel::Insel(Block* inselX, Block* inselhaus, Bebauung& bebauung)
   }
 }
 
-void Insel::grafik_boden(feld_t& ziel, uint8_t x, uint8_t y, uint8_t r)
+void Insel::grafik_boden(feld_t& ziel, uint8_t x, uint8_t y, uint8_t r, Grafiken& grafiken)
 {
-  inselfeld_t *feld;
-  g_t *g;
+  Bebauungsinfo* info;
+  int grafik;
   if (schicht2[y * breite + x].bebauung != 0xffff)
   {
-    g = GRAFIK(schicht2[y * breite + x].bebauung);
-    if ((g != NULL) && (g->bauhoehe == 0))
+    info = bebauung.info_zu(schicht2[y * breite + x].bebauung);
+    grafik = grafiken.grafik_zu(schicht2[y * breite + x].bebauung);
+    if (info != nullptr && info->bauhoehe == 0 && grafik != -1)
     {
-      ziel.index = g->index;
-      ziel.grundhoehe = g->grundhoehe;
+      ziel.index = grafik;
+      ziel.grundhoehe = info->grundhoehe;
       return;
     }
   }
   if (schicht1[y * breite + x].bebauung != 0xffff)
   {
-    g = GRAFIK(schicht1[y * breite + x].bebauung);
-    if ((g != NULL) && (g->bauhoehe == 0))
+    info = bebauung.info_zu(schicht1[y * breite + x].bebauung);
+    grafik = grafiken.grafik_zu(schicht1[y * breite + x].bebauung);
+    if (info != nullptr && info->bauhoehe == 0 && grafik != -1)
     {
-      ziel.index = g->index;
-      ziel.grundhoehe = g->grundhoehe;
+      ziel.index = grafik;
+      ziel.grundhoehe = info->grundhoehe;
       return;
     }
   }
@@ -192,7 +195,7 @@ void Insel::inselfeld_bebauung(inselfeld_t& ziel, uint8_t x, uint8_t y)
   ziel.y_pos = yp;
 }
 
-void Insel::grafik_bebauung_inselfeld(feld_t& ziel, inselfeld_t& feld, uint8_t r)
+void Insel::grafik_bebauung_inselfeld(feld_t& ziel, inselfeld_t& feld, uint8_t r, Bebauung& bebauung, Grafiken& grafiken)
 {
   if (feld.bebauung == 0xffff)
   {
@@ -201,40 +204,41 @@ void Insel::grafik_bebauung_inselfeld(feld_t& ziel, inselfeld_t& feld, uint8_t r
     return;
   }
   
-  g_t *g = GRAFIK(feld.bebauung);
-  if ((g == NULL) /*|| (g->bauhoehe == 0)*/)
+  Bebauungsinfo* info = bebauung.info_zu(feld.bebauung);
+  int grafik = grafiken.grafik_zu(feld.bebauung);
+  if (info == nullptr || grafik == -1)
   {
     ziel.index = -1;
     ziel.grundhoehe = 0;
     return;
   }
-  int16_t index = g->index;
-  index += g->breite * g->hoehe * ((r + feld.rot) % g->richtungen);
+  int16_t index = grafik;
+  index += info->breite * info->hoehe * ((r + feld.rot) % info->richtungen);
   switch (feld.rot)
   {
     case 0:
-      index += feld.y_pos * g->breite + feld.x_pos;
+      index += feld.y_pos * info->breite + feld.x_pos;
       break;
     case 1:
-      index += (g->hoehe - feld.x_pos - 1) * g->breite + feld.y_pos;
+      index += (info->hoehe - feld.x_pos - 1) * info->breite + feld.y_pos;
       break;
     case 2:
-      index += (g->hoehe - feld.y_pos - 1) * g->breite + (g->breite - feld.x_pos - 1);
+      index += (info->hoehe - feld.y_pos - 1) * info->breite + (info->breite - feld.x_pos - 1);
       break;
     case 3:
-      index += feld.x_pos * g->breite + (g->breite - feld.y_pos - 1);
+      index += feld.x_pos * info->breite + (info->breite - feld.y_pos - 1);
       break;
   }
-  index += g->breite * g->hoehe * g->richtungen * (feld.ani % g->ani_schritte);
+  index += info->breite * info->hoehe * info->richtungen * (feld.ani % info->ani_schritte);
   ziel.index = index;
-  ziel.grundhoehe = g->grundhoehe;
+  ziel.grundhoehe = info->grundhoehe;
 }
 
-void Insel::grafik_bebauung(feld_t& ziel, uint8_t x, uint8_t y, uint8_t r)
+void Insel::grafik_bebauung(feld_t& ziel, uint8_t x, uint8_t y, uint8_t r, Grafiken& grafiken)
 {
   inselfeld_t feld;
   inselfeld_bebauung(feld, x, y);
-  grafik_bebauung_inselfeld(ziel, feld, r);
+  grafik_bebauung_inselfeld(ziel, feld, r, bebauung, grafiken);
 }
 
 void Insel::bewege_wasser() // FIXME

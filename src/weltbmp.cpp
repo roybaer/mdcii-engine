@@ -32,6 +32,7 @@
 #include "insel.hpp"
 #include "grafikinfo.hpp"
 #include "welt.hpp"
+#include "grafiken.hpp"
 
 #include <boost/foreach.hpp>
 #define foreach BOOST_FOREACH
@@ -54,6 +55,7 @@ int main(int argc, char **argv)
   f.close();
   
   Bsh_leser bsh_leser("Mgfx/STADTFLD.BSH");
+  Grafiken stadtfld_grafiken("grafiken.txt");
   
   Bildspeicher_pal8 bs((Welt::KARTENBREITE + Welt::KARTENHOEHE) * XRASTER, (Welt::KARTENBREITE + Welt::KARTENHOEHE) * YRASTER, 0);
   
@@ -64,7 +66,7 @@ int main(int argc, char **argv)
       Insel* insel = welt.insel_an_pos(x, y);
       feld_t feld;
       if (insel != NULL)
-	insel->grafik_bebauung(feld, x - insel->xpos, y - insel->ypos, 0);
+	insel->grafik_bebauung(feld, x - insel->xpos, y - insel->ypos, 0, stadtfld_grafiken);
       else
       {
 	feld.index = meer.index + (y + x * 3) % 12;

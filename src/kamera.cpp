@@ -19,6 +19,7 @@
 #include <string>
 #include "kamera.hpp"
 #include "iteratoren.hpp"
+#include "grafiken.hpp"
 
 #define SGFX std::string("Sgfx/")
 #define MGFX std::string("Mgfx/")
@@ -68,6 +69,8 @@ Kamera::Kamera()
 //   traeger_bsh[2] = new Bsh_leser(GFX + "TRAEGER.BSH");
   
   zei = new Zei_leser("TOOLGFX/ZEI16G.ZEI");
+  
+  stadtfld_grafiken = new Grafiken("grafiken.txt");
 }
 
 void Kamera::gehe_zu(uint16_t x, uint16_t y)
@@ -267,7 +270,7 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
 	for (inselfeld_t feld : nos)
 	{
 	  feld_t feld2;
-	  Insel::grafik_bebauung_inselfeld(feld2, feld, 0);
+	  Insel::grafik_bebauung_inselfeld(feld2, feld, 0, *welt.bebauung, *stadtfld_grafiken);
 	  if (feld2.index != -1)
 	  {
 	    Bsh_bild& bsh = stadtfld_bsh[vergroesserung]->gib_bsh_bild(feld2.index);

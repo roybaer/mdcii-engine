@@ -24,6 +24,8 @@
 #include "bildspeicher.hpp"
 #include "welt.hpp"
 
+class Grafiken;
+
 /* GFX/ MGFX/ Sgfx/  EFFEKTE.BSH MAEHER.BSH NUMBERS.BSH SHIP.BSH SOLDAT.BSH STADTFLD.BSH TIERE.BSH TRAEGER.BSH */
 
 class Kamera
@@ -44,6 +46,8 @@ class Kamera
   Bsh_leser* tiere_bsh[3];
   Bsh_leser* traeger_bsh[3];
   Zei_leser* zei;
+  
+  Grafiken* stadtfld_grafiken;
   
 public:
   Kamera();

@@ -57,6 +57,7 @@
 404 1 1 1 1 1 0 strasse_kreuzung
 411 1 1 4 1 1 0 weg_gerade
 412 1 1 4 1 1 0 weg_ecke
+413 1 1 4 1 1 0 weg_t
 414 1 1 1 1 1 0 weg_kreuzung
 421 1 1 4 1 1 0 platz1
 422 1 1 4 1 1 0 platz2
