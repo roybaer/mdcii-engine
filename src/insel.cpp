@@ -243,19 +243,25 @@ void Insel::bewege_wasser() // FIXME
   {
     for (int x = 0; x < breite; x++)
     {
-      inselfeld_t *feld = &schicht2[y * breite + x];
-      if (feld->bebauung >= 1201 && feld->bebauung <= 1218 ||
-	  feld->bebauung >= 901 && feld->bebauung <= 905 ||
-	  feld->bebauung >= 1251 && feld->bebauung <= 1259 ||
-	  feld->bebauung == 1071 ||
-	  feld->bebauung == 2311)
-	feld->ani = (feld->ani + 1) % GRAFIK(feld->bebauung)->ani_schritte;
+      inselfeld_t& feld = schicht2[y * breite + x];
+      if (feld.bebauung >= 1201 && feld.bebauung <= 1218 ||
+	  feld.bebauung >= 901 && feld.bebauung <= 905 ||
+	  feld.bebauung >= 1251 && feld.bebauung <= 1259 ||
+	  feld.bebauung == 1071 ||
+	  feld.bebauung == 2311)
+      {
+	auto info = bebauung.index.find(feld.bebauung);
+	if (info != bebauung.index.end())
+	  feld.ani = (feld.ani + 1) % info->second.ani_schritte;
+      }
     }
   }
 }
 
 void Insel::animiere_gebaeude(uint8_t x, uint8_t y)
 {
-  inselfeld_t *feld = &schicht2[y * breite + x];
-  feld->ani = (feld->ani + 1) % GRAFIK(feld->bebauung)->ani_schritte;
+  inselfeld_t& feld = schicht2[y * breite + x];
+  auto info = bebauung.index.find(feld.bebauung);
+  if (info != bebauung.index.end())
+    feld.ani = (feld.ani + 1) % info->second.ani_schritte;
 }
