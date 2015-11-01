@@ -27,7 +27,7 @@ Bildspeicher::Bildspeicher(uint32_t breite, uint32_t hoehe, uint32_t format, uin
   this->pufferbreite = (pufferbreite >= breite * format) ? pufferbreite : (breite * format);
   if (puffer == NULL)
   {
-    this->puffer = new uint8_t[pufferbreite * hoehe];
+    this->puffer = new uint8_t[this->pufferbreite * hoehe];
     puffer_freigeben = 1;
   }
   else
