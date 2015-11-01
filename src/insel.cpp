@@ -42,19 +42,19 @@ void Insel::insel_rastern(inselfeld_t *a, uint32_t laenge, inselfeld_t *b, uint8
     if (feld.x_pos >= breite || feld.y_pos >= hoehe)
       continue;
     
-    auto info = bebauung.index.find(feld.bebauung);
-    if (info != bebauung.index.end())
+    Bebauungsinfo* info = bebauung.info_zu(feld.bebauung);
+    if (info != nullptr)
     {
       int x, y, u, v;
       if (feld.rot % 2 == 0)
       {
-	u = info->second.breite;
-	v = info->second.hoehe;
+	u = info->breite;
+	v = info->hoehe;
       }
       else
       {
-	u = info->second.hoehe;
-	v = info->second.breite;
+	u = info->hoehe;
+	v = info->breite;
       }
       
       for (int y = 0; y < v && feld.y_pos + y < hoehe; y++)
@@ -250,9 +250,9 @@ void Insel::bewege_wasser() // FIXME
 	  feld.bebauung == 1071 ||
 	  feld.bebauung == 2311)
       {
-	auto info = bebauung.index.find(feld.bebauung);
-	if (info != bebauung.index.end())
-	  feld.ani = (feld.ani + 1) % info->second.ani_schritte;
+	Bebauungsinfo* info = bebauung.info_zu(feld.bebauung);
+	if (info != nullptr)
+	  feld.ani = (feld.ani + 1) % info->ani_schritte;
       }
     }
   }
@@ -261,7 +261,7 @@ void Insel::bewege_wasser() // FIXME
 void Insel::animiere_gebaeude(uint8_t x, uint8_t y)
 {
   inselfeld_t& feld = schicht2[y * breite + x];
-  auto info = bebauung.index.find(feld.bebauung);
-  if (info != bebauung.index.end())
-    feld.ani = (feld.ani + 1) % info->second.ani_schritte;
+  Bebauungsinfo* info = bebauung.info_zu(feld.bebauung);
+  if (info != nullptr)
+    feld.ani = (feld.ani + 1) % info->ani_schritte;
 }

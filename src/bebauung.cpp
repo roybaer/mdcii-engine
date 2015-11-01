@@ -35,3 +35,12 @@ Bebauung::Bebauung(std::string dateiname)
       index[bebauung] = { (uint8_t)breite, (uint8_t)hoehe, (uint8_t)richtungen, (uint8_t)ani_schritte, (uint8_t)grundhoehe, (uint8_t)bauhoehe };
   }
 }
+
+Bebauungsinfo* Bebauung::info_zu(uint16_t i)
+{
+  auto info = index.find(i);
+  if (info != index.end())
+    return &info->second;
+  else
+    return nullptr;
+}

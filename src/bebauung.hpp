@@ -22,22 +22,23 @@
 #include <string>
 #include <map>
 
+struct Bebauungsinfo
+{
+  uint8_t breite;
+  uint8_t hoehe;
+  uint8_t richtungen;
+  uint8_t ani_schritte;
+  uint8_t grundhoehe;
+  uint8_t bauhoehe;
+};
+
 class Bebauung
 {
-  struct Bebauungsinfo
-  {
-    uint8_t breite;
-    uint8_t hoehe;
-    uint8_t richtungen;
-    uint8_t ani_schritte;
-    uint8_t grundhoehe;
-    uint8_t bauhoehe;
-  };
-public: // temporär public
   std::map<uint16_t, Bebauungsinfo> index;
   
 public:
   Bebauung(std::string dateiname);
+  Bebauungsinfo* info_zu(uint16_t i);
 };
 
 #endif
