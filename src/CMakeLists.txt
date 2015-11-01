@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 2.6)
 set(CMAKE_BUILD_TYPE Release)
 add_definitions(-std=c++11)
 
-add_executable(inselbmp inselbmp.cpp bildspeicher.cpp bildspeicher_pal8.cpp block.cpp grafikinfo.cpp insel.cpp stadtfld_bsh.cpp strukturen.cpp)
+add_executable(inselbmp inselbmp.cpp bildspeicher.cpp bildspeicher_pal8.cpp block.cpp grafikinfo.cpp insel.cpp stadtfld_bsh.cpp strukturen.cpp bebauung.cpp)
 target_link_libraries(inselbmp boost_iostreams)
 
 add_executable(weltbmp weltbmp.cpp bildspeicher.cpp bildspeicher_pal8.cpp block.cpp grafikinfo.cpp insel.cpp stadtfld_bsh.cpp strukturen.cpp welt.cpp bebauung.cpp)

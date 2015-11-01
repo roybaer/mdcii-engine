@@ -18,6 +18,7 @@
 
 #include "strukturen.hpp"
 #include "insel.hpp"
+#include "bebauung.hpp"
 #include <string.h>
 #include <fstream>
 #include <boost/format.hpp>
@@ -41,19 +42,19 @@ void Insel::insel_rastern(inselfeld_t *a, uint32_t laenge, inselfeld_t *b, uint8
     if (feld.x_pos >= breite || feld.y_pos >= hoehe)
       continue;
     
-    g_t *grafik = GRAFIK(feld.bebauung);
-    if (grafik != NULL)
+    auto info = bebauung.index.find(feld.bebauung);
+    if (info != bebauung.index.end())
     {
       int x, y, u, v;
       if (feld.rot % 2 == 0)
       {
-	u = grafik->breite;
-	v = grafik->hoehe;
+	u = info->second.breite;
+	v = info->second.hoehe;
       }
       else
       {
-	u = grafik->hoehe;
-	v = grafik->breite;
+	u = info->second.hoehe;
+	v = info->second.breite;
       }
       
       for (int y = 0; y < v && feld.y_pos + y < hoehe; y++)
@@ -100,7 +101,8 @@ std::string Insel::basisname(uint8_t breite, uint8_t num, uint8_t sued)
   return boost::str(boost::format("%slar%02d.scp") % (sued ? "Sued/" : "Nord/") % (int)num);
 }
 
-Insel::Insel(Block *inselX, Block *inselhaus)
+Insel::Insel(Block* inselX, Block* inselhaus, Bebauung& bebauung)
+  : bebauung(bebauung)
 {
   //Kennung prüfen
   if (strcmp(inselX->kennung, Insel5::kennung) == 0)

@@ -30,6 +30,7 @@
 //#include "stadtfld_bsh.hpp"
 #include "insel.hpp"
 #include "grafikinfo.hpp"
+#include "bebauung.hpp"
 
 
   
@@ -51,7 +52,9 @@ int main(int argc, char **argv)
   
   f.close();
   
-  Insel insel = Insel(&inselX, &inselhaus);
+  Bebauung bebauung("bebauung.txt");
+  
+  Insel insel = Insel(&inselX, &inselhaus, bebauung);
   uint8_t width = insel.breite;
   uint8_t height = insel.hoehe;
   

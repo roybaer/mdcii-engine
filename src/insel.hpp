@@ -23,6 +23,8 @@
 #include "block.hpp"
 #include "grafikinfo.hpp"
 
+class Bebauung;
+
 typedef struct
 {
   uint16_t bebauung;
@@ -47,6 +49,7 @@ class Insel
 {
   inselfeld_t *schicht1;
   inselfeld_t *schicht2;
+  Bebauung& bebauung;
 public:
   uint8_t breite;
   uint8_t hoehe;
@@ -55,7 +58,7 @@ public:
   void insel_rastern(inselfeld_t* a, uint32_t laenge, inselfeld_t* b, uint8_t breite, uint8_t hoehe);
   std::string basisname(uint8_t breite, uint8_t num, uint8_t sued);
   Block *inselX;
-  Insel(Block *inselX, Block *inselhaus);
+  Insel(Block *inselX, Block *inselhaus, Bebauung& bebauung);
   void grafik_boden(feld_t& ziel, uint8_t x, uint8_t y, uint8_t r);
   void inselfeld_bebauung(inselfeld_t& ziel, uint8_t x, uint8_t y);
   static void grafik_bebauung_inselfeld(feld_t& ziel, inselfeld_t& feld, uint8_t r);

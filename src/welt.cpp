@@ -32,7 +32,7 @@ Welt::Welt(std::istream& f)
   {
     if (strcmp((*i)->kennung, Insel5::kennung) == 0)
     {
-      inseln.push_back(new Insel(*i, *(i + 1)));
+      inseln.push_back(new Insel(*i, *(i + 1), *bebauung));
       i++;
     }
     else if (strcmp((*i)->kennung, Kontor::kennung) == 0)
