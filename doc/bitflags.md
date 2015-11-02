@@ -78,37 +78,39 @@ Bits im `freigeschaltet`-Attribut der `Player`-Struktur
 
 Ein gesetztes Bit bedeutet, dass die entsprechenden Gebäude gebaut werden können.
 
-| Bit | Bedeutung
-|----:|:------------------
-|   0 | (ignoriert)
-|   1 | (ignoriert)
-|   2 | Schule
-|   3 | Wirtshaus
-|   4 | Kirche
-|   5 | Badehaus
-|   6 | Theater
-|   7 | Hochschule
-|   8 | Arzt
-|   9 | Galgen
-|  10 | Schloss
-|  11 | Kathedrale
-|  12 | (nichts)
-|  13 | (nichts)
-|  14 | Fleischerei, Rinderfarm
-|  15 | Pflasterstraße, Steinbrücke, Steinbruch, Steinmetz, Feuerwehr
-|  16 | Palisade, Holztor, Kontor II
-|  17 | Tabakwarenladen, Rumbrennerei, Weingut, Weinstöcke, Zuckerrohrplantage, Zuckerrohrfeld, Tabakplantage, Tabakfeld, Gewürzplantage, Gewürzfeld
-|  18 | Windmühle, Bäckerei, Getreidefarm, Getreidefeld
-|  19 | Werkzeugschmiede
-|  20 | Erzmine, Werft, Erzschmelze
-|  21 | kleine Burg, Steinwall, Steintor, Wachturm, Stadttor, Platz I, Schwertschmiede
-|  22 | Kontor III
-|  23 | Goldmine
-|  24 | Schneiderei, Weberei, Baumwollplantage, Baumwollfeld, Kakaoplantage, Kakaofeld
-|  25 | (nichts)
-|  26 | Kanonengießerei
-|  27 | tiefe Erzmine
-|  28 | Platz II, Platz III, Zierbaum, Goldschmiede, Kontor IV
-|  29 | große Burg, Musketenbauer
-|  30 | große Werft
-|  31 | Festung
+| Bit | Bedingung¹        | Bedeutung
+|----:|:------------------|:------------------
+|   0 |                   | (ignoriert)
+|   1 |                   | (ignoriert)
+|   2 | 100 Siedler       | Schule
+|   3 | 50 Siedler        | Wirtshaus
+|   4 | 150 Bürger        | Kirche
+|   5 | 210 Bürger        | Badehaus
+|   6 | 300 Kaufleute     | Theater
+|   7 | 250 Kaufleute     | Hochschule
+|   8 | 50 Bürger         | Arzt
+|   9 | 100 Bürger        | Galgen
+|  10 | 1500 Aristokraten | Schloss
+|  11 | 2500 Aristokraten | Kathedrale
+|  12 |                   | (nichts)
+|  13 |                   | (nichts)
+|  14 | 30 Pioniere       | Fleischerei, Rinderfarm
+|  15 | 15 Siedler        | Pflasterstraße, Steinbrücke, Steinbruch, Steinmetz, Feuerwehr
+|  16 | 30 Siedler        | Palisade, Holztor, Kontor II
+|  17 | 40 Siedler        | Tabakwarenladen, Rumbrennerei, Weingut, Weinstöcke, Zuckerrohrplantage, Zuckerrohrfeld, Tabakplantage, Tabakfeld, Gewürzplantage, Gewürzfeld
+|  18 | 75 Siedler        | Windmühle, Bäckerei, Getreidefarm, Getreidefeld
+|  19 | 100 Siedler       | Werkzeugschmiede
+|  20 | 120 Siedler       | Erzmine, Werft, Erzschmelze
+|  21 | 200 Siedler       | kleine Burg, Steinwall, Steintor, Wachturm, Stadttor, Platz I, Schwertschmiede
+|  22 | 100 Bürger        | Kontor III
+|  23 | 150 Bürger        | Goldmine
+|  24 | 200 Bürger        | Schneiderei, Weberei, Baumwollplantage, Baumwollfeld, Kakaoplantage, Kakaofeld
+|  25 |                   | (nichts)
+|  26 | 400 Bürger        | Kanonengießerei
+|  27 | 450 Bürger        | tiefe Erzmine
+|  28 | 250 Kaufleute     | Platz II, Platz III, Zierbaum, Goldschmiede, Kontor IV
+|  29 | 400 Kaufleute     | große Burg, Musketenbauer
+|  30 | 500 Kaufleute     | große Werft
+|  31 | 600 Aristokraten  | Festung
+
+1) Quelle: [AnnoWiki 1602](http://1602.annowiki.de/). Die Bedingung muss nur einmal erfüllt gewesen sein.
