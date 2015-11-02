@@ -28,11 +28,14 @@ Bebauung::Bebauung(std::string dateiname)
   while (datei.good())
   {
     std::getline(datei, zeile);
-    std::stringstream ss(zeile, std::ios_base::in);
-    uint16_t bebauung, breite, hoehe, richtungen, ani_schritte, grundhoehe, bauhoehe;
-    ss >> bebauung >> breite >> hoehe >> richtungen >> ani_schritte >> grundhoehe >> bauhoehe;
-    if (datei.good())
-      index[bebauung] = { (uint8_t)breite, (uint8_t)hoehe, (uint8_t)richtungen, (uint8_t)ani_schritte, (uint8_t)grundhoehe, (uint8_t)bauhoehe };
+    if (!zeile.empty() && zeile[0] != ';')
+    {
+      std::stringstream ss(zeile, std::ios_base::in);
+      uint16_t bebauung, breite, hoehe, richtungen, ani_schritte, grundhoehe, bauhoehe;
+      ss >> bebauung >> breite >> hoehe >> richtungen >> ani_schritte >> grundhoehe >> bauhoehe;
+      if (datei.good())
+	index[bebauung] = { (uint8_t)breite, (uint8_t)hoehe, (uint8_t)richtungen, (uint8_t)ani_schritte, (uint8_t)grundhoehe, (uint8_t)bauhoehe };
+    }
   }
 }
 

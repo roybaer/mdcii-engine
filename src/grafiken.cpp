@@ -28,12 +28,15 @@ Grafiken::Grafiken(std::string dateiname)
   while (datei.good())
   {
     std::getline(datei, zeile);
-    std::stringstream ss(zeile, std::ios_base::in);
-    uint16_t bebauung;
-    uint32_t grafikindex;
-    ss >> bebauung >> grafikindex;
-    if (datei.good())
-      index[bebauung] = grafikindex;
+    if (!zeile.empty() && zeile[0] != ';')
+    {
+      std::stringstream ss(zeile, std::ios_base::in);
+      uint16_t bebauung;
+      uint32_t grafikindex;
+      ss >> bebauung >> grafikindex;
+      if (datei.good())
+	index[bebauung] = grafikindex;
+    }
   }
 }
 
