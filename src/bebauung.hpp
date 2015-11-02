@@ -30,6 +30,8 @@ struct Bebauungsinfo
   uint8_t ani_schritte;
   uint8_t grundhoehe;
   uint8_t bauhoehe;
+  uint8_t lagerstaende;
+  uint8_t kategorie;
 };
 
 class Bebauung
