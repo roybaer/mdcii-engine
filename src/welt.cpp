@@ -111,6 +111,17 @@ void Welt::feld_an_pos(inselfeld_t& feld, int x, int y)
   }
 }
 
+Prodlist* Welt::prodlist_an_pos(uint8_t insel, uint8_t x, uint8_t y)
+{
+  // Provisorium! Muss viel effizienter werden!
+  for (int i = 0; i < prodlist.size(); i++)
+  {
+    if (prodlist[i].inselnummer == insel && prodlist[i].x_pos == x && prodlist[i].y_pos == y)
+      return &prodlist[i];
+  }
+  return nullptr;
+}
+
 uint8_t Welt::spielerfarbe(uint8_t spieler)
 {
   return this->spieler[spieler].farbe;

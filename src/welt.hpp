@@ -48,6 +48,7 @@ public:
   Welt(std::istream& f);
   void simulationsschritt();
   void feld_an_pos(inselfeld_t& feld, int x, int y);
+  Prodlist* prodlist_an_pos(uint8_t insel, uint8_t x, uint8_t y);
   uint8_t spielerfarbe(uint8_t spieler);
 };
 

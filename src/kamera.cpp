@@ -282,6 +282,33 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
 	      feld_unter_maus = it;
 	    }
 	  }
+	  
+	  Bebauungsinfo* info = welt.bebauung->info_zu(feld.bebauung);
+	  if (info != nullptr)
+	  {
+	    if (info->kategorie == 4 && feld.x_pos == 0 && feld.y_pos == 0)
+	    {
+	      int insel = welt.inselnummer_an_pos(it.gib_x(), it.gib_y());
+	      if (insel != -1)
+	      {
+		Prodlist* prod = welt.prodlist_an_pos(insel, it.gib_x() - welt.inseln[insel]->xpos, it.gib_y() - welt.inseln[insel]->ypos);
+		if (prod != nullptr)
+		{
+		  if (! ((prod->modus & 1) != 0))  // Betrieb ist geschlossen
+		  {
+		    Bsh_bild& bsh = effekte_bsh[vergroesserung]->gib_bsh_bild(350);
+		    bs.zeichne_bsh_bild_oz(bsh, start_x, start_y - 2 * y_raster[vergroesserung] - grundhoehe[vergroesserung]);
+		  }
+		  if ((prod->ani & 0x0f) == 0x0f)  // Betrieb hat Rohstoffmangel
+		  {
+		    Bsh_bild& bsh = effekte_bsh[vergroesserung]->gib_bsh_bild(382);
+		    bs.zeichne_bsh_bild_oz(bsh, start_x, start_y - 2 * y_raster[vergroesserung] - grundhoehe[vergroesserung]);
+		  }
+		}
+	      }
+	    }
+	  }
+	  
 	  start_x += 2 * x_raster[vergroesserung];
 	}
 	start_y += y_raster[vergroesserung];
@@ -340,22 +367,6 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
 	int x_auf_karte_mal_2 = soldat.x_pos_2 - 2 * xpos;
 	int y_auf_karte_mal_2 = soldat.y_pos_2 - 2 * ypos;
 	bs.zeichne_bsh_bild_oz(bsh, (x_auf_karte_mal_2 - y_auf_karte_mal_2 - 1) * (x_raster[vergroesserung] / 2) + bs.breite / 2, (x_auf_karte_mal_2 + y_auf_karte_mal_2) * (y_raster[vergroesserung] / 2) - grundhoehe[vergroesserung] + bs.hoehe / 2);
-      }
-      
-      for (Prodlist& prod : welt.prodlist)
-      {
-	int x, y;
-	auf_bildschirm(bs, prod.x_pos + welt.inseln[prod.inselnummer]->xpos, prod.y_pos + welt.inseln[prod.inselnummer]->ypos, x, y);
-	if (! ((prod.modus & 1) != 0))
-	{
-	  Bsh_bild& bsh = effekte_bsh[vergroesserung]->gib_bsh_bild(350);
-	  bs.zeichne_bsh_bild_oz(bsh, x, y - grundhoehe[vergroesserung]);
-	}
-	if ((prod.ani & 0x0f) == 0x0f)
-	{
-	  Bsh_bild& bsh = effekte_bsh[vergroesserung]->gib_bsh_bild(382);
-	  bs.zeichne_bsh_bild_oz(bsh, x, y - grundhoehe[vergroesserung]);
-	}
       }
       
     }
