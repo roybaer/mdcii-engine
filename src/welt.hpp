@@ -40,14 +40,15 @@ public:
   Insel* insel_an_pos(uint16_t x, uint16_t y);
   std::vector<Block *> bloecke;
   std::vector<Insel *> inseln;
-  std::vector<Kontor *> kontore;
-  std::vector<Ship *> schiffe;
-  std::vector<Soldat *> soldaten;
-  std::vector<Prodlist *> prodlist;
-  std::vector<Player *> spieler;
+  std::vector<Kontor> kontore;
+  std::vector<Ship> schiffe;
+  std::vector<Soldat> soldaten;
+  std::vector<Prodlist> prodlist;
+  std::vector<Player> spieler;
   Welt(std::istream& f);
   void simulationsschritt();
   void feld_an_pos(inselfeld_t& feld, int x, int y);
+  uint8_t spielerfarbe(uint8_t spieler);
 };
 
 #endif

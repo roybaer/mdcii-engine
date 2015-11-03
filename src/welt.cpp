@@ -38,27 +38,27 @@ Welt::Welt(std::istream& f)
     else if (strcmp((*i)->kennung, Kontor::kennung) == 0)
     {
       for (int j = 0; j < (*i)->laenge / sizeof(Kontor); j++)
-	kontore.push_back(new Kontor((Kontor&)(*i)->daten[j * sizeof(Kontor)]));
+	kontore.push_back((Kontor&)(*i)->daten[j * sizeof(Kontor)]);
     }
     else if (strcmp((*i)->kennung, Ship::kennung) == 0)
     {
       for (int j = 0; j < (*i)->laenge / sizeof(Ship); j++)
-	schiffe.push_back(new Ship((Ship&)(*i)->daten[j * sizeof(Ship)]));
+	schiffe.push_back((Ship&)(*i)->daten[j * sizeof(Ship)]);
     }
     else if (strcmp((*i)->kennung, Soldat::kennung) == 0)
     {
       for (int j = 0; j < (*i)->laenge / sizeof(Soldat); j++)
-	soldaten.push_back(new Soldat((Soldat&)(*i)->daten[j * sizeof(Soldat)]));
+	soldaten.push_back((Soldat&)(*i)->daten[j * sizeof(Soldat)]);
     }
     else if (strcmp((*i)->kennung, Prodlist::kennung) == 0)
     {
       for (int j = 0; j < (*i)->laenge / sizeof(Prodlist); j++)
-	prodlist.push_back(new Prodlist((Prodlist&)(*i)->daten[j * sizeof(Prodlist)]));
+	prodlist.push_back((Prodlist&)(*i)->daten[j * sizeof(Prodlist)]);
     }
     else if (strcmp((*i)->kennung, Player::kennung) == 0)
     {
       for (int j = 0; j < (*i)->laenge / sizeof(Player); j++)
-	spieler.push_back(new Player((Player&)(*i)->daten[j * sizeof(Player)]));
+	spieler.push_back((Player&)(*i)->daten[j * sizeof(Player)]);
     }
     i++;
   }
@@ -91,10 +91,10 @@ void Welt::simulationsschritt()
   {
     insel->bewege_wasser();
   }
-  for (Prodlist *prod : prodlist)
+  for (Prodlist& prod : prodlist)
   {
-    if (prod->modus & 1 && prod->rohstoff1_menge >= 16 && prod->produkt_menge < 320)
-      inseln[prod->inselnummer]->animiere_gebaeude(prod->x_pos, prod->y_pos);
+    if (prod.modus & 1 && prod.rohstoff1_menge >= 16 && prod.produkt_menge < 320)
+      inseln[prod.inselnummer]->animiere_gebaeude(prod.x_pos, prod.y_pos);
   }
 }
 
@@ -109,4 +109,9 @@ void Welt::feld_an_pos(inselfeld_t& feld, int x, int y)
     feld.bebauung = 1201;
     feld.ani = (0x80000000 + y + x * 3 + ani) % 12; // (12 == ani_schritte des Meeres);
   }
+}
+
+uint8_t Welt::spielerfarbe(uint8_t spieler)
+{
+  return this->spieler[spieler].farbe;
 }

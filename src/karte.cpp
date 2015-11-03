@@ -37,7 +37,7 @@ void Karte::zeichne_bild(Bildspeicher& bs, Welt& welt)
 	inselfeld_t feld;
 	insel->inselfeld_bebauung(feld, x, y);
 	uint8_t farbe = 0;
-	uint8_t nummer = (feld.spieler < 4) ? welt.spieler[feld.spieler]->farbe : feld.spieler;
+	uint8_t nummer = (feld.spieler < 4) ? welt.spielerfarbe(feld.spieler) : feld.spieler;
 	switch (nummer)
 	{
 	  case 0: farbe = 183; break; // rot
@@ -54,10 +54,10 @@ void Karte::zeichne_bild(Bildspeicher& bs, Welt& welt)
     }
   }
   
-  for (Ship* schiff : welt.schiffe)
+  for (Ship& schiff : welt.schiffe)
   {
-    int x = xpos + schiff->x_pos * breite / Welt::KARTENBREITE;
-    int y = ypos + schiff->y_pos * hoehe / Welt::KARTENHOEHE;
+    int x = xpos + schiff.x_pos * breite / Welt::KARTENBREITE;
+    int y = ypos + schiff.y_pos * hoehe / Welt::KARTENHOEHE;
     bs.zeichne_rechteck(x, y, x + 1, y + 1, 252);
   }
 }

@@ -287,86 +287,71 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
 	start_y += y_raster[vergroesserung];
       }
       
-      for (Ship *schiff : welt.schiffe)
+      for (Ship& schiff : welt.schiffe)
       {
-	int index = 0;
-	if (schiff->typ == 0x15)
-	  index = 0;
-	if (schiff->typ == 0x17)
-	  index = 32;
-	if (schiff->typ == 0x1b)
-	  index = 48;
-	if (schiff->typ == 0x1d)
-	  index = 16;
-	if (schiff->typ == 0x19)
-	  index = 64;
-	if (schiff->typ == 0x25)
-	  index = 80;
-	Bsh_bild& bsh = ship_bsh[vergroesserung]->gib_bsh_bild(index + schiff->richtung);  // FIXME
-	int x_auf_karte = schiff->x_pos - xpos;
-	int y_auf_karte = schiff->y_pos - ypos;
-	bs.zeichne_bsh_bild_oz(bsh, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] + bs.hoehe / 2);
-	if (schiff->spieler != 4)
+	int index;
+	switch (schiff.typ)
 	{
-	  uint8_t nummer = (schiff->spieler < 4) ? welt.spieler[schiff->spieler]->farbe : schiff->spieler;
+	  case 0x15: index = 0;  break;  // kleines Handelsschiff
+	  case 0x17: index = 32; break;  // großes Handelsschiff
+	  case 0x1b: index = 48; break;  // großes Kriegsschiff
+	  case 0x1d: index = 16; break;  // fliegender Händler
+	  case 0x19: index = 64; break;  // kleines Kriegsschiff
+	  case 0x25: index = 80; break;  // Piratenschiff (?)
+	  default:   index = 0;
+	}
+	Bsh_bild& bsh = ship_bsh[vergroesserung]->gib_bsh_bild(index + schiff.richtung);  // FIXME
+	int x_auf_karte = schiff.x_pos - xpos;
+	int y_auf_karte = schiff.y_pos - ypos;
+	bs.zeichne_bsh_bild_oz(bsh, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] + bs.hoehe / 2);
+	if (schiff.spieler != 4)
+	{
+	  uint8_t nummer = (schiff.spieler < 4) ? welt.spielerfarbe(schiff.spieler) : schiff.spieler;
 	  Bsh_bild& flagge = ship_bsh[vergroesserung]->gib_bsh_bild(192 + nummer * 8);
 	  bs.zeichne_bsh_bild_oz(flagge, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] + bs.hoehe / 2);
 	}
       }
       
-      for (Soldat *soldat : welt.soldaten)
+      for (Soldat& soldat : welt.soldaten)
       {
-	int index = 0;
-	if (soldat->typ == 1)
-	  index = 0;
-	else if (soldat->typ == 2)
-	  index = 280;
-	else if (soldat->typ == 3)
-	  index = 560;
-	else if (soldat->typ == 4)
-	  index = 840;
-	else if (soldat->typ == 5)
-	  index = 1120;
-	else if (soldat->typ == 6)
-	  index = 1424;
-	else if (soldat->typ == 7)
-	  index = 1728;
-	else if (soldat->typ == 8)
-	  index = 2032;
-	else if (soldat->typ == 13)
-	  index = 2336;
-	else if (soldat->typ == 14)
-	  index = 2552;
-	else if (soldat->typ == 15)
-	  index = 2768;
-	else if (soldat->typ == 16)
-	  index = 2984;
-	else if (soldat->typ == 9)
-	  index = 3200;
-	else if (soldat->typ == 10)
-	  index = 3336;
-	else if (soldat->typ == 11)
-	  index = 3472;
-	else if (soldat->typ == 12)
-	  index = 3608;
-	else if (soldat->typ == 33)
-	  index = 3744;
-	Bsh_bild& bsh = soldat_bsh[vergroesserung]->gib_bsh_bild(index + soldat->richtung * 8);  // FIXME
-	int x_auf_karte_mal_2 = soldat->x_pos_2 - 2 * xpos;
-	int y_auf_karte_mal_2 = soldat->y_pos_2 - 2 * ypos;
+	int index;
+	switch (soldat.typ)
+	{
+	  case 1:  index = 0;    break;  // Infanterist, rot
+	  case 2:  index = 280;  break;  // Infanterist, blau
+	  case 3:  index = 560;  break;  // Infanterist, gelb
+	  case 4:  index = 840;  break;  // Infanterist, grau
+	  case 5:  index = 1120; break;  // Kavallerist, rot
+	  case 6:  index = 1424; break;  // Kavallerist, blau
+	  case 7:  index = 1728; break;  // Kavallerist, gelb
+	  case 8:  index = 2032; break;  // Kavallerist, grau
+	  case 9:  index = 3200; break;  // Musketier, rot
+	  case 10: index = 3336; break;  // Musketier, blau
+	  case 11: index = 3472; break;  // Musketier, gelb
+	  case 12: index = 3608; break;  // Musketier, grau
+	  case 13: index = 2336; break;  // Kanonier, rot
+	  case 14: index = 2552; break;  // Kanonier, blau
+	  case 15: index = 2768; break;  // Kanonier, gelb
+	  case 16: index = 2984; break;  // Kanonier, grau
+	  case 33: index = 3744; break;  // Eingeborener
+	  default: index = 0;
+	}
+	Bsh_bild& bsh = soldat_bsh[vergroesserung]->gib_bsh_bild(index + soldat.richtung * 8);  // FIXME
+	int x_auf_karte_mal_2 = soldat.x_pos_2 - 2 * xpos;
+	int y_auf_karte_mal_2 = soldat.y_pos_2 - 2 * ypos;
 	bs.zeichne_bsh_bild_oz(bsh, (x_auf_karte_mal_2 - y_auf_karte_mal_2 - 1) * (x_raster[vergroesserung] / 2) + bs.breite / 2, (x_auf_karte_mal_2 + y_auf_karte_mal_2) * (y_raster[vergroesserung] / 2) - grundhoehe[vergroesserung] + bs.hoehe / 2);
       }
       
-      for (Prodlist *prod : welt.prodlist)
+      for (Prodlist& prod : welt.prodlist)
       {
 	int x, y;
-	auf_bildschirm(bs, prod->x_pos + welt.inseln[prod->inselnummer]->xpos, prod->y_pos + welt.inseln[prod->inselnummer]->ypos, x, y);
-	if (! ((prod->modus & 1) != 0))
+	auf_bildschirm(bs, prod.x_pos + welt.inseln[prod.inselnummer]->xpos, prod.y_pos + welt.inseln[prod.inselnummer]->ypos, x, y);
+	if (! ((prod.modus & 1) != 0))
 	{
 	  Bsh_bild& bsh = effekte_bsh[vergroesserung]->gib_bsh_bild(350);
 	  bs.zeichne_bsh_bild_oz(bsh, x, y - grundhoehe[vergroesserung]);
 	}
-	if ((prod->ani & 0x0f) == 0x0f)
+	if ((prod.ani & 0x0f) == 0x0f)
 	{
 	  Bsh_bild& bsh = effekte_bsh[vergroesserung]->gib_bsh_bild(382);
 	  bs.zeichne_bsh_bild_oz(bsh, x, y - grundhoehe[vergroesserung]);
