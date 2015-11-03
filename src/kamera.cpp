@@ -379,8 +379,12 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
   bs.setze_schriftfarbe(245, 0);
   bs.zeichne_string(*zei, "aktuelle Position:", 10, 10);
   bs.zeichne_string(*zei, "(" + std::to_string(xpos) + ", " + std::to_string(ypos) + ")", 10, 30);
-  bs.zeichne_string(*zei, "Bebauung unter Mauszeiger:", 10, 60);
-  bs.zeichne_string(*zei, std::to_string(feld_unter_maus->bebauung), 10, 80);
-  bs.zeichne_string(*zei, "Position und Insel unter Mauszeiger:", 10, 110);
-  bs.zeichne_string(*zei, "(" + std::to_string(feld_unter_maus.gib_x()) + ", " + std::to_string(feld_unter_maus.gib_y()) + ")  Insel " + std::to_string(welt.inselnummer_an_pos(feld_unter_maus.gib_x(), feld_unter_maus.gib_y())), 10, 130);
+  Nordostiterator leer;
+  if (feld_unter_maus != leer)
+  {
+    bs.zeichne_string(*zei, "Bebauung unter Mauszeiger:", 10, 60);
+    bs.zeichne_string(*zei, std::to_string(feld_unter_maus->bebauung), 10, 80);
+    bs.zeichne_string(*zei, "Position und Insel unter Mauszeiger:", 10, 110);
+    bs.zeichne_string(*zei, "(" + std::to_string(feld_unter_maus.gib_x()) + ", " + std::to_string(feld_unter_maus.gib_y()) + ")  Insel " + std::to_string(welt.inselnummer_an_pos(feld_unter_maus.gib_x(), feld_unter_maus.gib_y())), 10, 130);
+  }
 }
