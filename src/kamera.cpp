@@ -286,23 +286,31 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
 	  Bebauungsinfo* info = welt.bebauung->info_zu(feld.bebauung);
 	  if (info != nullptr)
 	  {
-	    if (info->kategorie == 4 && feld.x_pos == 0 && feld.y_pos == 0)
+	    int max_x = (((feld.rot & 1) == 0) ? info->breite : info->hoehe) - 1;
+	    int max_y = (((feld.rot & 1) == 0) ? info->hoehe : info->breite) - 1;
+	    if (info->kategorie == 4 && feld.x_pos == max_x && feld.y_pos == max_y)
 	    {
-	      int insel = welt.inselnummer_an_pos(it.gib_x(), it.gib_y());
+	      int x = it.gib_x() - feld.x_pos;
+	      int y = it.gib_y() - feld.y_pos;
+	      int insel = welt.inselnummer_an_pos(x, y);
 	      if (insel != -1)
 	      {
-		Prodlist* prod = welt.prodlist_an_pos(insel, it.gib_x() - welt.inseln[insel]->xpos, it.gib_y() - welt.inseln[insel]->ypos);
+		x -= welt.inseln[insel]->xpos;
+		y -= welt.inseln[insel]->ypos;
+		Prodlist* prod = welt.prodlist_an_pos(insel, x, y);
 		if (prod != nullptr)
 		{
+		  int versatz = info->breite + info->hoehe;
+		  versatz += versatz & 2;
 		  if (! ((prod->modus & 1) != 0))  // Betrieb ist geschlossen
 		  {
 		    Bsh_bild& bsh = effekte_bsh[vergroesserung]->gib_bsh_bild(350);
-		    bs.zeichne_bsh_bild_oz(bsh, start_x, start_y - 2 * y_raster[vergroesserung] - grundhoehe[vergroesserung]);
+		    bs.zeichne_bsh_bild_oz(bsh, start_x, start_y - versatz * y_raster[vergroesserung] - grundhoehe[vergroesserung]);
 		  }
 		  if ((prod->ani & 0x0f) == 0x0f)  // Betrieb hat Rohstoffmangel
 		  {
 		    Bsh_bild& bsh = effekte_bsh[vergroesserung]->gib_bsh_bild(382);
-		    bs.zeichne_bsh_bild_oz(bsh, start_x, start_y - 2 * y_raster[vergroesserung] - grundhoehe[vergroesserung]);
+		    bs.zeichne_bsh_bild_oz(bsh, start_x, start_y - versatz * y_raster[vergroesserung] - grundhoehe[vergroesserung]);
 		  }
 		}
 	      }
