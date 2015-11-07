@@ -331,10 +331,18 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
 	      case 0x25: index = 80; break;  // Piratenschiff (?)
 	      default:   index = 0;
 	    }
-	    Bsh_bild& bsh = ship_bsh[vergroesserung]->gib_bsh_bild(index + schiff->richtung);  // FIXME
 	    int x_auf_karte = schiff->x_pos - xpos;
 	    int y_auf_karte = schiff->y_pos - ypos;
+	    // zeichne Bugwellen
+	    if ((schiff->kurs_ziel & 0xff) != 0)  // FIXME: Bedeutet dies wirklich, dass das Schiff fährt?
+	    {
+	      Bsh_bild& wellen = ship_bsh[vergroesserung]->gib_bsh_bild(12 * schiff->richtung + 96);
+	      bs.zeichne_bsh_bild_oz(wellen, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte + 1) * y_raster[vergroesserung] + bs.hoehe / 2);
+	    }
+	    // zeichne Schiff
+	    Bsh_bild& bsh = ship_bsh[vergroesserung]->gib_bsh_bild(index + schiff->richtung);  // FIXME
 	    bs.zeichne_bsh_bild_oz(bsh, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] + bs.hoehe / 2);
+	    // zeichne Flagge
 	    if (schiff->spieler != 4)
 	    {
 	      uint8_t nummer = (schiff->spieler < 4) ? welt.spielerfarbe(schiff->spieler) : schiff->spieler;
