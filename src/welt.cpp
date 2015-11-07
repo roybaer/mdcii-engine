@@ -122,6 +122,17 @@ Prodlist* Welt::prodlist_an_pos(uint8_t insel, uint8_t x, uint8_t y)
   return nullptr;
 }
 
+Ship* Welt::schiff_an_pos(uint16_t x, uint16_t y)
+{
+  // Provisorium! Muss viel effizienter werden!
+  for (int i = 0; i < schiffe.size(); i++)
+  {
+    if (schiffe[i].x_pos == x && schiffe[i].y_pos == y)
+      return &schiffe[i];
+  }
+  return nullptr;
+}
+
 uint8_t Welt::spielerfarbe(uint8_t spieler)
 {
   return this->spieler[spieler].farbe;
