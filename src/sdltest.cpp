@@ -54,6 +54,7 @@ int main(int argc, char **argv)
   int screen_width;
   int screen_height;
   bool fullscreen;
+  int rate;
   std::string gam_name;
   
   po::options_description desc("Zulässige Optionen");
@@ -61,6 +62,7 @@ int main(int argc, char **argv)
     ("width,W", po::value<int>(&screen_width)->default_value(800), "Bildschirmbreite")
     ("height,H", po::value<int>(&screen_height)->default_value(600), "Bildschirmhöhe")
     ("fullscreen,F", po::value<bool>(&fullscreen)->default_value(false), "Vollbildmodus (true/false)")
+    ("rate,r", po::value<int>(&rate)->default_value(10), "Bildrate")
     ("load,l", po::value<std::string>(&gam_name)->default_value("game00.gam"), "Lädt den angegebenen Spielstand (*.gam)")
     ("help,h", "Gibt diesen Hilfetext aus")
   ;
@@ -114,7 +116,10 @@ int main(int argc, char **argv)
   
   
   
-  SDL_TimerID timer_id = SDL_AddTimer(100, timer_callback, NULL);
+  if (rate != 0)
+  {
+    SDL_TimerID timer_id = SDL_AddTimer(1000 / rate, timer_callback, NULL);
+  }
   Uint8 *keystate = SDL_GetKeyState(NULL);
   
   SDL_Event e;
