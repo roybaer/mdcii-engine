@@ -56,7 +56,7 @@ int main(int argc, char **argv)
   uint8_t width = insel.breite;
   uint8_t height = insel.hoehe;
   
-  Bsh_leser bsh_leser("../STADTFLD_BIG.BSH");
+  Bsh_leser bsh_leser("gfx/stadtfld.bsh");
   
   Bildspeicher_pal8 bs((width + height) * XRASTER, (width + height) * YRASTER, 0);
   

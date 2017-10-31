@@ -21,9 +21,9 @@
 #include "iteratoren.hpp"
 #include "grafiken.hpp"
 
-#define SGFX std::string("Sgfx/")
-#define MGFX std::string("Mgfx/")
-#define GFX std::string("Gfx/")
+#define SGFX std::string("sgfx/")
+#define MGFX std::string("mgfx/")
+#define GFX std::string("gfx/")
 
 const int Kamera::x_raster[3] = {8, 16, 32};
 const int Kamera::y_raster[3] = {4, 8, 16};
@@ -37,38 +37,38 @@ Kamera::Kamera()
   vergroesserung = 1;
   
   effekte_bsh[0] = new Bsh_leser(SGFX + "effekte.bsh");
-  effekte_bsh[1] = new Bsh_leser(MGFX + "EFFEKTE.BSH");
-  effekte_bsh[2] = new Bsh_leser(GFX + "EFFEKTE.BSH");
+  effekte_bsh[1] = new Bsh_leser(MGFX + "effekte.bsh");
+  effekte_bsh[2] = new Bsh_leser(GFX + "effekte.bsh");
   
 //   maeher_bsh[0] = new Bsh_leser(SGFX + "maeher.bsh");
-//   maeher_bsh[1] = new Bsh_leser(MGFX + "MAEHER.BSH");
-//   maeher_bsh[2] = new Bsh_leser(GFX + "MAEHER.BSH");
+//   maeher_bsh[1] = new Bsh_leser(MGFX + "maeher.bsh");
+//   maeher_bsh[2] = new Bsh_leser(GFX + "maeher.bsh");
 //   
 //   numbers_bsh[0] = new Bsh_leser(SGFX + "numbers.bsh");
 //   numbers_bsh[1] = new Bsh_leser(MGFX + "NUMBERS.BSH");
 //   numbers_bsh[2] = new Bsh_leser(GFX + "NUMBERS.BSH");
   
   ship_bsh[0] = new Bsh_leser(SGFX + "ship.bsh");
-  ship_bsh[1] = new Bsh_leser(MGFX + "SHIP.BSH");
-  ship_bsh[2] = new Bsh_leser(GFX + "SHIP.BSH");
+  ship_bsh[1] = new Bsh_leser(MGFX + "ship.bsh");
+  ship_bsh[2] = new Bsh_leser(GFX + "ship.bsh");
   
   soldat_bsh[0] = new Bsh_leser(SGFX + "soldat.bsh");
-  soldat_bsh[1] = new Bsh_leser(MGFX + "SOLDAT.BSH");
-  soldat_bsh[2] = new Bsh_leser(GFX + "SOLDAT.BSH");
+  soldat_bsh[1] = new Bsh_leser(MGFX + "soldat.bsh");
+  soldat_bsh[2] = new Bsh_leser(GFX + "soldat.bsh");
   
   stadtfld_bsh[0] = new Bsh_leser(SGFX + "stadtfld.bsh");
-  stadtfld_bsh[1] = new Bsh_leser(MGFX + "STADTFLD.BSH");
-  stadtfld_bsh[2] = new Bsh_leser(GFX + "STADTFLD.BSH");
+  stadtfld_bsh[1] = new Bsh_leser(MGFX + "stadtfld.bsh");
+  stadtfld_bsh[2] = new Bsh_leser(GFX + "stadtfld.bsh");
   
 //   tiere_bsh[0] = new Bsh_leser(SGFX + "tiere.bsh");
-//   tiere_bsh[1] = new Bsh_leser(MGFX + "TIERE.BSH");
-//   tiere_bsh[2] = new Bsh_leser(GFX + "TIERE.BSH");
+//   tiere_bsh[1] = new Bsh_leser(MGFX + "tiere.bsh");
+//   tiere_bsh[2] = new Bsh_leser(GFX + "tiere.bsh");
 //   
 //   traeger_bsh[0] = new Bsh_leser(SGFX + "traeger.bsh");
-//   traeger_bsh[1] = new Bsh_leser(MGFX + "TRAEGER.BSH");
-//   traeger_bsh[2] = new Bsh_leser(GFX + "TRAEGER.BSH");
+//   traeger_bsh[1] = new Bsh_leser(MGFX + "traeger.bsh");
+//   traeger_bsh[2] = new Bsh_leser(GFX + "traeger.bsh");
   
-  zei = new Zei_leser("TOOLGFX/ZEI16G.ZEI");
+  zei = new Zei_leser("toolgfx/zei16g.zei");
   
   stadtfld_grafiken = new Grafiken("grafiken.txt");
 }

@@ -88,18 +88,18 @@ std::string Insel::basisname(uint8_t breite, uint8_t num, uint8_t sued)
 {
   // 30x30
   if (breite < 35)
-    return boost::str(boost::format("%slit%02d.scp") % (sued ? "Sued/" : "Nord/") % (int)num);
+    return boost::str(boost::format("%slit%02d.scp") % (sued ? "sued/" : "nord/") % (int)num);
   // 40x40
   if (breite < 45)
-    return boost::str(boost::format("%smit%02d.scp") % (sued ? "Sued/" : "Nord/") % (int)num);
+    return boost::str(boost::format("%smit%02d.scp") % (sued ? "sued/" : "nord/") % (int)num);
   // 50x52
   if (breite < 60)
-    return boost::str(boost::format("%smed%02d.scp") % (sued ? "Sued/" : "Nord/") % (int)num);
+    return boost::str(boost::format("%smed%02d.scp") % (sued ? "sued/" : "nord/") % (int)num);
   // 70x60
   if (breite < 85)
-    return boost::str(boost::format("%sbig%02d.scp") % (sued ? "Sued/" : "Nord/") % (int)num);
+    return boost::str(boost::format("%sbig%02d.scp") % (sued ? "sued/" : "nord/") % (int)num);
   // 100x90
-  return boost::str(boost::format("%slar%02d.scp") % (sued ? "Sued/" : "Nord/") % (int)num);
+  return boost::str(boost::format("%slar%02d.scp") % (sued ? "sued/" : "nord/") % (int)num);
 }
 
 Insel::Insel(Block* inselX, Block* inselhaus, Bebauung& bebauung)

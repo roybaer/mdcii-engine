@@ -50,7 +50,7 @@ int main(int argc, char **argv)
   
   f.close();
   
-  Bsh_leser bsh_leser("Mgfx/STADTFLD.BSH");
+  Bsh_leser bsh_leser("mgfx/stadtfld.bsh");
   Grafiken stadtfld_grafiken("grafiken.txt");
   
   Bildspeicher_pal8 bs((Welt::KARTENBREITE + Welt::KARTENHOEHE) * XRASTER, (Welt::KARTENBREITE + Welt::KARTENHOEHE) * YRASTER, 0);
