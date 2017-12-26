@@ -24,15 +24,15 @@
 extern char inselhaus_kennung[];
 extern char wiff_kennung[];
 
-struct Ware// 20 bytes
+struct Ware // 20 bytes
 {
-  uint8_t verkaufswert;
-  uint8_t einkaufswert;
-  uint16_t einheit;
+  uint32_t verkaufswert : 10;   ///< Verkaufswert in Goldstücken
+  uint32_t einkaufswert : 10;   ///< Einkaufswert in Goldstücken
+  uint32_t aktion : 12;         ///< 0: keine, 1: verkaufen, 2: einkaufen
   uint32_t unbekannt; // i.d.R. 0, einmal 0x80
   uint16_t leer1;
-  uint16_t lagerstand_soll;
-  uint16_t lagerstand_ist;
+  uint16_t lagerstand_soll;     ///< Soll-Lagerstand in 1/32 t
+  uint16_t lagerstand_ist;      ///< Ist-Lagerstand in 1/32 t
   uint16_t leer2;
   uint16_t ware; //0x6109 0x6509 0xe105 0xe705 0xe305 0xe905 0xdf05 0xf501 0x0902 0x0502 0x1102 0x0f02 0x3304 0x0d02 0xdd05 0xe505 0x0702 0xfb01 0xf901 0x1502 0x0302 0xd107 0x0102
   uint16_t leer3;
@@ -244,7 +244,7 @@ struct Markt // 260 bytes
 
 struct Vertrag // 8 bytes
 {
-  uint32_t status; // 0: nicht vorhanden, 1: biete anderem Spieler an, 2: wird vom anderen Spieler angeboten, 3: besteht
+  uint32_t status;      ///< 0: nicht vorhanden, 1: biete anderem Spieler an, 2: wird vom anderen Spieler angeboten, 3: besteht
   uint32_t unbekannt; // immer 0?
 };
 
@@ -256,18 +256,21 @@ struct Player // 1072 bytes
   uint8_t c;
   uint8_t farbe;                ///< Spielerfarbe? (0 bis 3)
   uint8_t unbekannt1[8];
-  uint32_t a; // Anzahl besiegter Spieler?
+  uint16_t gegner_besiegt;      ///< Anzahl besiegter Gegner (jeweils +1500 Punkte)
+  uint16_t triumphboegen;       ///< Anzahl bereits gebauter Triumphbögen
   uint16_t soldaten_besiegt;    ///< Anzahl Soldaten, die dieser Spieler besiegt hat
   uint16_t soldaten_gefallen;   ///< Anzahl gefallener Soldaten
   uint16_t schiffe_gesunken;    ///< Anzahl gesunkener Schiffe
   uint16_t schiffe_versenkt;    ///< Anzahl Schiffe, die dieser Spieler versenkt hat
   uint8_t unbekannt2[24];
   uint32_t freigeschaltet;      ///< Bitflags für Gruppen freigeschalteter Gebäude
-  uint16_t zufriedenheit;       ///< Zufriedenheit der Bevölkerung (Anzahl Denkmäler)
-  uint8_t unbekannt3[270];
+  uint16_t zufriedenheit;       ///< Zufriedenheit der Bevölkerung (Anzahl Denkmäler) Punkte pro Denkmal: zwischen 169,16666 und 169,25
+  uint16_t denkmaeler;          ///< Anzahl bereits gebauter Denkmäler
+  uint32_t unbekannt3;          ///< immer 0xffffffff?
+  uint8_t unbekannt4[264];
   Vertrag handelsvertraege[3];  ///< Handelsverträge mit den drei anderen Spielern
   Vertrag friedensvertraege[3]; ///< Friedensverträge mit den drei anderen Spielern
-  uint8_t unbekannt4[584];
+  uint8_t unbekannt5[584];
   char name[112];               ///< Name dieses Spielers
   
   static constexpr char kennung[] = "PLAYER4";
@@ -301,19 +304,30 @@ struct Handler // 604 bytes
 
 struct Laderaum
 {
-  uint16_t ware;        ///< Warenkennung
-  uint16_t menge;       ///< Menge in 1/32 t
+  uint16_t ware;        ///< Warenkennung bzw. Einheitenkennung von Soldaten
+  uint16_t menge;       ///< Menge in 1/32 t bzw. Gesundheit von Soldaten normiert auf 50t
   uint32_t aktion;      ///< 0 = einladen, 1 = ausladen
 };
 
 struct Handelsroute // 36 bytes
 {
-  uint8_t id; // 0x35, 0x36, 0x37
+  uint8_t id; // 0x35, 0x36, 0x37     oder 4 Bytes Kurs für Patrouille
   uint8_t kontornummer;
   uint16_t leer1; // 0x0000
   Laderaum ladung[2];
   uint8_t leer2[16]; // 0
 } __attribute__((packed));
+
+enum class Schiffstyp : uint16_t
+{
+  KL_HANDELSSCHIFF = 0x15,      ///< kleines Handelsschiff
+  GR_HANDELSSCHIFF = 0x17,      ///< großes Handelsschiff
+  KL_KRIEGSSCHIFF = 0x19,       ///< kleines Kriegsschiff
+  GR_KRIEGSSCHIFF = 0x1b,       ///< großes Kriegsschiff
+  FLIEGENDER_HAENDLER = 0x1d,   ///< fliegender Händler
+  PIRATENSCHIFF = 0x1f,         ///< Piratenschiff
+  FAHRENDER_HAENDLER = 0x25,    ///< fahrender Händler
+};
 
 struct Ship // 436 bytes
 {
@@ -330,10 +344,10 @@ struct Ship // 436 bytes
   uint8_t d1; // 0, 1, 2, 3, 5, 6
   uint8_t d2; // 0x50
   uint8_t bewaffnung;   ///< Anzahl Kanonen
-  uint8_t flags;        ///< z.B. 0x00, 0x02, 0x08, 0x0a, 0x06, 0x09;  Flag 0x04: zum Verkauf anbieten
+  uint8_t flags;        ///< z.B. 0x00, 0x02, 0x08, 0x0a, 0x06, 0x09;  Flag 0x04: zum Verkauf anbieten, 0x02: auf Patrouille
   uint16_t preis;       ///< Verkaufspreis = 18,75 * `preis`.  `preis` reicht von 0x0000 bis 0x0180
   uint16_t id;          ///< aufsteigender Wert, beginnend bei 0, gesunkene Schiffe eingeschlossen
-  uint16_t typ;         ///< Schiffstyp
+  uint16_t typ;         ///< Schiffstyp.  Auch der fahrende Händler zählt als Schiff!
   uint8_t g; // 1, 2, 5
   uint8_t spieler;      ///< Spieler, dem das Schiff gehört.  0: rot, 1: blau, 2: gelb, 3: grau, 4: fliegender Händler, 5: Piraten
   uint8_t h1; // 0 bis 6

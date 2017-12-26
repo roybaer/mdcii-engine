@@ -17,11 +17,6 @@ Werft
 - Auslastung?
 - Lebenspunkte?
 
-Ware
-----
-- Wird zugekauft
-- Wird verkauft
-
 Timer
 -----
 (alles unbekannt)
@@ -34,5 +29,4 @@ Player
 Soldat
 ------
 - Formation
-- Ist auf Schiff
 - ...

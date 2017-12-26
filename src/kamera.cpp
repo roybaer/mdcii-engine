@@ -328,7 +328,7 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
 	      case 0x1b: index = 48; break;  // großes Kriegsschiff
 	      case 0x1d: index = 16; break;  // fliegender Händler
 	      case 0x19: index = 64; break;  // kleines Kriegsschiff
-	      case 0x25: index = 80; break;  // Piratenschiff (?)
+	      case 0x1f: index = 80; break;  // Piratenschiff     TODO: fahrender Händler (0x25)
 	      default:   index = 0;
 	    }
 	    int x_auf_karte = schiff->x_pos - xpos;
