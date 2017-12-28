@@ -134,7 +134,7 @@ struct Prodlist // 24 bytes
   uint8_t x_pos;            ///< X-Position auf der Insel
   uint8_t y_pos;            ///< Y-Position auf der Insel
   uint8_t leer1;            ///< immer 0
-  uint8_t unbekannt;        ///< 0x07, 0x05, 0x00 (irgendetwas, pro prodlist konstant)
+  uint8_t unbekannt;        ///< 0x07, 0x05, 0x04, 0x03, 0x00 (irgendetwas, blockweise konstant, unterscheidet sich pro Spielstand maximal um 1)
   uint16_t produkt_menge;   ///< Lagerstand des von diesem Betrieb hergestellten Produkts
   uint8_t leer2;            ///< immer 0
   uint16_t warteschritt; //? verbleibende Sekunden: bei 0 werden Lagerstand und Auslastung aktualisiert. 0x00 bis 0x1b, einmal 0x4e
@@ -145,7 +145,7 @@ struct Prodlist // 24 bytes
   uint16_t auslastung_zaehler; // Auslastung in Prozent etwa = (200 * zaehler) / (256 * nenner) abgerundet
   uint16_t auslastung_nenner;
   uint8_t modus; // 0x00, 0x01, 0x05, 0x15, 0x2d, 0x35, 0x25, 0x19, 0x03, 0x11, 0x29, 0x21, 0x31, 0x39, 0x28  Flag 0x01 = aktiv, 0x40 = nicht abholen
-  uint8_t ani; // vermutlich auch Modus ? 0x00 bis 0x0f  Animationsschritt???  0x0f = Rohstoffmangel oder öffentlich; arbeitsschritt und ani niemals gleichzeitig != 0
+  uint8_t ani; // Inaktivität? 0x00 bis 0x0f.  0x0f = Rohstoffmangel oder öffentlich; arbeitsschritt und ani niemals gleichzeitig != 0
   uint16_t leer4;           ///< immer 0
   
   static constexpr char kennung[] = "PRODLIST2";
@@ -172,9 +172,9 @@ struct Einheit // 8 bytes     TODO: Wo ist gespeichert, ob die Einheit schon bew
 {
   uint8_t typ;          ///< Typ und Uniformfarbe. 1-4: Infanterist, 5-8: Kavallerist, 9-12: Musketier, 13-16: Kanonier, (vmtl. 33: Eingeborener)
   uint8_t flags;        ///< Flag 0x10: Einheit kann noch nicht ausgesendet werden
-  uint16_t unbekannt1; // im Szenario immer 0
+  uint16_t unbekannt1;  ///< im Szenario immer 0
   uint16_t fortschritt; ///< Fortschritt in Lebenspunkten: max. 0x280 (Infanterist), 0x240 (Kavallerist), 0x1e0 (Musketier), 0x180 (Kanonier)
-  uint16_t unbekannt2; // im Szenario immer 0
+  uint16_t unbekannt2;  ///< im Szenario immer 0
 };
 
 struct Militar // 112 bytes     TODO: Wo ist das Nicht-bewaffnen-Flag?
@@ -234,7 +234,7 @@ struct Markt_intern // 16 bytes
 
 struct Markt // 260 bytes
 {
-  uint8_t id; // fortlaufende nummerierung der marktplätze pro spieler
+  uint8_t id;                   ///< fortlaufende Nummerierung der Marktplätze pro Spieler
   uint8_t spieler;
   uint16_t a; // 0x0000
   Markt_intern unbekannt[16];
@@ -349,7 +349,7 @@ struct Ship // 436 bytes
   uint16_t id;          ///< aufsteigender Wert, beginnend bei 0, gesunkene Schiffe eingeschlossen
   uint16_t typ;         ///< Schiffstyp.  Auch der fahrende Händler zählt als Schiff!
   uint8_t g; // 1, 2, 5
-  uint8_t spieler;      ///< Spieler, dem das Schiff gehört.  0: rot, 1: blau, 2: gelb, 3: grau, 4: fliegender Händler, 5: Piraten
+  uint8_t spieler;      ///< Spieler, dem das Schiff gehört.  0-3: normale Spieler, 4: fliegender Händler, 5: Piraten
   uint8_t h1; // 0 bis 6
   uint8_t h2; // 0xff, 0x10, 0x0d, 0x01, 0x06, 0x0e, 0x0b, 0x11, 0x07, 0x0a
   uint8_t h3; // 0, selten 1
