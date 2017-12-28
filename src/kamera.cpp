@@ -232,172 +232,283 @@ void Kamera::rechts_drehen()
 
 void Kamera::auf_bildschirm(Bildspeicher& bs, int karte_x, int karte_y, int& bildschirm_x, int& bildschirm_y)
 {
-  // Für Drehung 0
-  bildschirm_x = bs.breite / 2 + ((karte_x - xpos) - (karte_y - ypos) - 1) * x_raster[vergroesserung];
-  bildschirm_y = bs.hoehe / 2 + ((karte_x - xpos) + (karte_y - ypos)) * y_raster[vergroesserung];
+  int x = karte_x - xpos;
+  int y = karte_y - ypos;
+  switch (drehung)
+  {
+    case 0:
+      bildschirm_x = bs.breite / 2 + (x - y - 1) * x_raster[vergroesserung];
+      bildschirm_y = bs.hoehe / 2 + (x + y) * y_raster[vergroesserung];
+      break;
+    case 1:  // TODO: Fälle 1-3 überprüfen
+      bildschirm_x = bs.breite / 2 + (-x - y - 1) * x_raster[vergroesserung];
+      bildschirm_y = bs.hoehe / 2 + (x + -y) * y_raster[vergroesserung];
+      break;
+    case 2:
+      bildschirm_x = bs.breite / 2 - (x - y - 1) * x_raster[vergroesserung];
+      bildschirm_y = bs.hoehe / 2 - (x + y) * y_raster[vergroesserung];
+      break;
+    case 3:
+      bildschirm_x = bs.breite / 2 - (-x - y - 1) * x_raster[vergroesserung];
+      bildschirm_y = bs.hoehe / 2 - (x + -y) * y_raster[vergroesserung];
+      break;
+  }
+}
+
+void Kamera::auf_bildschirm(Bildspeicher& bs, int karte_x, int karte_y, int karte_z, int& bildschirm_x, int& bildschirm_y, int& bildschirm_z)
+{
+  auf_bildschirm(bs, karte_x, karte_y, bildschirm_x, bildschirm_y);
+  int x = karte_x - xpos;
+  int y = karte_y - ypos;
+  switch (drehung)
+  {
+    case 0:
+      bildschirm_z = x + y;
+      break;
+    case 1:
+      bildschirm_z = x - y;
+      break;
+    case 2:
+      bildschirm_z = -(x + y);
+      break;
+    case 3:
+      bildschirm_z = -(x - y);
+      break;
+  }
+  bildschirm_y -= karte_z * grundhoehe[vergroesserung];
+  bildschirm_z *= 256;
+}
+
+void Kamera::auf_bildschirm_256(Bildspeicher& bs, int karte_x, int karte_y, int karte_z, int& bildschirm_x, int& bildschirm_y, int& bildschirm_z)
+{
+  int x = karte_x - 256 * xpos;
+  int y = karte_y - 256 * ypos;
+  switch (drehung)
+  {
+    case 0:
+      bildschirm_x = bs.breite / 2 + (x - y - 1) * x_raster[vergroesserung] / 256;
+      bildschirm_y = bs.hoehe / 2 + (x + y) * y_raster[vergroesserung] / 256;
+      bildschirm_z = x + y;
+      break;
+    case 1:  // TODO: Fälle 1-3 überprüfen
+      bildschirm_x = bs.breite / 2 + (-x - y - 1) * x_raster[vergroesserung] / 256;
+      bildschirm_y = bs.hoehe / 2 + (x + -y) * y_raster[vergroesserung] / 256;
+      bildschirm_z = x - y;
+      break;
+    case 2:
+      bildschirm_x = bs.breite / 2 - (x - y - 1) * x_raster[vergroesserung] / 256;
+      bildschirm_y = bs.hoehe / 2 - (x + y) * y_raster[vergroesserung] / 256;
+      bildschirm_z = -(x + y);
+      break;
+    case 3:
+      bildschirm_x = bs.breite / 2 - (-x - y - 1) * x_raster[vergroesserung] / 256;
+      bildschirm_y = bs.hoehe / 2 - (x + -y) * y_raster[vergroesserung] / 256;
+      bildschirm_z = -(x - y);
+      break;
+  }
+  bildschirm_y -= karte_z * grundhoehe[vergroesserung] / 256;
 }
 
 void Kamera::auf_karte(Bildspeicher& bs, int bildschirm_x, int bildschirm_y, int& karte_x, int& karte_y)
 {
-  // Für Drehung 0
   int temp1 = (bildschirm_x - (int)bs.breite / 2) / x_raster[vergroesserung];
   int temp2 = (bildschirm_y - (int)bs.hoehe / 2) / y_raster[vergroesserung];
   int temp3 = (temp2 - temp1 + 1) / 2;
-  karte_x = temp1 + temp3 + xpos;
-  karte_y = temp3 + ypos;
+  switch (drehung)
+  {
+    case 0:
+      karte_x = temp1 + temp3 + xpos;
+      karte_y = temp3 + ypos;
+      break;
+    case 1:  // TODO: Fälle 1-3 überprüfen
+      karte_x = temp3 + xpos;
+      karte_y = -(temp1 + temp3) + ypos;
+      break;
+    case 2:
+      karte_x = -(temp1 + temp3) + xpos;
+      karte_y = -temp3 + ypos;
+      break;
+    case 3:
+      karte_x = -temp3 + xpos;
+      karte_y = temp1 + temp3 + ypos;
+      break;
+  }
 }
+
+
+struct bild_mit_pos_t
+{
+  Bsh_bild* bild;
+  int bs_x;
+  int bs_y;
+  int bs_z;
+  int x;
+  int y;
+  bool sp;
+};
 
 
 void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
 {
-  Nordostiterator feld_unter_maus;
-  
-  switch (drehung)
+  bool feld_unter_maus = false;
+  int feld_unter_maus_x, feld_unter_maus_y;
+
+  int karte_x, karte_y;
+  auf_karte(bs, -x_raster[vergroesserung], -2 * y_raster[vergroesserung], karte_x, karte_y);
+  int bildschirm_x, bildschirm_y;
+  auf_bildschirm(bs, karte_x, karte_y, bildschirm_x, bildschirm_y);
+  int felder_horizontal = bs.breite / x_raster[vergroesserung] / 2 + 2;
+  int felder_vertikal = bs.hoehe / y_raster[vergroesserung] / 2 + 8;
+
+  int ausdehnung = (felder_horizontal + felder_vertikal) / 2;
+
+  std::vector<bild_mit_pos_t> felder;
+  for (int y = ypos - ausdehnung; y < ypos + ausdehnung; y++)
   {
-    case 0:
+    for (int x = xpos - ausdehnung; x < xpos + ausdehnung; x++)
     {
-      int karte_x, karte_y;
-      auf_karte(bs, -x_raster[vergroesserung], -2 * y_raster[vergroesserung], karte_x, karte_y);
-      int bildschirm_x, bildschirm_y;
-      auf_bildschirm(bs, karte_x, karte_y, bildschirm_x, bildschirm_y);
-      int felder_horizontal = bs.breite / x_raster[vergroesserung] / 2 + 2;
-      int felder_vertikal = bs.hoehe / y_raster[vergroesserung] / 2 + 8;
-      int start_y = bildschirm_y;
-      for (int y = 0; y < felder_vertikal * 2; y++)
+      inselfeld_t inselfeld;
+      welt.feld_an_pos(inselfeld, x, y);
+      feld_t feld;
+      Insel::grafik_bebauung_inselfeld(feld, inselfeld, drehung, *welt.bebauung, *stadtfld_grafiken);
+      if (feld.index != -1)
       {
-	Nordoststreifen nos(welt, karte_x + (y & 1) + (y >> 1), karte_y + (y >> 1), felder_horizontal);
-	int start_x = bildschirm_x + ((y & 1) ? x_raster[vergroesserung] : 0);
-	for (Nordostiterator it = nos.begin(); it != nos.end(); ++it)
+	int bs_x, bs_y, bs_z;
+	auf_bildschirm(bs, x, y, feld.grundhoehe, bs_x, bs_y, bs_z);
+	bild_mit_pos_t bild_mit_pos = {&stadtfld_bsh[vergroesserung]->gib_bsh_bild(feld.index), bs_x, bs_y, bs_z, x, y, true};
+	felder.push_back(bild_mit_pos);
+      }
+
+      Bebauungsinfo* info = welt.bebauung->info_zu(inselfeld.bebauung);
+      if (info != nullptr)
+      {
+	int max_x = (((inselfeld.rot & 1) == 0) ? info->breite : info->hoehe) - 1;
+	int max_y = (((inselfeld.rot & 1) == 0) ? info->hoehe : info->breite) - 1;
+	if (info->kategorie == 4 && inselfeld.x_pos == max_x && inselfeld.y_pos == max_y)
 	{
-	  inselfeld_t feld = *it;
-	  feld_t feld2;
-	  Insel::grafik_bebauung_inselfeld(feld2, feld, 0, *welt.bebauung, *stadtfld_grafiken);
-	  if (feld2.index != -1)
+	  int bx = x - inselfeld.x_pos;
+	  int by = y - inselfeld.y_pos;
+	  int insel = welt.inselnummer_an_pos(bx, by);
+	  if (insel != -1)
 	  {
-	    Bsh_bild& bsh = stadtfld_bsh[vergroesserung]->gib_bsh_bild(feld2.index);
-	    bool ist_unter_maus;
-	    bs.zeichne_bsh_bild_sp_oz(bsh, start_x, start_y - feld2.grundhoehe * grundhoehe[vergroesserung], maus_x, maus_y, ist_unter_maus);
-	    if (ist_unter_maus)
+	    bx -= welt.inseln[insel]->xpos;
+	    by -= welt.inseln[insel]->ypos;
+	    Prodlist* prod = welt.prodlist_an_pos(insel, bx, by);
+	    if (prod != nullptr)
 	    {
-	      feld_unter_maus = it;
-	    }
-	  }
-	  
-	  Bebauungsinfo* info = welt.bebauung->info_zu(feld.bebauung);
-	  if (info != nullptr)
-	  {
-	    int max_x = (((feld.rot & 1) == 0) ? info->breite : info->hoehe) - 1;
-	    int max_y = (((feld.rot & 1) == 0) ? info->hoehe : info->breite) - 1;
-	    if (info->kategorie == 4 && feld.x_pos == max_x && feld.y_pos == max_y)
-	    {
-	      int x = it.gib_x() - feld.x_pos;
-	      int y = it.gib_y() - feld.y_pos;
-	      int insel = welt.inselnummer_an_pos(x, y);
-	      if (insel != -1)
+	      int versatz = info->breite + info->hoehe;
+	      versatz += versatz & 2;
+	      if (! ((prod->modus & 1) != 0))  // Betrieb ist geschlossen
 	      {
-		x -= welt.inseln[insel]->xpos;
-		y -= welt.inseln[insel]->ypos;
-		Prodlist* prod = welt.prodlist_an_pos(insel, x, y);
-		if (prod != nullptr)
-		{
-		  int versatz = info->breite + info->hoehe;
-		  versatz += versatz & 2;
-		  if (! ((prod->modus & 1) != 0))  // Betrieb ist geschlossen
-		  {
-		    Bsh_bild& bsh = effekte_bsh[vergroesserung]->gib_bsh_bild(350);
-		    bs.zeichne_bsh_bild_oz(bsh, start_x, start_y - versatz * y_raster[vergroesserung] - grundhoehe[vergroesserung]);
-		  }
-		  if ((prod->ani & 0x0f) == 0x0f)  // Betrieb hat Rohstoffmangel
-		  {
-		    Bsh_bild& bsh = effekte_bsh[vergroesserung]->gib_bsh_bild(382);
-		    bs.zeichne_bsh_bild_oz(bsh, start_x, start_y - versatz * y_raster[vergroesserung] - grundhoehe[vergroesserung]);
-		  }
-		}
+		int bs_x, bs_y, bs_z;
+		auf_bildschirm(bs, x, y, 1, bs_x, bs_y, bs_z);
+		bild_mit_pos_t bild_mit_pos = {&effekte_bsh[vergroesserung]->gib_bsh_bild(350), bs_x, bs_y - versatz * y_raster[vergroesserung], bs_z + 1, x, y, false};
+		felder.push_back(bild_mit_pos);
+	      }
+	      if ((prod->ani & 0x0f) == 0x0f)  // Betrieb hat Rohstoffmangel
+	      {
+		int bs_x, bs_y, bs_z;
+		auf_bildschirm(bs, x, y, 1, bs_x, bs_y, bs_z);
+		bild_mit_pos_t bild_mit_pos = {&effekte_bsh[vergroesserung]->gib_bsh_bild(382), bs_x, bs_y - versatz * y_raster[vergroesserung], bs_z + 1, x, y, false};
+		felder.push_back(bild_mit_pos);
 	      }
 	    }
 	  }
-	  
-	  Ship* schiff = welt.schiff_an_pos(it.gib_x() - 1, it.gib_y() - 1);
-	  if (schiff != nullptr)
-	  {
-	    int index;
-	    switch (schiff->typ)
-	    {
-	      case 0x15: index = 0;  break;  // kleines Handelsschiff
-	      case 0x17: index = 32; break;  // großes Handelsschiff
-	      case 0x1b: index = 48; break;  // großes Kriegsschiff
-	      case 0x1d: index = 16; break;  // fliegender Händler
-	      case 0x19: index = 64; break;  // kleines Kriegsschiff
-	      case 0x1f: index = 80; break;  // Piratenschiff     TODO: fahrender Händler (0x25)
-	      default:   index = 0;
-	    }
-	    int x_auf_karte = schiff->x_pos - xpos;
-	    int y_auf_karte = schiff->y_pos - ypos;
-	    // zeichne Bugwellen
-	    if ((schiff->kurs_ziel & 0xff) != 0)  // FIXME: Bedeutet dies wirklich, dass das Schiff fährt?
-	    {
-	      Bsh_bild& wellen = ship_bsh[vergroesserung]->gib_bsh_bild(12 * schiff->richtung + 96);
-	      bs.zeichne_bsh_bild_oz(wellen, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte + 1) * y_raster[vergroesserung] + bs.hoehe / 2);
-	    }
-	    // zeichne Schiff
-	    Bsh_bild& bsh = ship_bsh[vergroesserung]->gib_bsh_bild(index + schiff->richtung);  // FIXME
-	    bs.zeichne_bsh_bild_oz(bsh, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] + bs.hoehe / 2);
-	    // zeichne Flagge
-	    if (schiff->spieler != 4)
-	    {
-	      uint8_t nummer = (schiff->spieler < 4) ? welt.spielerfarbe(schiff->spieler) : schiff->spieler;
-	      Bsh_bild& flagge = ship_bsh[vergroesserung]->gib_bsh_bild(192 + nummer * 8);
-	      bs.zeichne_bsh_bild_oz(flagge, (x_auf_karte - y_auf_karte - 1) * x_raster[vergroesserung] + bs.breite / 2, (x_auf_karte + y_auf_karte) * y_raster[vergroesserung] + bs.hoehe / 2);
-	    }
-	  }
-	  
-	  start_x += 2 * x_raster[vergroesserung];
 	}
-	start_y += y_raster[vergroesserung];
       }
-      
-      for (Soldat& soldat : welt.soldaten)
-      {
-	int index;
-	switch (soldat.typ)
-	{
-	  case 1:  index = 0;    break;  // Infanterist, rot
-	  case 2:  index = 280;  break;  // Infanterist, blau
-	  case 3:  index = 560;  break;  // Infanterist, gelb
-	  case 4:  index = 840;  break;  // Infanterist, grau
-	  case 5:  index = 1120; break;  // Kavallerist, rot
-	  case 6:  index = 1424; break;  // Kavallerist, blau
-	  case 7:  index = 1728; break;  // Kavallerist, gelb
-	  case 8:  index = 2032; break;  // Kavallerist, grau
-	  case 9:  index = 3200; break;  // Musketier, rot
-	  case 10: index = 3336; break;  // Musketier, blau
-	  case 11: index = 3472; break;  // Musketier, gelb
-	  case 12: index = 3608; break;  // Musketier, grau
-	  case 13: index = 2336; break;  // Kanonier, rot
-	  case 14: index = 2552; break;  // Kanonier, blau
-	  case 15: index = 2768; break;  // Kanonier, gelb
-	  case 16: index = 2984; break;  // Kanonier, grau
-	  case 33: index = 3744; break;  // Eingeborener
-	  default: index = 0;
-	}
-	Bsh_bild& bsh = soldat_bsh[vergroesserung]->gib_bsh_bild(index + soldat.richtung * 8);  // FIXME
-	int x_auf_karte_mal_2 = soldat.x_pos_2 - 2 * xpos;
-	int y_auf_karte_mal_2 = soldat.y_pos_2 - 2 * ypos;
-	bs.zeichne_bsh_bild_oz(bsh, (x_auf_karte_mal_2 - y_auf_karte_mal_2 - 1) * (x_raster[vergroesserung] / 2) + bs.breite / 2, (x_auf_karte_mal_2 + y_auf_karte_mal_2) * (y_raster[vergroesserung] / 2) - grundhoehe[vergroesserung] + bs.hoehe / 2);
-      }
-      
+
     }
   }
-      
+
+  for (Ship& schiff : welt.schiffe)
+  {
+    int index;
+    switch (schiff.typ)
+    {
+      case 0x15: index = 0;  break;  // kleines Handelsschiff
+      case 0x17: index = 32; break;  // großes Handelsschiff
+      case 0x1b: index = 48; break;  // großes Kriegsschiff
+      case 0x1d: index = 16; break;  // fliegender Händler
+      case 0x19: index = 64; break;  // kleines Kriegsschiff
+      case 0x1f: index = 80; break;  // Piratenschiff     TODO: fahrender Händler (0x25)
+      default:   index = 0;
+    }
+    int bs_x, bs_y, bs_z;
+    auf_bildschirm(bs, schiff.x_pos, schiff.y_pos, 0, bs_x, bs_y, bs_z);
+    // zeichne Bugwellen
+    if ((schiff.kurs_ziel & 0xff) != 0)  // FIXME: Bedeutet dies wirklich, dass das Schiff fährt?
+    {
+      Bsh_bild& wellen = ship_bsh[vergroesserung]->gib_bsh_bild(12 * schiff.richtung + 96);
+      felder.push_back({&wellen, bs_x, bs_y + y_raster[vergroesserung], bs_z + 512, schiff.x_pos, schiff.y_pos, false});
+    }
+    // zeichne Schiff
+    Bsh_bild& bsh = ship_bsh[vergroesserung]->gib_bsh_bild(index + schiff.richtung);  // FIXME
+    felder.push_back({&bsh, bs_x, bs_y, bs_z + 512, schiff.x_pos, schiff.y_pos, false});
+    // zeichne Flagge
+    if (schiff.spieler != 4)
+    {
+      uint8_t nummer = (schiff.spieler < 4) ? welt.spielerfarbe(schiff.spieler) : schiff.spieler;
+      Bsh_bild& flagge = ship_bsh[vergroesserung]->gib_bsh_bild(192 + nummer * 8);
+      felder.push_back({&flagge, bs_x, bs_y, bs_z + 512, schiff.x_pos, schiff.y_pos, false});
+    }
+  }
+
+  for (Soldat& soldat : welt.soldaten)
+  {
+    int index;
+    switch (soldat.typ)
+    {
+      case 1:  index = 0;    break;  // Infanterist, rot
+      case 2:  index = 280;  break;  // Infanterist, blau
+      case 3:  index = 560;  break;  // Infanterist, gelb
+      case 4:  index = 840;  break;  // Infanterist, grau
+      case 5:  index = 1120; break;  // Kavallerist, rot
+      case 6:  index = 1424; break;  // Kavallerist, blau
+      case 7:  index = 1728; break;  // Kavallerist, gelb
+      case 8:  index = 2032; break;  // Kavallerist, grau
+      case 9:  index = 3200; break;  // Musketier, rot
+      case 10: index = 3336; break;  // Musketier, blau
+      case 11: index = 3472; break;  // Musketier, gelb
+      case 12: index = 3608; break;  // Musketier, grau
+      case 13: index = 2336; break;  // Kanonier, rot
+      case 14: index = 2552; break;  // Kanonier, blau
+      case 15: index = 2768; break;  // Kanonier, gelb
+      case 16: index = 2984; break;  // Kanonier, grau
+      case 33: index = 3744; break;  // Eingeborener
+      default: index = 0;
+    }
+    Bsh_bild& bsh = soldat_bsh[vergroesserung]->gib_bsh_bild(index + soldat.richtung * 8);  // FIXME
+    int bs_x, bs_y, bs_z;
+    auf_bildschirm_256(bs, soldat.x_pos_2 * 128, soldat.y_pos_2 * 128, 256, bs_x, bs_y, bs_z);
+    felder.push_back({&bsh, bs_x, bs_y, bs_z + 256, soldat.x_pos_2 / 2, soldat.y_pos_2 / 2, false});
+  }
+
+  std::stable_sort(felder.begin(), felder.end(), [](const bild_mit_pos_t& a, const bild_mit_pos_t& b){ return a.bs_z < b.bs_z; });
+
+  for (bild_mit_pos_t& feld : felder)
+  {
+    bool schnitt;
+    bs.zeichne_bsh_bild_sp_oz(*feld.bild, feld.bs_x, feld.bs_y, maus_x, maus_y, schnitt);
+    if (schnitt && feld.sp)
+    {
+      feld_unter_maus_x = feld.x;
+      feld_unter_maus_y = feld.y;
+      feld_unter_maus = true;
+    }
+  }
+
+
   bs.setze_schriftfarbe(245, 0);
   bs.zeichne_string(*zei, "aktuelle Position:", 10, 10);
   bs.zeichne_string(*zei, "(" + std::to_string(xpos) + ", " + std::to_string(ypos) + ")", 10, 30);
   Nordostiterator leer;
-  if (feld_unter_maus != leer)
+  if (feld_unter_maus)
   {
+    inselfeld_t inselfeld;
+    welt.feld_an_pos(inselfeld, feld_unter_maus_x, feld_unter_maus_y);
     bs.zeichne_string(*zei, "Bebauung unter Mauszeiger:", 10, 60);
-    bs.zeichne_string(*zei, std::to_string(feld_unter_maus->bebauung), 10, 80);
+    bs.zeichne_string(*zei, std::to_string(inselfeld.bebauung), 10, 80);
     bs.zeichne_string(*zei, "Position und Insel unter Mauszeiger:", 10, 110);
-    bs.zeichne_string(*zei, "(" + std::to_string(feld_unter_maus.gib_x()) + ", " + std::to_string(feld_unter_maus.gib_y()) + ")  Insel " + std::to_string(welt.inselnummer_an_pos(feld_unter_maus.gib_x(), feld_unter_maus.gib_y())), 10, 130);
+    bs.zeichne_string(*zei, "(" + std::to_string(feld_unter_maus_x) + ", " + std::to_string(feld_unter_maus_y) + ")  Insel " + std::to_string(welt.inselnummer_an_pos(feld_unter_maus_x, feld_unter_maus_y)), 10, 130);
   }
 }
