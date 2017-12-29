@@ -286,22 +286,22 @@ void Kamera::auf_bildschirm_256(Bildspeicher& bs, int karte_x, int karte_y, int 
   switch (drehung)
   {
     case 0:
-      bildschirm_x = bs.breite / 2 + (x - y - 1) * x_raster[vergroesserung] / 256;
+      bildschirm_x = bs.breite / 2 + (x - y - 256) * x_raster[vergroesserung] / 256;
       bildschirm_y = bs.hoehe / 2 + (x + y) * y_raster[vergroesserung] / 256;
       bildschirm_z = x + y;
       break;
     case 1:  // TODO: Fälle 1-3 überprüfen
-      bildschirm_x = bs.breite / 2 + (-x - y - 1) * x_raster[vergroesserung] / 256;
+      bildschirm_x = bs.breite / 2 + (-x - y - 256) * x_raster[vergroesserung] / 256;
       bildschirm_y = bs.hoehe / 2 + (x + -y) * y_raster[vergroesserung] / 256;
       bildschirm_z = x - y;
       break;
     case 2:
-      bildschirm_x = bs.breite / 2 - (x - y - 1) * x_raster[vergroesserung] / 256;
+      bildschirm_x = bs.breite / 2 - (x - y - 256) * x_raster[vergroesserung] / 256;
       bildschirm_y = bs.hoehe / 2 - (x + y) * y_raster[vergroesserung] / 256;
       bildschirm_z = -(x + y);
       break;
     case 3:
-      bildschirm_x = bs.breite / 2 - (-x - y - 1) * x_raster[vergroesserung] / 256;
+      bildschirm_x = bs.breite / 2 - (-x - y - 256) * x_raster[vergroesserung] / 256;
       bildschirm_y = bs.hoehe / 2 - (x + -y) * y_raster[vergroesserung] / 256;
       bildschirm_z = -(x - y);
       break;
