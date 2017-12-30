@@ -20,12 +20,14 @@
 #define WELT_HPP
 
 #include <vector>
+#include <map>
 #include <fstream>
 #include <inttypes.h>
 #include "insel.hpp"
 #include "block.hpp"
 #include "strukturen.hpp"
 #include "bebauung.hpp"
+#include "animation.hpp"
 
 class Welt
 {
@@ -35,6 +37,7 @@ public:
   enum { KARTENHOEHE = 350 };
   
   Bebauung* bebauung;
+  std::map<std::pair<int, int>, Animation> animationen;
   
   int inselnummer_an_pos(uint16_t x, uint16_t y);
   Insel* insel_an_pos(uint16_t x, uint16_t y);

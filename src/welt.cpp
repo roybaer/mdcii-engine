@@ -62,6 +62,37 @@ Welt::Welt(std::istream& f)
     }
     i++;
   }
+
+
+  // Initialisiere Animationen über Gebäuden
+
+  for (Prodlist& prod : prodlist)
+  {
+    int x = prod.x_pos + inseln[prod.inselnummer]->xpos;
+    int y = prod.y_pos + inseln[prod.inselnummer]->ypos;
+    inselfeld_t inselfeld;
+    feld_an_pos(inselfeld, x, y);
+    Bebauungsinfo* info = bebauung->info_zu(inselfeld.bebauung);
+    if (info != nullptr)
+    {
+      int max_x = (((inselfeld.rot & 1) == 0) ? info->breite : info->hoehe) - 1;
+      int max_y = (((inselfeld.rot & 1) == 0) ? info->hoehe : info->breite) - 1;
+      if (info->kategorie == 4)
+      {
+	int versatz = (info->breite + info->hoehe) / 2;
+	versatz += (versatz & 1) * 2;
+	if (! ((prod.modus & 1) != 0))  // Betrieb ist geschlossen
+	{
+	  animationen[std::pair<int, int>(x, y)] = {x * 256 + max_x * 128, y * 256 + max_y * 128, 256 + versatz * 205, 0, 350, 32, (max_x + max_y) * 128, true};
+	}
+	if ((prod.ani & 0x0f) == 0x0f)  // Betrieb hat Rohstoffmangel
+	{
+	  animationen[std::pair<int, int>(x, y)] = {x * 256 + max_x * 128, y * 256 + max_y * 128, 256 + versatz * 205, 0, 382, 32, (max_x + max_y) * 128, true};
+	}
+      }
+    }
+  }
+
 }
 
 int Welt::inselnummer_an_pos(uint16_t x, uint16_t y)
@@ -95,6 +126,24 @@ void Welt::simulationsschritt()
   {
     if (prod.modus & 1 && prod.rohstoff1_menge >= 16 && prod.produkt_menge < 320)
       inseln[prod.inselnummer]->animiere_gebaeude(prod.x_pos, prod.y_pos);
+  }
+  for (auto& map_elem : animationen)
+  {
+    Animation& animation = map_elem.second;
+    if (animation.ani != -1)
+    {
+      if (animation.ani < animation.schritte - 1)
+      {
+	animation.ani++;
+      }
+      else
+      {
+	if (animation.wiederholen)
+	  animation.ani = 0;
+	else
+	  animation.ani = -1;
+      }
+    }
   }
 }
 

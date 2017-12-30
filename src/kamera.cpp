@@ -375,49 +375,21 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
       {
 	int bs_x, bs_y, bs_z;
 	auf_bildschirm(bs, x, y, feld.grundhoehe, bs_x, bs_y, bs_z);
-	bild_mit_pos_t bild_mit_pos = {&stadtfld_bsh[vergroesserung]->gib_bsh_bild(feld.index), bs_x, bs_y, bs_z, x, y, true};
+	bild_mit_pos_t bild_mit_pos = {&stadtfld_bsh[vergroesserung]->gib_bsh_bild(feld.index), bs_x, bs_y + y_raster[vergroesserung], bs_z, x, y, true};
 	felder.push_back(bild_mit_pos);
       }
 
-      Bebauungsinfo* info = welt.bebauung->info_zu(inselfeld.bebauung);
-      if (info != nullptr)
-      {
-	int max_x = (((inselfeld.rot & 1) == 0) ? info->breite : info->hoehe) - 1;
-	int max_y = (((inselfeld.rot & 1) == 0) ? info->hoehe : info->breite) - 1;
-	if (info->kategorie == 4 && inselfeld.x_pos == max_x && inselfeld.y_pos == max_y)
-	{
-	  int bx = x - inselfeld.x_pos;
-	  int by = y - inselfeld.y_pos;
-	  int insel = welt.inselnummer_an_pos(bx, by);
-	  if (insel != -1)
-	  {
-	    bx -= welt.inseln[insel]->xpos;
-	    by -= welt.inseln[insel]->ypos;
-	    Prodlist* prod = welt.prodlist_an_pos(insel, bx, by);
-	    if (prod != nullptr)
-	    {
-	      int versatz = info->breite + info->hoehe;
-	      versatz += versatz & 2;
-	      if (! ((prod->modus & 1) != 0))  // Betrieb ist geschlossen
-	      {
-		int bs_x, bs_y, bs_z;
-		auf_bildschirm(bs, x, y, 1, bs_x, bs_y, bs_z);
-		bild_mit_pos_t bild_mit_pos = {&effekte_bsh[vergroesserung]->gib_bsh_bild(350), bs_x, bs_y - versatz * y_raster[vergroesserung], bs_z + 1, x, y, false};
-		felder.push_back(bild_mit_pos);
-	      }
-	      if ((prod->ani & 0x0f) == 0x0f)  // Betrieb hat Rohstoffmangel
-	      {
-		int bs_x, bs_y, bs_z;
-		auf_bildschirm(bs, x, y, 1, bs_x, bs_y, bs_z);
-		bild_mit_pos_t bild_mit_pos = {&effekte_bsh[vergroesserung]->gib_bsh_bild(382), bs_x, bs_y - versatz * y_raster[vergroesserung], bs_z + 1, x, y, false};
-		felder.push_back(bild_mit_pos);
-	      }
-	    }
-	  }
-	}
-      }
-
     }
+  }
+
+
+  for (auto& map_elem : welt.animationen)
+  {
+    Animation& animation = map_elem.second;
+    int bs_x, bs_y, bs_z;
+    auf_bildschirm_256(bs, animation.x, animation.y, animation.z, bs_x, bs_y, bs_z);
+    bild_mit_pos_t bild_mit_pos = {&effekte_bsh[vergroesserung]->gib_bsh_bild(animation.start_index + animation.ani), bs_x, bs_y, bs_z + animation.bs_z_versatz, map_elem.first.first, map_elem.first.second, false};
+    felder.push_back(bild_mit_pos);
   }
 
   for (Ship& schiff : welt.schiffe)
@@ -439,17 +411,17 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
     if ((schiff.kurs_ziel & 0xff) != 0)  // FIXME: Bedeutet dies wirklich, dass das Schiff fährt?
     {
       Bsh_bild& wellen = ship_bsh[vergroesserung]->gib_bsh_bild(12 * schiff.richtung + 96);
-      felder.push_back({&wellen, bs_x, bs_y + y_raster[vergroesserung], bs_z + 512, schiff.x_pos, schiff.y_pos, false});
+      felder.push_back({&wellen, bs_x, bs_y + y_raster[vergroesserung] * 2, bs_z + 512, schiff.x_pos, schiff.y_pos, false});
     }
     // zeichne Schiff
     Bsh_bild& bsh = ship_bsh[vergroesserung]->gib_bsh_bild(index + schiff.richtung);  // FIXME
-    felder.push_back({&bsh, bs_x, bs_y, bs_z + 512, schiff.x_pos, schiff.y_pos, false});
+    felder.push_back({&bsh, bs_x, bs_y + y_raster[vergroesserung], bs_z + 512, schiff.x_pos, schiff.y_pos, false});
     // zeichne Flagge
     if (schiff.spieler != 4)
     {
       uint8_t nummer = (schiff.spieler < 4) ? welt.spielerfarbe(schiff.spieler) : schiff.spieler;
       Bsh_bild& flagge = ship_bsh[vergroesserung]->gib_bsh_bild(192 + nummer * 8);
-      felder.push_back({&flagge, bs_x, bs_y, bs_z + 512, schiff.x_pos, schiff.y_pos, false});
+      felder.push_back({&flagge, bs_x, bs_y + y_raster[vergroesserung], bs_z + 512, schiff.x_pos, schiff.y_pos, false});
     }
   }
 
@@ -480,7 +452,7 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
     Bsh_bild& bsh = soldat_bsh[vergroesserung]->gib_bsh_bild(index + soldat.richtung * 8);  // FIXME
     int bs_x, bs_y, bs_z;
     auf_bildschirm_256(bs, soldat.x_pos_2 * 128, soldat.y_pos_2 * 128, 256, bs_x, bs_y, bs_z);
-    felder.push_back({&bsh, bs_x, bs_y, bs_z + 256, soldat.x_pos_2 / 2, soldat.y_pos_2 / 2, false});
+    felder.push_back({&bsh, bs_x, bs_y + y_raster[vergroesserung], bs_z + 256, soldat.x_pos_2 / 2, soldat.y_pos_2 / 2, false});
   }
 
   std::stable_sort(felder.begin(), felder.end(), [](const bild_mit_pos_t& a, const bild_mit_pos_t& b){ return a.bs_z < b.bs_z; });
