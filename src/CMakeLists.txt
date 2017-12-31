@@ -18,3 +18,6 @@ add_custom_command(TARGET mdcii-sdltest POST_BUILD COMMAND ${CMAKE_COMMAND} ARGS
 
 add_executable(mdcii-bshdump bshdump.cpp bildspeicher.cpp bildspeicher_pal8.cpp bildspeicher_rgb24.cpp)
 target_link_libraries(mdcii-bshdump boost_iostreams boost_program_options)
+
+add_executable(mdcii-bshpacker bshpacker.cpp bsh_schreiber.cpp)
+target_link_libraries(mdcii-bshpacker boost_iostreams boost_program_options)
