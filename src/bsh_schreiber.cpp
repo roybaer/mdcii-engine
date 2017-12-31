@@ -134,10 +134,16 @@ void Bsh_schreiber::schreib_bsh(uint8_t* bild, int breite, int hoehe, vector<uin
 	    ziel.push_back(0);
 	  }
 	  else
+	  {
 	    if (ist_transparent(bild[y * breite + x]))
 	    {
 	      zustand = TRANSPARENT;
+	      if (x == 0)
+	      {
+		zz++;
+	      }
 	    }
+	  }
 	}
 	else
 	{
