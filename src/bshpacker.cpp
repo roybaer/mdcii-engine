@@ -31,18 +31,22 @@ int main(int argc, char** argv)
   string output_name;
   string file_format;
   string prefix;
+  string signature;
   int number;
   int color;
   int bpp;
+  int extra;
 
   po::options_description desc("Zulässige Optionen");
   desc.add_options()
     ("output,o", po::value<string>(&output_name), "Zieldatei (*.bsh)")
+    ("signature,s", po::value<string>(&signature)->default_value("BSH"), "Signatur (BSH oder ZEI)")
     ("format,f", po::value<string>(&file_format)->default_value("pnm"), "Format (bmp oder pnm)")
     ("bpp,b", po::value<int>(&bpp)->default_value(24), "Bits pro Pixel (8 oder 24)")
     ("prefix,p", po::value<string>(&prefix)->default_value("g_"), "Präfix (inklusive Pfad) für die Namen der Ausgangsdateien")
     ("number,n", po::value<int>(&number)->default_value(1), "Anzahl zu verarbeitenden Bilder (mit Nummern 0 bis n-1)")
     ("color,c", po::value<int>(&color)->default_value(0), "Hintergrundfarbe für transparente Bereiche")
+    ("extra,e", po::value<int>(&extra)->default_value(0), "Extraspalten in den Ausgangsdateien")
     ("help,h", "Gibt diesen Hilfetext aus")
   ;
 
@@ -80,7 +84,13 @@ int main(int argc, char** argv)
     exit(EXIT_FAILURE);
   }
 
-  Bsh_schreiber bsh(output_name, number, color);
+  if (signature != "BSH" && signature != "ZEI")
+  {
+    cout << "Gültige Werte für die --signature sind BSH und ZEI" << endl;
+    exit(EXIT_FAILURE);
+  }
+
+  Bsh_schreiber bsh(output_name, number, color, extra, signature == "ZEI");
   if (bpp == 24)
   {
     for (uint32_t i = 0; i < number; i++)

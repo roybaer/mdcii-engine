@@ -30,11 +30,12 @@ class Bsh_schreiber
   int anzahl;
   int genutzt;
   int transp_farbe;
+  int extra_spalten;
   uint32_t groesse;
   uint32_t* index;
 
 public:
-  Bsh_schreiber(std::string pfadname, int anzahl, int transp_farbe = 0);
+  Bsh_schreiber(std::string pfadname, int anzahl, int transp_farbe = 0, int extra_spalten = 0, bool ist_zei = false);
   ~Bsh_schreiber();
   void schreib_bsh(uint8_t* bild, int breite, int hoehe, std::vector<uint8_t>& ziel);
   void lies_pgm(const char* pfadname, uint8_t*& bild, int& breite, int& hoehe);

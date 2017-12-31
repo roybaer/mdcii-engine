@@ -29,14 +29,19 @@ istream& operator>>(istream& is, const char* str)
   return is;
 }
 
-Bsh_schreiber::Bsh_schreiber(string pfadname, int anzahl, int transp_farbe)
+Bsh_schreiber::Bsh_schreiber(string pfadname, int anzahl, int transp_farbe, int extra_spalten, bool ist_zei)
 {
   bsh.open(pfadname.c_str(), fstream::in | fstream::out | fstream::trunc);
   this->anzahl = anzahl;
   this->transp_farbe = transp_farbe;
+  this->extra_spalten = extra_spalten;
   genutzt = 0;
-  char signatur[16] = {'B', 'S', 'H', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0'};
-  bsh.write(signatur, sizeof(signatur));
+  char signatur_bsh[16] = {'B', 'S', 'H', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0'};
+  char signatur_zei[16] = {'Z', 'E', 'I', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0'};
+  if (ist_zei)
+    bsh.write(signatur_zei, sizeof(signatur_zei));
+  else
+    bsh.write(signatur_bsh, sizeof(signatur_bsh));
   groesse = anzahl * sizeof(uint32_t);
   bsh.write(reinterpret_cast<char*>(&groesse), sizeof(groesse));
   index = new uint32_t[anzahl];
@@ -193,7 +198,10 @@ void Bsh_schreiber::pgm_anhaengen(const char* pfadname)
   int versatz = (int)bsh.tellp() - 20;
   int typ = 1;
   int laenge = ziel.size() + 16;
-  bsh.write(reinterpret_cast<char*>(&breite), sizeof(breite));
+  int angegebene_breite = breite - extra_spalten;
+  if (angegebene_breite <  1)
+    angegebene_breite = 1;
+  bsh.write(reinterpret_cast<char*>(&angegebene_breite), sizeof(angegebene_breite));
   bsh.write(reinterpret_cast<char*>(&hoehe), sizeof(hoehe));
   bsh.write(reinterpret_cast<char*>(&typ), sizeof(typ));
   bsh.write(reinterpret_cast<char*>(&laenge), sizeof(laenge));
