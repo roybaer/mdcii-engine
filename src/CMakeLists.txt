@@ -21,3 +21,6 @@ target_link_libraries(mdcii-bshdump boost_iostreams boost_program_options)
 
 add_executable(mdcii-bshpacker bshpacker.cpp bsh_schreiber.cpp)
 target_link_libraries(mdcii-bshpacker boost_iostreams boost_program_options)
+
+add_executable(mdcii-zeitext zeitext.cpp bildspeicher.cpp bildspeicher_pal8.cpp bildspeicher_rgb24.cpp)
+target_link_libraries(mdcii-zeitext boost_iostreams boost_program_options)
