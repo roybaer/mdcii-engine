@@ -93,6 +93,39 @@ Welt::Welt(std::istream& f)
     }
   }
 
+  // Initialisiere Animationen über Bergen
+
+  for (Insel*& insel : inseln)
+  {
+    for (int i = 0; i < reinterpret_cast<Insel5*>(insel->inselX->daten)->erzvorkommen; i++)
+    {
+      Erzvorkommen& erz = reinterpret_cast<Insel5*>(insel->inselX->daten)->erze[i];
+      int x = erz.x_pos + insel->xpos;
+      int y = erz.y_pos + insel->ypos;
+      inselfeld_t inselfeld;
+      feld_an_pos(inselfeld, x, y);
+      Bebauungsinfo* info = bebauung->info_zu(inselfeld.bebauung);
+      if (info != nullptr)
+      {
+	int max_x = (((inselfeld.rot & 1) == 0) ? info->breite : info->hoehe) - 1;
+	int max_y = (((inselfeld.rot & 1) == 0) ? info->hoehe : info->breite) - 1;
+// 	if (info->kategorie == 4)
+	{
+	  int versatz = (info->breite + info->hoehe) / 2;
+	  versatz += (versatz & 1) * 2 + 3;
+	  if (erz.typ == 2)  // Eisen
+	  {
+	    animationen[std::pair<int, int>(x, y)] = {x * 256 + max_x * 128, y * 256 + max_y * 128, 256 + versatz * 205, 0, 556, 32, (max_x + max_y) * 128, true};
+	  }
+	  if (erz.typ == 3)  // Gold
+	  {
+	    animationen[std::pair<int, int>(x, y)] = {x * 256 + max_x * 128, y * 256 + max_y * 128, 256 + versatz * 205, 0, 588, 32, (max_x + max_y) * 128, true};
+	  }
+	}
+      }
+    }
+  }
+
 }
 
 int Welt::inselnummer_an_pos(uint16_t x, uint16_t y)
