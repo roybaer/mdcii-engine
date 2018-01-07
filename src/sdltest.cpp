@@ -132,25 +132,25 @@ int main(int argc, char **argv)
 	exit(EXIT_SUCCESS);
 	break;
       case SDL_USEREVENT:
-	if (keystate[SDLK_LEFT])
+	int x, y;
+	SDL_GetMouseState(&x, &y);
+	
+	if (keystate[SDLK_LEFT] || (fullscreen && x == 0))
 	{
 	  spielbildschirm.kamera.nach_links();
 	}
-	if (keystate[SDLK_RIGHT])
+	if (keystate[SDLK_RIGHT] || (fullscreen && x == screen_width - 1))
 	{
 	  spielbildschirm.kamera.nach_rechts();
 	}
-	if (keystate[SDLK_UP])
+	if (keystate[SDLK_UP] || (fullscreen && y == 0))
 	{
 	  spielbildschirm.kamera.nach_oben();
 	}
-	if (keystate[SDLK_DOWN])
+	if (keystate[SDLK_DOWN] || (fullscreen && y == screen_height - 1))
 	{
 	  spielbildschirm.kamera.nach_unten();
 	}
-	
-	int x, y;
-	SDL_GetMouseState(&x, &y);
 	
 	welt.simulationsschritt();
 	spielbildschirm.zeichne_bild(welt, x, y);
