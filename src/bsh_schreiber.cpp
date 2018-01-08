@@ -18,6 +18,8 @@
 
 #include "bsh_schreiber.hpp"
 
+#include <boost/crc.hpp>
+
 using namespace std;
 
 istream& operator>>(istream& is, const char* str)
@@ -29,31 +31,15 @@ istream& operator>>(istream& is, const char* str)
   return is;
 }
 
-Bsh_schreiber::Bsh_schreiber(string pfadname, int anzahl, int transp_farbe, int extra_spalten, bool ist_zei)
+Bsh_schreiber::Bsh_schreiber(int transp_farbe, int extra_spalten, bool ist_zei)
 {
-  bsh.open(pfadname.c_str(), fstream::in | fstream::out | fstream::trunc | fstream::binary);
-  this->anzahl = anzahl;
   this->transp_farbe = transp_farbe;
   this->extra_spalten = extra_spalten;
-  genutzt = 0;
-  char signatur_bsh[16] = {'B', 'S', 'H', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0'};
-  char signatur_zei[16] = {'Z', 'E', 'I', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0'};
-  if (ist_zei)
-    bsh.write(signatur_zei, sizeof(signatur_zei));
-  else
-    bsh.write(signatur_bsh, sizeof(signatur_bsh));
-  groesse = anzahl * sizeof(uint32_t);
-  bsh.write(reinterpret_cast<char*>(&groesse), sizeof(groesse));
-  index = new uint32_t[anzahl];
-  for (int i = 0; i < anzahl; i++)
-    index[i] = 0;
-  bsh.write(reinterpret_cast<char*>(index), anzahl * sizeof(uint32_t));
+  this->ist_zei = ist_zei;
 }
 
 Bsh_schreiber::~Bsh_schreiber()
 {
-  delete[] index;
-  bsh.close();
 }
 
 enum zustand_t
@@ -195,27 +181,86 @@ void Bsh_schreiber::pgm_anhaengen(const char* pfadname)
   int breite, hoehe;
   uint8_t* bild;
   lies_pgm(pfadname, bild, breite, hoehe);
-  vector<uint8_t> ziel;
-  schreib_bsh(bild, breite, hoehe, ziel);
+  bilder.emplace_back();
+  Bild_und_meta& ziel = bilder.back();
+  schreib_bsh(bild, breite, hoehe, ziel.daten);
   delete[] bild;
-  while (ziel.size() % 4 != 0)
-    ziel.push_back(0);
-  bsh.seekp(0, ios::end);
-  int versatz = (int)bsh.tellp() - 20;
-  int typ = 1;
-  int laenge = ziel.size() + 16;
-  int angegebene_breite = breite - extra_spalten;
-  if (angegebene_breite <  1)
-    angegebene_breite = 1;
-  bsh.write(reinterpret_cast<char*>(&angegebene_breite), sizeof(angegebene_breite));
-  bsh.write(reinterpret_cast<char*>(&hoehe), sizeof(hoehe));
-  bsh.write(reinterpret_cast<char*>(&typ), sizeof(typ));
-  bsh.write(reinterpret_cast<char*>(&laenge), sizeof(laenge));
-  bsh.write(reinterpret_cast<char*>(ziel.data()), ziel.size());
-  int blockgroesse = (int)bsh.tellp() - 20;
-  bsh.seekp(genutzt * 4 + 20);
-  bsh.write(reinterpret_cast<char*>(&versatz), sizeof(versatz));
-  bsh.seekp(16);
-  bsh.write(reinterpret_cast<char*>(&blockgroesse), sizeof(blockgroesse));
-  genutzt++;
+  while (ziel.daten.size() % 4 != 0)
+    ziel.daten.push_back(0);
+  ziel.typ = 1;
+  ziel.laenge = ziel.daten.size() + 16;
+  ziel.breite = (breite > extra_spalten) ? breite - extra_spalten : 1;
+  ziel.hoehe = hoehe;
+  boost::crc_32_type crccomp;
+  crccomp.process_bytes(ziel.daten.data(), ziel.daten.size());
+  ziel.crc = crccomp.checksum();
+  ziel.duplikat_von = -1;
+  ziel.versatz = 0;
+}
+
+void Bsh_schreiber::datei_schreiben(const char* pfadname)
+{
+  if (bilder.size() < 1)
+    return;
+
+  fstream bsh;
+  bsh.open(pfadname, fstream::in | fstream::out | fstream::trunc | fstream::binary);
+  char signatur_bsh[16] = {'B', 'S', 'H', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0'};
+  char signatur_zei[16] = {'Z', 'E', 'I', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0'};
+  if (ist_zei)
+    bsh.write(signatur_zei, sizeof(signatur_zei));
+  else
+    bsh.write(signatur_bsh, sizeof(signatur_bsh));
+
+  for (int i = 0; i < bilder.size(); i++)
+  {
+    for (int j = 0; j < i; j++)
+    {
+      if (bilder[i].crc == bilder[j].crc
+	&& bilder[i].breite == bilder[j].breite && bilder[i].hoehe == bilder[j].hoehe
+	&& bilder[i].typ == bilder[j].typ && bilder[i].laenge == bilder[j].laenge
+        && bilder[i].daten == bilder[j].daten)
+      {
+	bilder[i].duplikat_von = j;
+	break;
+      }
+    }
+  }
+
+  uint32_t versatz_absolut = bilder.size() * sizeof(uint32_t);
+  for (int i = 0; i < bilder.size(); i++)
+  {
+    if (bilder[i].duplikat_von == -1)
+    {
+      bilder[i].versatz = versatz_absolut;
+      versatz_absolut += bilder[i].laenge;
+    }
+    else
+      bilder[i].versatz = bilder[bilder[i].duplikat_von].versatz;
+  }
+
+  uint32_t groesse = bilder.size() * sizeof(uint32_t);
+  for (Bild_und_meta& bild : bilder)
+  {
+    if (bild.duplikat_von == -1)
+      groesse += bild.laenge;
+  }
+  bsh.write(reinterpret_cast<char*>(&groesse), sizeof(groesse));
+
+  for (Bild_und_meta& bild : bilder)
+  {
+    bsh.write(reinterpret_cast<char*>(&bild.versatz), sizeof(bild.versatz));
+  }
+
+  for (Bild_und_meta& bild : bilder)
+  {
+    if (bild.duplikat_von == -1)
+    {
+      bsh.write(reinterpret_cast<char*>(&bild.breite), sizeof(bild.breite));
+      bsh.write(reinterpret_cast<char*>(&bild.hoehe), sizeof(bild.hoehe));
+      bsh.write(reinterpret_cast<char*>(&bild.typ), sizeof(bild.typ));
+      bsh.write(reinterpret_cast<char*>(&bild.laenge), sizeof(bild.laenge));
+      bsh.write(reinterpret_cast<char*>(bild.daten.data()), bild.daten.size());
+    }
+  }
 }

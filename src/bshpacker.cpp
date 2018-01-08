@@ -90,7 +90,7 @@ int main(int argc, char** argv)
     exit(EXIT_FAILURE);
   }
 
-  Bsh_schreiber bsh(output_name, number, color, extra, signature == "ZEI");
+  Bsh_schreiber bsh(color, extra, signature == "ZEI");
   if (bpp == 24)
   {
     for (uint32_t i = 0; i < number; i++)
@@ -108,4 +108,5 @@ int main(int argc, char** argv)
 // 	bsh.bmp_anhaengen((prefix + boost::str(boost::format("%04d.bmp") % i)).c_str());
     }
   }
+  bsh.datei_schreiben(output_name.c_str());
 }
