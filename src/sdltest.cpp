@@ -100,7 +100,7 @@ int main(int argc, char **argv)
   
   
   std::ifstream f;
-  f.open(gam_name);
+  f.open(gam_name, std::ios_base::in | std::ios_base::binary);
   
   Welt welt = Welt(f);
   

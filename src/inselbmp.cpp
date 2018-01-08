@@ -42,7 +42,7 @@ int main(int argc, char **argv)
     exit(EXIT_FAILURE);
   
   std::ifstream f;
-  f.open(argv[1]);
+  f.open(argv[1], std::ios_base::in | std::ios_base::binary);
   
   Block inselX = Block(f);
   Block inselhaus = Block(f);

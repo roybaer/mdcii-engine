@@ -5,6 +5,8 @@ add_definitions(-std=c++11)
 find_package(Boost REQUIRED COMPONENTS iostreams program_options)
 find_package(SDL REQUIRED)
 
+add_compile_options(-mno-ms-bitfields)
+
 add_executable(mdcii-inselbmp inselbmp.cpp bildspeicher.cpp bildspeicher_pal8.cpp block.cpp insel.cpp strukturen.cpp bebauung.cpp grafiken.cpp)
 target_link_libraries(mdcii-inselbmp boost_iostreams)
 

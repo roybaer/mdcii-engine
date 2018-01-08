@@ -31,7 +31,7 @@ istream& operator>>(istream& is, const char* str)
 
 Bsh_schreiber::Bsh_schreiber(string pfadname, int anzahl, int transp_farbe, int extra_spalten, bool ist_zei)
 {
-  bsh.open(pfadname.c_str(), fstream::in | fstream::out | fstream::trunc);
+  bsh.open(pfadname.c_str(), fstream::in | fstream::out | fstream::trunc | fstream::binary);
   this->anzahl = anzahl;
   this->transp_farbe = transp_farbe;
   this->extra_spalten = extra_spalten;
@@ -179,7 +179,7 @@ void Bsh_schreiber::schreib_bsh(uint8_t* bild, int breite, int hoehe, vector<uin
 void Bsh_schreiber::lies_pgm(const char* pfadname, uint8_t*& bild, int& breite, int& hoehe)
 {
   ifstream pgm;
-  pgm.open(pfadname);
+  pgm.open(pfadname, ios_base::in | ios_base::binary);
   pgm.unsetf(ios::skipws);
   pgm >> "P5";
   pgm.setf(ios::skipws);

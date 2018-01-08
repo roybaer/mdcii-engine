@@ -180,7 +180,7 @@ void Bildspeicher_pal8::zeichne_pixel(int x, int y, uint8_t farbe)
 void Bildspeicher_pal8::exportiere_pnm(const char* pfadname)
 {
   std::ofstream pnm;
-  pnm.open(pfadname);
+  pnm.open(pfadname, std::ios_base::out | std::ios_base::binary);
   pnm << "P5\n" << breite << " " << hoehe << "\n255\n";
   pnm.write((char*)puffer, breite * hoehe * format);
   pnm.close();
@@ -212,7 +212,7 @@ void Bildspeicher_pal8::exportiere_bmp(const char* pfadname)
   } __attribute__((packed)) bmih = {40, (int32_t)breite, (int32_t)hoehe, 1, 8, 0, 0, 0, 0, 0, 0};
   
   std::ofstream bmp;
-  bmp.open(pfadname);
+  bmp.open(pfadname, std::ios_base::out | std::ios_base::binary);
   bmp.write((char*)&bmfh, sizeof(struct tagBITMAPFILEHEADER));
   bmp.write((char*)&bmih, sizeof(struct tagBITMAPINFOHEADER));
   
