@@ -188,6 +188,7 @@ void Bildspeicher_pal8::exportiere_pnm(const char* pfadname)
 
 void Bildspeicher_pal8::exportiere_bmp(const char* pfadname)
 {
+  uint32_t bytes_pro_zeile = (breite + 3) & 0xfffffffc;
   struct tagBITMAPFILEHEADER
   {
     uint16_t bfType;
@@ -195,7 +196,7 @@ void Bildspeicher_pal8::exportiere_bmp(const char* pfadname)
     uint16_t bfReserved1;
     uint16_t bfReserved2;
     uint32_t bfOffBits;
-  } __attribute__((packed)) bmfh = {19778, breite * hoehe + 1078, 0, 0, 1078};
+  } __attribute__((packed)) bmfh = {19778, bytes_pro_zeile * hoehe + 1078, 0, 0, 1078};
   struct tagBITMAPINFOHEADER
   {
     uint32_t biSize;
@@ -216,11 +217,18 @@ void Bildspeicher_pal8::exportiere_bmp(const char* pfadname)
   bmp.write((char*)&bmfh, sizeof(struct tagBITMAPFILEHEADER));
   bmp.write((char*)&bmih, sizeof(struct tagBITMAPINFOHEADER));
   
-  int i;
-  for (i = 0; i < 256; i++)
+  for (int i = 0; i < 256; i++)
+  {
     bmp << palette[i * 3 + 2] << palette[i * 3 + 1] << palette[i * 3] << (char)0;
-  for (i = hoehe - 1; i >= 0; i--)
+  }
+  
+  for (int i = hoehe - 1; i >= 0; i--)
+  {
     bmp.write((char*)&puffer[breite * i], breite);
+    uint32_t null = 0;
+    bmp.write((char*)&null, bytes_pro_zeile - breite);
+  }
+  
   bmp.close();
 }
 

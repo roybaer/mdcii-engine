@@ -120,9 +120,7 @@ void Bildspeicher_rgb24::exportiere_pnm(const char* pfadname)
 
 void Bildspeicher_rgb24::exportiere_bmp(const char* pfadname)
 {
-  // FIXME
-  return;
-  
+  uint32_t bytes_pro_zeile = (breite * 3 + 3) & 0xfffffffc;
   struct tagBITMAPFILEHEADER
   {
     uint16_t bfType;
@@ -130,7 +128,7 @@ void Bildspeicher_rgb24::exportiere_bmp(const char* pfadname)
     uint16_t bfReserved1;
     uint16_t bfReserved2;
     uint32_t bfOffBits;
-  } __attribute__((packed)) bmfh = {19778, breite * hoehe + 1078, 0, 0, 1078};
+  } __attribute__((packed)) bmfh = {19778, bytes_pro_zeile * hoehe + 54, 0, 0, 54};
   struct tagBITMAPINFOHEADER
   {
     uint32_t biSize;
@@ -144,18 +142,26 @@ void Bildspeicher_rgb24::exportiere_bmp(const char* pfadname)
     int32_t  biYPelsPerMeter;
     uint32_t biClrUsed;
     uint32_t biClrImportant;
-  } __attribute__((packed)) bmih = {40, (int32_t)breite, (int32_t)hoehe, 1, 8, 0, 0, 0, 0, 0, 0};
+  } __attribute__((packed)) bmih = {40, (int32_t)breite, (int32_t)hoehe, 1, 24, 0, 0, 0, 0, 0, 0};
   
   std::ofstream bmp;
   bmp.open(pfadname, std::ios_base::out | std::ios_base::binary);
   bmp.write((char*)&bmfh, sizeof(struct tagBITMAPFILEHEADER));
   bmp.write((char*)&bmih, sizeof(struct tagBITMAPINFOHEADER));
   
-  int i;
-  for (i = 0; i < 256; i++)
-    bmp << palette[i * 3 + 2] << palette[i * 3 + 1] << palette[i * 3] << (char)0;
-  for (i = hoehe - 1; i >= 0; i--)
-    bmp.write((char*)&puffer[breite * i], breite);
+  uint8_t* zeile = new uint8_t[bytes_pro_zeile];
+  for (int i = hoehe - 1; i >= 0; i--)
+  {
+    for (int x = 0; x < breite; x++)
+    {
+      zeile[x * 3] = puffer[breite * 3 * i + x * 3 + 2];
+      zeile[x * 3 + 1] = puffer[breite * 3 * i + x * 3 + 1];
+      zeile[x * 3 + 2] = puffer[breite * 3 * i + x * 3];
+    }
+    bmp.write((char*)zeile, bytes_pro_zeile);
+  }
+  delete[] zeile;
+  
   bmp.close();
 }
 
