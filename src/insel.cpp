@@ -118,7 +118,7 @@ Insel::Insel(Block* inselX, Block* inselhaus, Bebauung& bebauung)
     if (((Insel5 *)inselX->daten)->diff == 0)
     {
       std::ifstream f;
-      f.open(this->basisname(this->breite, ((Insel5 *)inselX->daten)->basis, ((Insel5 *)inselX->daten)->sued).c_str());
+      f.open(this->basisname(this->breite, ((Insel5 *)inselX->daten)->basis, ((Insel5 *)inselX->daten)->sued).c_str(), std::ios_base::in | std::ios_base::binary);
       Block inselX_basis = Block(f);
       Block inselhaus_basis = Block(f);
       this->insel_rastern((inselfeld_t *)inselhaus_basis.daten, inselhaus_basis.laenge / 8, schicht1, this->breite, this->hoehe);
