@@ -27,6 +27,7 @@
 #include "kamera.hpp"
 #include "bildspeicher_pal8.hpp"
 #include "spielbildschirm.hpp"
+#include "files.hpp"
 
 namespace po = boost::program_options;
 
@@ -77,6 +78,11 @@ int main(int argc, char** argv)
   {
     std::cout << desc << std::endl;
     exit(EXIT_SUCCESS);
+  }
+
+  if (check_all_files(files) == false)
+  {
+    exit(EXIT_FAILURE);
   }
 
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0)

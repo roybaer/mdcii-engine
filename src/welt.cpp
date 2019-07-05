@@ -18,10 +18,11 @@
 
 #include <string.h>
 #include "welt.hpp"
+#include "files.hpp"
 
 Welt::Welt(std::istream& f)
 {
-  bebauung = new Bebauung("bebauung.txt");
+  bebauung = new Bebauung(files["bebauung_txt"]);
 
   while (!f.eof())
   {

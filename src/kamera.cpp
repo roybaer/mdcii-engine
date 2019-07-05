@@ -19,10 +19,7 @@
 #include <string>
 #include "kamera.hpp"
 #include "grafiken.hpp"
-
-#define SGFX std::string("sgfx/")
-#define MGFX std::string("mgfx/")
-#define GFX std::string("gfx/")
+#include "files.hpp"
 
 const int Kamera::x_raster[3] = {8, 16, 32};
 const int Kamera::y_raster[3] = {4, 8, 16};
@@ -35,41 +32,41 @@ Kamera::Kamera()
   drehung = 0;
   vergroesserung = 1;
 
-  effekte_bsh[0] = new Bsh_leser(SGFX + "effekte.bsh");
-  effekte_bsh[1] = new Bsh_leser(MGFX + "effekte.bsh");
-  effekte_bsh[2] = new Bsh_leser(GFX + "effekte.bsh");
+  effekte_bsh[0] = new Bsh_leser(files["sgfx_effekte_bsh"]);
+  effekte_bsh[1] = new Bsh_leser(files["mgfx_effekte_bsh"]);
+  effekte_bsh[2] = new Bsh_leser(files["gfx_effekte_bsh"]);
 
-  // maeher_bsh[0] = new Bsh_leser(SGFX + "maeher.bsh");
-  // maeher_bsh[1] = new Bsh_leser(MGFX + "maeher.bsh");
-  // maeher_bsh[2] = new Bsh_leser(GFX + "maeher.bsh");
+  // maeher_bsh[0] = new Bsh_leser(files["sgfx_maeher_bsh"]);
+  // maeher_bsh[1] = new Bsh_leser(files["mgfx_maeher_bsh"]);
+  // maeher_bsh[2] = new Bsh_leser(files["gfx_maeher_bsh"]);
 
-  // numbers_bsh[0] = new Bsh_leser(SGFX + "numbers.bsh");
-  // numbers_bsh[1] = new Bsh_leser(MGFX + "NUMBERS.BSH");
-  // numbers_bsh[2] = new Bsh_leser(GFX + "NUMBERS.BSH");
+  // numbers_bsh[0] = new Bsh_leser(files["sgfx_numbers_bsh"]);
+  // numbers_bsh[1] = new Bsh_leser(files["mgfx_numbers_bsh"]);
+  // numbers_bsh[2] = new Bsh_leser(files["gfx_numbers_bsh"]);
 
-  ship_bsh[0] = new Bsh_leser(SGFX + "ship.bsh");
-  ship_bsh[1] = new Bsh_leser(MGFX + "ship.bsh");
-  ship_bsh[2] = new Bsh_leser(GFX + "ship.bsh");
+  ship_bsh[0] = new Bsh_leser(files["sgfx_ship_bsh"]);
+  ship_bsh[1] = new Bsh_leser(files["mgfx_ship_bsh"]);
+  ship_bsh[2] = new Bsh_leser(files["gfx_ship_bsh"]);
 
-  soldat_bsh[0] = new Bsh_leser(SGFX + "soldat.bsh");
-  soldat_bsh[1] = new Bsh_leser(MGFX + "soldat.bsh");
-  soldat_bsh[2] = new Bsh_leser(GFX + "soldat.bsh");
+  soldat_bsh[0] = new Bsh_leser(files["sgfx_soldat_bsh"]);
+  soldat_bsh[1] = new Bsh_leser(files["mgfx_soldat_bsh"]);
+  soldat_bsh[2] = new Bsh_leser(files["gfx_soldat_bsh"]);
 
-  stadtfld_bsh[0] = new Bsh_leser(SGFX + "stadtfld.bsh");
-  stadtfld_bsh[1] = new Bsh_leser(MGFX + "stadtfld.bsh");
-  stadtfld_bsh[2] = new Bsh_leser(GFX + "stadtfld.bsh");
+  stadtfld_bsh[0] = new Bsh_leser(files["sgfx_stadtfld_bsh"]);
+  stadtfld_bsh[1] = new Bsh_leser(files["mgfx_stadtfld_bsh"]);
+  stadtfld_bsh[2] = new Bsh_leser(files["gfx_stadtfld_bsh"]);
 
-  // tiere_bsh[0] = new Bsh_leser(SGFX + "tiere.bsh");
-  // tiere_bsh[1] = new Bsh_leser(MGFX + "tiere.bsh");
-  // tiere_bsh[2] = new Bsh_leser(GFX + "tiere.bsh");
+  // tiere_bsh[0] = new Bsh_leser(files["sgfx_tiere_bsh"]);
+  // tiere_bsh[1] = new Bsh_leser(files["mgfx_tiere_bsh"]);
+  // tiere_bsh[2] = new Bsh_leser(files["gfx_tiere_bsh"]);
 
-  // traeger_bsh[0] = new Bsh_leser(SGFX + "traeger.bsh");
-  // traeger_bsh[1] = new Bsh_leser(MGFX + "traeger.bsh");
-  // traeger_bsh[2] = new Bsh_leser(GFX + "traeger.bsh");
+  // traeger_bsh[0] = new Bsh_leser(files["sgfx_traeger_bsh"]);
+  // traeger_bsh[1] = new Bsh_leser(files["mgfx_traeger_bsh"]);
+  // traeger_bsh[2] = new Bsh_leser(files["gfx_traeger_bsh"]);
 
-  zei = new Zei_leser("toolgfx/zei16g.zei");
+  zei = new Zei_leser(files["toolgfx_zeig16g_zei"]);
 
-  stadtfld_grafiken = new Grafiken("grafiken.txt");
+  stadtfld_grafiken = new Grafiken(files["grafiken_txt"]);
 }
 
 void Kamera::gehe_zu(uint16_t x, uint16_t y)

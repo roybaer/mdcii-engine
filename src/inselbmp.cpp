@@ -28,6 +28,7 @@
 #include "insel.hpp"
 #include "bebauung.hpp"
 #include "grafiken.hpp"
+#include "files.hpp"
 
 
 #define XRASTER 32
@@ -48,14 +49,14 @@ int main(int argc, char** argv)
 
   f.close();
 
-  Bebauung bebauung("bebauung.txt");
-  Grafiken stadtfld_grafiken("grafiken.txt");
+  Bebauung bebauung(files["bebauung_txt"]);
+  Grafiken stadtfld_grafiken(files["grafiken_txt"]);
 
   Insel insel = Insel(&inselX, &inselhaus, bebauung);
   uint8_t width = insel.breite;
   uint8_t height = insel.hoehe;
 
-  Bsh_leser bsh_leser("gfx/stadtfld.bsh");
+  Bsh_leser bsh_leser(files["gfx_stadtfld_bsh"]);
 
   Bildspeicher_pal8 bs((width + height) * XRASTER, (width + height) * YRASTER, 0);
 

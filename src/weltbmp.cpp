@@ -29,6 +29,7 @@
 #include "insel.hpp"
 #include "welt.hpp"
 #include "grafiken.hpp"
+#include "files.hpp"
 
 #include <boost/foreach.hpp>
 #define foreach BOOST_FOREACH
@@ -50,8 +51,8 @@ int main(int argc, char** argv)
 
   f.close();
 
-  Bsh_leser bsh_leser("mgfx/stadtfld.bsh");
-  Grafiken stadtfld_grafiken("grafiken.txt");
+  Bsh_leser bsh_leser(files["mgfx_stadtfld_bsh"]);
+  Grafiken stadtfld_grafiken(files["grafiken_txt"]);
 
   Bildspeicher_pal8 bs((Welt::KARTENBREITE + Welt::KARTENHOEHE) * XRASTER, (Welt::KARTENBREITE + Welt::KARTENHOEHE) * YRASTER, 0);
 
