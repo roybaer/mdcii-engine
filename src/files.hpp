@@ -18,8 +18,9 @@
 
 #ifndef FILES_HPP
 #define FILES_HPP
-#include <string>
 #include <map>
+#include <string>
+#include <vector>
 
 extern std::map<std::string, std::string> files;
 

@@ -16,11 +16,11 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+#include <algorithm>
+#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <vector>
-#include <filesystem>
-#include <algorithm>
 
 #include "files.hpp"
 
@@ -83,10 +83,10 @@ bool check_all_files(std::map<std::string, std::string> files)
 std::vector<std::string> get_directory_tree(const std::string& path)
 {
   std::vector<std::string> tree;
-  std::filesystem::directory_options options = std::filesystem::directory_options::follow_directory_symlink;
-  for (auto& p : std::filesystem::recursive_directory_iterator(path, options))
+  boost::filesystem::symlink_option options = boost::filesystem::symlink_option::recurse;
+  for (auto& p : boost::filesystem::recursive_directory_iterator(path, options))
   {
-    tree.push_back(p.path());
+    tree.push_back(p.path().string());
   }
   return tree;
 }

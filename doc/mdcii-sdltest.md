@@ -14,6 +14,7 @@ Die folgenden Kommandozeilenparameter können beim Programmaufruf angegebenen we
       -F [ --fullscreen ] arg (=0)    Vollbildmodus (true/false)
       -r [ --rate ] arg (=10)         Bildrate
       -l [ --load ] arg (=game00.gam) Lädt den angegebenen Spielstand (*.gam)
+      -f [ --files ] arg (=.)         Pfad zur ANNO1602 Installation
       -h [ --help ]                   Gibt diesen Hilfetext aus
     
 
