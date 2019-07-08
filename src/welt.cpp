@@ -22,7 +22,8 @@
 
 Welt::Welt(std::istream& f)
 {
-  bebauung = new Bebauung(files["bebauung_txt"]);
+  auto files = Files::instance();
+  bebauung = new Bebauung(files->instance()->get_file("bebauung_txt"));
 
   while (!f.eof())
   {

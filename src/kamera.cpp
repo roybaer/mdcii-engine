@@ -31,42 +31,42 @@ Kamera::Kamera()
   ypos = Welt::KARTENHOEHE / 2;
   drehung = 0;
   vergroesserung = 1;
+  auto files = Files::instance();
+  effekte_bsh[0] = new Bsh_leser(files->instance()->get_file("sgfx_effekte_bsh"));
+  effekte_bsh[1] = new Bsh_leser(files->instance()->get_file("mgfx_effekte_bsh"));
+  effekte_bsh[2] = new Bsh_leser(files->instance()->get_file("gfx_effekte_bsh"));
 
-  effekte_bsh[0] = new Bsh_leser(files["sgfx_effekte_bsh"]);
-  effekte_bsh[1] = new Bsh_leser(files["mgfx_effekte_bsh"]);
-  effekte_bsh[2] = new Bsh_leser(files["gfx_effekte_bsh"]);
+  // maeher_bsh[0] = new Bsh_leser(files->instance()->get_file("sgfx_maeher_bsh"));
+  // maeher_bsh[1] = new Bsh_leser(files->instance()->get_file("mgfx_maeher_bsh"));
+  // maeher_bsh[2] = new Bsh_leser(files->instance()->get_file("gfx_maeher_bsh"));
 
-  // maeher_bsh[0] = new Bsh_leser(files["sgfx_maeher_bsh"]);
-  // maeher_bsh[1] = new Bsh_leser(files["mgfx_maeher_bsh"]);
-  // maeher_bsh[2] = new Bsh_leser(files["gfx_maeher_bsh"]);
+  // numbers_bsh[0] = new Bsh_leser(files->instance()->get_file("sgfx_numbers_bsh"));
+  // numbers_bsh[1] = new Bsh_leser(files->instance()->get_file("mgfx_numbers_bsh"));
+  // numbers_bsh[2] = new Bsh_leser(files->instance()->get_file("gfx_numbers_bsh"));
 
-  // numbers_bsh[0] = new Bsh_leser(files["sgfx_numbers_bsh"]);
-  // numbers_bsh[1] = new Bsh_leser(files["mgfx_numbers_bsh"]);
-  // numbers_bsh[2] = new Bsh_leser(files["gfx_numbers_bsh"]);
+  ship_bsh[0] = new Bsh_leser(files->instance()->get_file("sgfx_ship_bsh"));
+  ship_bsh[1] = new Bsh_leser(files->instance()->get_file("mgfx_ship_bsh"));
+  ship_bsh[2] = new Bsh_leser(files->instance()->get_file("gfx_ship_bsh"));
 
-  ship_bsh[0] = new Bsh_leser(files["sgfx_ship_bsh"]);
-  ship_bsh[1] = new Bsh_leser(files["mgfx_ship_bsh"]);
-  ship_bsh[2] = new Bsh_leser(files["gfx_ship_bsh"]);
+  soldat_bsh[0] = new Bsh_leser(files->instance()->get_file("sgfx_soldat_bsh"));
+  soldat_bsh[1] = new Bsh_leser(files->instance()->get_file("mgfx_soldat_bsh"));
+  soldat_bsh[2] = new Bsh_leser(files->instance()->get_file("gfx_soldat_bsh"));
 
-  soldat_bsh[0] = new Bsh_leser(files["sgfx_soldat_bsh"]);
-  soldat_bsh[1] = new Bsh_leser(files["mgfx_soldat_bsh"]);
-  soldat_bsh[2] = new Bsh_leser(files["gfx_soldat_bsh"]);
+  stadtfld_bsh[0] = new Bsh_leser(files->instance()->get_file("sgfx_stadtfld_bsh"));
+  stadtfld_bsh[1] = new Bsh_leser(files->instance()->get_file("mgfx_stadtfld_bsh"));
+  stadtfld_bsh[2] = new Bsh_leser(files->instance()->get_file("gfx_stadtfld_bsh"));
 
-  stadtfld_bsh[0] = new Bsh_leser(files["sgfx_stadtfld_bsh"]);
-  stadtfld_bsh[1] = new Bsh_leser(files["mgfx_stadtfld_bsh"]);
-  stadtfld_bsh[2] = new Bsh_leser(files["gfx_stadtfld_bsh"]);
+  // tiere_bsh[0] = new Bsh_leser(files->instance()->get_file("sgfx_tiere_bsh"));
+  // tiere_bsh[1] = new Bsh_leser(files->instance()->get_file("mgfx_tiere_bsh"));
+  // tiere_bsh[2] = new Bsh_leser(files->instance()->get_file("gfx_tiere_bsh"));
 
-  // tiere_bsh[0] = new Bsh_leser(files["sgfx_tiere_bsh"]);
-  // tiere_bsh[1] = new Bsh_leser(files["mgfx_tiere_bsh"]);
-  // tiere_bsh[2] = new Bsh_leser(files["gfx_tiere_bsh"]);
+  // traeger_bsh[0] = new Bsh_leser(files->instance()->get_file("sgfx_traeger_bsh"));
+  // traeger_bsh[1] = new Bsh_leser(files->instance()->get_file("mgfx_traeger_bsh"));
+  // traeger_bsh[2] = new Bsh_leser(files->instance()->get_file("gfx_traeger_bsh"));
 
-  // traeger_bsh[0] = new Bsh_leser(files["sgfx_traeger_bsh"]);
-  // traeger_bsh[1] = new Bsh_leser(files["mgfx_traeger_bsh"]);
-  // traeger_bsh[2] = new Bsh_leser(files["gfx_traeger_bsh"]);
+  zei = new Zei_leser(files->instance()->get_file("toolgfx_zeig16g_zei"));
 
-  zei = new Zei_leser(files["toolgfx_zeig16g_zei"]);
-
-  stadtfld_grafiken = new Grafiken(files["grafiken_txt"]);
+  stadtfld_grafiken = new Grafiken(files->instance()->get_file("grafiken_txt"));
 }
 
 void Kamera::gehe_zu(uint16_t x, uint16_t y)
