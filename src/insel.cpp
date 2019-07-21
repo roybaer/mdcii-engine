@@ -1,17 +1,17 @@
 
 // This file is part of the MDCII Game Engine.
 // Copyright (C) 2015  Benedikt Freisen
-// 
+//
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -26,7 +26,7 @@
 #include <string>
 #include <iostream>
 
-void Insel::insel_rastern(inselfeld_t *a, uint32_t laenge, inselfeld_t *b, uint8_t breite, uint8_t hoehe)
+void Insel::insel_rastern(inselfeld_t* a, uint32_t laenge, inselfeld_t* b, uint8_t breite, uint8_t hoehe)
 {
   for (int y = 0; y < hoehe; y++)
   {
@@ -35,14 +35,14 @@ void Insel::insel_rastern(inselfeld_t *a, uint32_t laenge, inselfeld_t *b, uint8
       b[y * breite + x].bebauung = 0xffff;
     }
   }
-  
+
   for (int i = 0; i < laenge; i++)
   {
     inselfeld_t& feld = a[i];
-    
+
     if (feld.x_pos >= breite || feld.y_pos >= hoehe)
       continue;
-    
+
     Bebauungsinfo* info = bebauung.info_zu(feld.bebauung);
     if (info != nullptr)
     {
@@ -57,7 +57,7 @@ void Insel::insel_rastern(inselfeld_t *a, uint32_t laenge, inselfeld_t *b, uint8
 	u = info->hoehe;
 	v = info->breite;
       }
-      
+
       for (int y = 0; y < v && feld.y_pos + y < hoehe; y++)
       {
 	for (int x = 0; x < u && feld.x_pos + x < breite; x++)
@@ -105,28 +105,28 @@ std::string Insel::basisname(uint8_t breite, uint8_t num, uint8_t sued)
 Insel::Insel(Block* inselX, Block* inselhaus, Bebauung& bebauung)
   : bebauung(bebauung)
 {
-  //Kennung prüfen
+  // Kennung prüfen
   if (strcmp(inselX->kennung, Insel5::kennung) == 0)
   {
     this->inselX = inselX;
-    this->breite = ((Insel5 *)inselX->daten)->breite;
-    this->hoehe = ((Insel5 *)inselX->daten)->hoehe;
-    this->xpos = ((Insel5 *)inselX->daten)->x_pos;
-    this->ypos = ((Insel5 *)inselX->daten)->y_pos;
+    this->breite = ((Insel5*)inselX->daten)->breite;
+    this->hoehe = ((Insel5*)inselX->daten)->hoehe;
+    this->xpos = ((Insel5*)inselX->daten)->x_pos;
+    this->ypos = ((Insel5*)inselX->daten)->y_pos;
     this->schicht1 = new inselfeld_t[this->breite * this->hoehe];
     this->schicht2 = new inselfeld_t[this->breite * this->hoehe];
-    if (((Insel5 *)inselX->daten)->diff == 0)
+    if (((Insel5*)inselX->daten)->diff == 0)
     {
       std::ifstream f;
-      f.open(this->basisname(this->breite, ((Insel5 *)inselX->daten)->basis, ((Insel5 *)inselX->daten)->sued).c_str(), std::ios_base::in | std::ios_base::binary);
+      f.open(this->basisname(this->breite, ((Insel5*)inselX->daten)->basis, ((Insel5*)inselX->daten)->sued).c_str(), std::ios_base::in | std::ios_base::binary);
       Block inselX_basis = Block(f);
       Block inselhaus_basis = Block(f);
-      this->insel_rastern((inselfeld_t *)inselhaus_basis.daten, inselhaus_basis.laenge / 8, schicht1, this->breite, this->hoehe);
+      this->insel_rastern((inselfeld_t*)inselhaus_basis.daten, inselhaus_basis.laenge / 8, schicht1, this->breite, this->hoehe);
       f.close();
     }
-    
-    this->insel_rastern((inselfeld_t *)inselhaus->daten, inselhaus->laenge / 8, schicht2, this->breite, this->hoehe);
-    
+
+    this->insel_rastern((inselfeld_t*)inselhaus->daten, inselhaus->laenge / 8, schicht2, this->breite, this->hoehe);
+
     uint8_t x, y;
     for (y = 0; y < this->hoehe; y++)
     {
@@ -140,13 +140,13 @@ Insel::Insel(Block* inselX, Block* inselhaus, Bebauung& bebauung)
   else if (strcmp(inselX->kennung, Insel3::kennung) == 0)
   {
     this->inselX = inselX;
-    this->breite = ((Insel3 *)inselX->daten)->breite;
-    this->hoehe = ((Insel3 *)inselX->daten)->hoehe;
-    this->xpos = ((Insel3 *)inselX->daten)->x_pos;
-    this->ypos = ((Insel3 *)inselX->daten)->y_pos;
+    this->breite = ((Insel3*)inselX->daten)->breite;
+    this->hoehe = ((Insel3*)inselX->daten)->hoehe;
+    this->xpos = ((Insel3*)inselX->daten)->x_pos;
+    this->ypos = ((Insel3*)inselX->daten)->y_pos;
     this->schicht1 = new inselfeld_t[this->breite * this->hoehe];
     this->schicht2 = new inselfeld_t[this->breite * this->hoehe];
-    this->insel_rastern((inselfeld_t *)inselhaus->daten, inselhaus->laenge / 8, schicht1, this->breite, this->hoehe);
+    this->insel_rastern((inselfeld_t*)inselhaus->daten, inselhaus->laenge / 8, schicht1, this->breite, this->hoehe);
     memcpy(schicht2, schicht1, sizeof(inselfeld_t) * this->breite * this->hoehe);
   }
 }
@@ -203,7 +203,7 @@ void Insel::grafik_bebauung_inselfeld(feld_t& ziel, inselfeld_t& feld, uint8_t r
     ziel.grundhoehe = 0;
     return;
   }
-  
+
   Bebauungsinfo* info = bebauung.info_zu(feld.bebauung);
   int grafik = grafiken.grafik_zu(feld.bebauung);
   if (info == nullptr || grafik == -1)
@@ -216,18 +216,10 @@ void Insel::grafik_bebauung_inselfeld(feld_t& ziel, inselfeld_t& feld, uint8_t r
   index += info->breite * info->hoehe * ((r + feld.rot) % info->richtungen);
   switch (feld.rot)
   {
-    case 0:
-      index += feld.y_pos * info->breite + feld.x_pos;
-      break;
-    case 1:
-      index += (info->hoehe - feld.x_pos - 1) * info->breite + feld.y_pos;
-      break;
-    case 2:
-      index += (info->hoehe - feld.y_pos - 1) * info->breite + (info->breite - feld.x_pos - 1);
-      break;
-    case 3:
-      index += feld.x_pos * info->breite + (info->breite - feld.y_pos - 1);
-      break;
+    case 0: index += feld.y_pos * info->breite + feld.x_pos; break;
+    case 1: index += (info->hoehe - feld.x_pos - 1) * info->breite + feld.y_pos; break;
+    case 2: index += (info->hoehe - feld.y_pos - 1) * info->breite + (info->breite - feld.x_pos - 1); break;
+    case 3: index += feld.x_pos * info->breite + (info->breite - feld.y_pos - 1); break;
   }
   index += info->breite * info->hoehe * info->richtungen * (feld.ani % info->ani_schritte);
   ziel.index = index;
@@ -248,11 +240,8 @@ void Insel::bewege_wasser() // FIXME
     for (int x = 0; x < breite; x++)
     {
       inselfeld_t& feld = schicht2[y * breite + x];
-      if (feld.bebauung >= 1201 && feld.bebauung <= 1218 ||
-	  feld.bebauung >= 901 && feld.bebauung <= 905 ||
-	  feld.bebauung >= 1251 && feld.bebauung <= 1259 ||
-	  feld.bebauung == 1071 ||
-	  feld.bebauung == 2311)
+      if (feld.bebauung >= 1201 && feld.bebauung <= 1218 || feld.bebauung >= 901 && feld.bebauung <= 905 || feld.bebauung >= 1251 && feld.bebauung <= 1259
+	  || feld.bebauung == 1071 || feld.bebauung == 2311)
       {
 	Bebauungsinfo* info = bebauung.info_zu(feld.bebauung);
 	if (info != nullptr)

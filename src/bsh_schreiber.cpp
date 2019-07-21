@@ -216,10 +216,8 @@ void Bsh_schreiber::datei_schreiben(const char* pfadname)
   {
     for (int j = 0; j < i; j++)
     {
-      if (bilder[i].crc == bilder[j].crc
-	&& bilder[i].breite == bilder[j].breite && bilder[i].hoehe == bilder[j].hoehe
-	&& bilder[i].typ == bilder[j].typ && bilder[i].laenge == bilder[j].laenge
-        && bilder[i].daten == bilder[j].daten)
+      if (bilder[i].crc == bilder[j].crc && bilder[i].breite == bilder[j].breite && bilder[i].hoehe == bilder[j].hoehe && bilder[i].typ == bilder[j].typ
+	  && bilder[i].laenge == bilder[j].laenge && bilder[i].daten == bilder[j].daten)
       {
 	bilder[i].duplikat_von = j;
 	break;

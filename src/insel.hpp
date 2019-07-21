@@ -1,17 +1,17 @@
 
 // This file is part of the MDCII Game Engine.
 // Copyright (C) 2015  Benedikt Freisen
-// 
+//
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -32,8 +32,8 @@ typedef struct
   uint8_t y_pos;
   uint32_t rot : 2;
   uint32_t ani : 4;
-  uint32_t unbekannt : 8;  // Werte zwischen 0 und ca. 17, pro Insel konstant, mehrere Inseln können den gleichen Wert haben
-  uint32_t status : 3;  // 7: frei, 0: von spieler besiedelt, 1: von spieler erobert (?)
+  uint32_t unbekannt : 8; // Werte zwischen 0 und ca. 17, pro Insel konstant, mehrere Inseln können den gleichen Wert haben
+  uint32_t status : 3;    // 7: frei, 0: von spieler besiedelt, 1: von spieler erobert (?)
   uint32_t zufall : 5;
   uint32_t spieler : 3;
   uint32_t leer : 7;
@@ -47,9 +47,10 @@ typedef struct
 
 class Insel
 {
-  inselfeld_t *schicht1;
-  inselfeld_t *schicht2;
+  inselfeld_t* schicht1;
+  inselfeld_t* schicht2;
   Bebauung& bebauung;
+
 public:
   uint8_t breite;
   uint8_t hoehe;
@@ -57,8 +58,8 @@ public:
   uint16_t ypos;
   void insel_rastern(inselfeld_t* a, uint32_t laenge, inselfeld_t* b, uint8_t breite, uint8_t hoehe);
   std::string basisname(uint8_t breite, uint8_t num, uint8_t sued);
-  Block *inselX;
-  Insel(Block *inselX, Block *inselhaus, Bebauung& bebauung);
+  Block* inselX;
+  Insel(Block* inselX, Block* inselhaus, Bebauung& bebauung);
   void grafik_boden(feld_t& ziel, uint8_t x, uint8_t y, uint8_t r, Grafiken& grafiken);
   void inselfeld_bebauung(inselfeld_t& ziel, uint8_t x, uint8_t y);
   static void grafik_bebauung_inselfeld(feld_t& ziel, inselfeld_t& feld, uint8_t r, Bebauung& bebauung, Grafiken& grafiken);

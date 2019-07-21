@@ -1,17 +1,17 @@
 
 // This file is part of the MDCII Game Engine.
 // Copyright (C) 2015  Benedikt Freisen
-// 
+//
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -30,13 +30,13 @@ Bildspeicher_rgb24::Bildspeicher_rgb24(uint32_t breite, uint32_t hoehe, uint32_t
 void Bildspeicher_rgb24::zeichne_bsh_bild_ganz(Bsh_bild& bild, int x, int y)
 {
   uint8_t ch;
-  uint8_t *quelle = bild.puffer;
-  uint8_t *zielzeile;
-  uint8_t *ziel;
-  
+  uint8_t* quelle = bild.puffer;
+  uint8_t* zielzeile;
+  uint8_t* ziel;
+
   ziel = zielzeile = this->puffer + y * this->pufferbreite + x * 3;
   int restbreite = this->pufferbreite;
-  
+
   while ((ch = *(quelle++)) != 0xff)
   {
     if (ch == 0xfe)
@@ -46,7 +46,7 @@ void Bildspeicher_rgb24::zeichne_bsh_bild_ganz(Bsh_bild& bild, int x, int y)
     else
     {
       ziel += ((int)ch) * 3;
-      
+
       for (ch = *(quelle++); ch > 0; ch--)
       {
 	int index = ((int)*(quelle++)) * 3;
@@ -64,7 +64,7 @@ void Bildspeicher_rgb24::zeichne_bsh_bild_partiell(Bsh_bild& bild, int x, int y)
   int v = 0;
   int i = 0;
   unsigned char ch;
-  
+
   while ((ch = bild.puffer[i++]) != 0xff)
   {
     if (ch == 0xfe)
@@ -75,7 +75,7 @@ void Bildspeicher_rgb24::zeichne_bsh_bild_partiell(Bsh_bild& bild, int x, int y)
     else
     {
       u += ch;
-      
+
       for (ch = bild.puffer[i++]; ch > 0; ch--, u++, i++)
       {
 	if (y + v >= 0 && y + v < this->hoehe && x + u >= 0 && x + u < this->breite)
@@ -132,23 +132,23 @@ void Bildspeicher_rgb24::exportiere_bmp(const char* pfadname)
   struct tagBITMAPINFOHEADER
   {
     uint32_t biSize;
-    int32_t  biWidth;
-    int32_t  biHeight;
+    int32_t biWidth;
+    int32_t biHeight;
     uint16_t biPlanes;
     uint16_t biBitCount;
     uint32_t biCompression;
     uint32_t biSizeImage;
-    int32_t  biXPelsPerMeter;
-    int32_t  biYPelsPerMeter;
+    int32_t biXPelsPerMeter;
+    int32_t biYPelsPerMeter;
     uint32_t biClrUsed;
     uint32_t biClrImportant;
   } __attribute__((packed)) bmih = {40, (int32_t)breite, (int32_t)hoehe, 1, 24, 0, 0, 0, 0, 0, 0};
-  
+
   std::ofstream bmp;
   bmp.open(pfadname, std::ios_base::out | std::ios_base::binary);
   bmp.write((char*)&bmfh, sizeof(struct tagBITMAPFILEHEADER));
   bmp.write((char*)&bmih, sizeof(struct tagBITMAPINFOHEADER));
-  
+
   uint8_t* zeile = new uint8_t[bytes_pro_zeile];
   for (int i = hoehe - 1; i >= 0; i--)
   {
@@ -161,7 +161,7 @@ void Bildspeicher_rgb24::exportiere_bmp(const char* pfadname)
     bmp.write((char*)zeile, bytes_pro_zeile);
   }
   delete[] zeile;
-  
+
   bmp.close();
 }
 

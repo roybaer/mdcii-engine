@@ -1,17 +1,17 @@
 
 // This file is part of the MDCII Game Engine.
 // Copyright (C) 2015  Benedikt Freisen
-// 
+//
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -30,7 +30,7 @@
 
 namespace po = boost::program_options;
 
-Uint32 timer_callback(Uint32 interval, void *param)
+Uint32 timer_callback(Uint32 interval, void* param)
 {
   SDL_Event event;
   SDL_UserEvent userevent;
@@ -46,17 +46,17 @@ Uint32 timer_callback(Uint32 interval, void *param)
   event.user = userevent;
 
   SDL_PushEvent(&event);
-  return(interval);
+  return (interval);
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
   int screen_width;
   int screen_height;
   bool fullscreen;
   int rate;
   std::string gam_name;
-  
+
   // clang-format off
   po::options_description desc("Zulässige Optionen");
   desc.add_options()
@@ -68,26 +68,26 @@ int main(int argc, char **argv)
     ("help,h", "Gibt diesen Hilfetext aus")
   ;
   // clang-format on
-  
+
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
   po::notify(vm);
-  
+
   if (vm.count("help"))
   {
     std::cout << desc << std::endl;
     exit(EXIT_SUCCESS);
   }
-  
+
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0)
   {
     exit(EXIT_FAILURE);
   }
   atexit(SDL_Quit);
-  
-  SDL_Surface *screen;
+
+  SDL_Surface* screen;
   screen = SDL_SetVideoMode(screen_width, screen_height, 8, SDL_SWSURFACE | (fullscreen ? SDL_FULLSCREEN : 0));
-  
+
   SDL_Color colors[256];
   int i, j;
   for (i = 0, j = 0; i < 256; i++)
@@ -96,47 +96,41 @@ int main(int argc, char **argv)
     colors[i].g = palette[j++];
     colors[i].b = palette[j++];
   }
-  SDL_SetPalette(screen, SDL_LOGPAL|SDL_PHYSPAL, colors, 0, 256);
-  
-  
-  
-  
+  SDL_SetPalette(screen, SDL_LOGPAL | SDL_PHYSPAL, colors, 0, 256);
+
+
   std::ifstream f;
   f.open(gam_name, std::ios_base::in | std::ios_base::binary);
-  
+
   Welt welt = Welt(f);
-  
+
   f.close();
-  
-  Bildspeicher_pal8 bs(screen_width, screen_height, 0, (uint8_t *)screen->pixels, screen->pitch);
-  
+
+  Bildspeicher_pal8 bs(screen_width, screen_height, 0, (uint8_t*)screen->pixels, screen->pitch);
+
   Spielbildschirm spielbildschirm(bs);
   spielbildschirm.zeichne_bild(welt, 0, 0);
-  
+
   SDL_UpdateRect(screen, 0, 0, screen_width, screen_height);
-  
-  
-  
-  
+
+
   if (rate != 0)
   {
     SDL_TimerID timer_id = SDL_AddTimer(1000 / rate, timer_callback, NULL);
   }
-  Uint8 *keystate = SDL_GetKeyState(NULL);
-  
+  Uint8* keystate = SDL_GetKeyState(NULL);
+
   SDL_Event e;
-  while(1)
+  while (1)
   {
     SDL_WaitEvent(&e);
     switch (e.type)
     {
-      case SDL_QUIT:
-	exit(EXIT_SUCCESS);
-	break;
+      case SDL_QUIT: exit(EXIT_SUCCESS); break;
       case SDL_USEREVENT:
 	int x, y;
 	SDL_GetMouseState(&x, &y);
-	
+
 	if (keystate[SDLK_LEFT] || (fullscreen && x == 0))
 	{
 	  spielbildschirm.kamera.nach_links();
@@ -153,7 +147,7 @@ int main(int argc, char **argv)
 	{
 	  spielbildschirm.kamera.nach_unten();
 	}
-	
+
 	welt.simulationsschritt();
 	spielbildschirm.zeichne_bild(welt, x, y);
 	SDL_UpdateRect(screen, 0, 0, screen_width, screen_height);

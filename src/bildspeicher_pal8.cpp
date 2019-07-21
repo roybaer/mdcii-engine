@@ -1,17 +1,17 @@
 
 // This file is part of the MDCII Game Engine.
 // Copyright (C) 2015  Benedikt Freisen
-// 
+//
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -30,7 +30,7 @@ Bildspeicher_pal8::Bildspeicher_pal8(uint32_t breite, uint32_t hoehe, uint32_t f
     uint8_t r = palette[3 * i] >> 1;
     uint8_t g = palette[3 * i + 1] >> 1;
     uint8_t b = palette[3 * i + 2] >> 1;
-    
+
     int mindiff = 0x7fffffff;
     for (int j = 0; j < 256; j++)
     {
@@ -47,13 +47,13 @@ Bildspeicher_pal8::Bildspeicher_pal8(uint32_t breite, uint32_t hoehe, uint32_t f
 void Bildspeicher_pal8::zeichne_bsh_bild_ganz(Bsh_bild& bild, int x, int y)
 {
   uint8_t ch;
-  uint8_t *quelle = bild.puffer;
-  uint8_t *zielzeile;
-  uint8_t *ziel;
-  
+  uint8_t* quelle = bild.puffer;
+  uint8_t* zielzeile;
+  uint8_t* ziel;
+
   ziel = zielzeile = this->puffer + y * this->pufferbreite + x;
   int restbreite = this->pufferbreite;
-  
+
   while ((ch = *(quelle++)) != 0xff)
   {
     if (ch == 0xfe)
@@ -63,7 +63,7 @@ void Bildspeicher_pal8::zeichne_bsh_bild_ganz(Bsh_bild& bild, int x, int y)
     else
     {
       ziel += ch;
-      
+
       for (ch = *(quelle++); ch > 0; ch--)
 	*(ziel++) = *(quelle++);
     }
@@ -76,17 +76,17 @@ void Bildspeicher_pal8::zeichne_bsh_bild_partiell(Bsh_bild& bild, int x, int y)
   int v = 0;
   int i = 0;
   unsigned char ch;
-  
-  uint8_t *quelle = bild.puffer;
-  uint8_t *zielzeile;
-  uint8_t *ziel = zielzeile = this->puffer + y * (int)this->pufferbreite + x;
+
+  uint8_t* quelle = bild.puffer;
+  uint8_t* zielzeile;
+  uint8_t* ziel = zielzeile = this->puffer + y * (int)this->pufferbreite + x;
   int restbreite = this->pufferbreite;
-  
+
   if (x >= 0 && x + bild.breite < this->breite)
   {
-    uint8_t *anfang = this->puffer;
-    uint8_t *ende = this->puffer + this->pufferbreite * this->hoehe;
-    
+    uint8_t* anfang = this->puffer;
+    uint8_t* ende = this->puffer + this->pufferbreite * this->hoehe;
+
     while (ziel < anfang)
     {
       ch = *(quelle++);
@@ -101,7 +101,7 @@ void Bildspeicher_pal8::zeichne_bsh_bild_partiell(Bsh_bild& bild, int x, int y)
       else
       {
 	ziel += ch;
-	
+
 	ch = *(quelle++);
 	quelle += ch;
 	ziel += ch;
@@ -118,7 +118,7 @@ void Bildspeicher_pal8::zeichne_bsh_bild_partiell(Bsh_bild& bild, int x, int y)
       else
       {
 	ziel += ch;
-	
+
 	for (ch = *(quelle++); ch > 0; ch--)
 	  *(ziel++) = *(quelle++);
       }
@@ -140,7 +140,7 @@ void Bildspeicher_pal8::zeichne_bsh_bild_partiell(Bsh_bild& bild, int x, int y)
       {
 	u += ch;
 	ziel += ch;
-	
+
 	ch = *(quelle++);
 	if (y + v >= 0)
 	{
@@ -200,35 +200,35 @@ void Bildspeicher_pal8::exportiere_bmp(const char* pfadname)
   struct tagBITMAPINFOHEADER
   {
     uint32_t biSize;
-    int32_t  biWidth;
-    int32_t  biHeight;
+    int32_t biWidth;
+    int32_t biHeight;
     uint16_t biPlanes;
     uint16_t biBitCount;
     uint32_t biCompression;
     uint32_t biSizeImage;
-    int32_t  biXPelsPerMeter;
-    int32_t  biYPelsPerMeter;
+    int32_t biXPelsPerMeter;
+    int32_t biYPelsPerMeter;
     uint32_t biClrUsed;
     uint32_t biClrImportant;
   } __attribute__((packed)) bmih = {40, (int32_t)breite, (int32_t)hoehe, 1, 8, 0, 0, 0, 0, 0, 0};
-  
+
   std::ofstream bmp;
   bmp.open(pfadname, std::ios_base::out | std::ios_base::binary);
   bmp.write((char*)&bmfh, sizeof(struct tagBITMAPFILEHEADER));
   bmp.write((char*)&bmih, sizeof(struct tagBITMAPINFOHEADER));
-  
+
   for (int i = 0; i < 256; i++)
   {
     bmp << palette[i * 3 + 2] << palette[i * 3 + 1] << palette[i * 3] << (char)0;
   }
-  
+
   for (int i = hoehe - 1; i >= 0; i--)
   {
     bmp.write((char*)&puffer[breite * i], breite);
     uint32_t null = 0;
     bmp.write((char*)&null, bytes_pro_zeile - breite);
   }
-  
+
   bmp.close();
 }
 

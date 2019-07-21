@@ -44,7 +44,6 @@ public:
   void lies_pgm(const char* pfadname, uint8_t*& bild, int& breite, int& hoehe);
   void pgm_anhaengen(const char* pfadname);
   void datei_schreiben(const char* pfadname);
-
 };
 
 #endif

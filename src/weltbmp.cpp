@@ -1,17 +1,17 @@
 
 // This file is part of the MDCII Game Engine.
 // Copyright (C) 2015  Benedikt Freisen
-// 
+//
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -32,29 +32,29 @@
 
 #include <boost/foreach.hpp>
 #define foreach BOOST_FOREACH
-  
+
 #define XRASTER 16
 #define YRASTER 8
 #define ELEVATION 10
 
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
   if (argc < 3)
     exit(EXIT_FAILURE);
-  
+
   std::ifstream f;
   f.open(argv[1], std::ios_base::in | std::ios_base::binary);
-  
+
   Welt welt = Welt(f);
-  
+
   f.close();
-  
+
   Bsh_leser bsh_leser("mgfx/stadtfld.bsh");
   Grafiken stadtfld_grafiken("grafiken.txt");
-  
+
   Bildspeicher_pal8 bs((Welt::KARTENBREITE + Welt::KARTENHOEHE) * XRASTER, (Welt::KARTENBREITE + Welt::KARTENHOEHE) * YRASTER, 0);
-  
+
   for (int y = 0; y < Welt::KARTENHOEHE; y++)
   {
     for (int x = 0; x < Welt::KARTENBREITE; x++)
@@ -75,13 +75,13 @@ int main(int argc, char **argv)
 	Bsh_bild& bsh = bsh_leser.gib_bsh_bild(feld.index);
 	uint16_t x_auf_karte = x /*- insel->breite / 2*/;
 	uint16_t y_auf_karte = y /*- insel->hoehe / 2*/;
-	bs.zeichne_bsh_bild_oz(bsh, (x_auf_karte - y_auf_karte + Welt::KARTENHOEHE) * XRASTER, (x_auf_karte + y_auf_karte) * YRASTER + 2 * YRASTER - feld.grundhoehe * ELEVATION);
+	bs.zeichne_bsh_bild_oz(
+	    bsh, (x_auf_karte - y_auf_karte + Welt::KARTENHOEHE) * XRASTER, (x_auf_karte + y_auf_karte) * YRASTER + 2 * YRASTER - feld.grundhoehe * ELEVATION);
       }
       /*else
-        std::cout << insel->schicht2[y * insel->breite + x].bebauung << " ";*/
+	std::cout << insel->schicht2[y * insel->breite + x].bebauung << " ";*/
     }
   }
-  
+
   bs.exportiere_bmp(argv[2]);
-  
 }

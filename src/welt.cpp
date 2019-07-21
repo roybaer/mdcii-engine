@@ -1,17 +1,17 @@
 
 // This file is part of the MDCII Game Engine.
 // Copyright (C) 2015  Benedikt Freisen
-// 
+//
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -22,12 +22,12 @@
 Welt::Welt(std::istream& f)
 {
   bebauung = new Bebauung("bebauung.txt");
-  
+
   while (!f.eof())
   {
     bloecke.push_back(new Block(f));
   }
-  std::vector<Block *>::iterator i = bloecke.begin();
+  std::vector<Block*>::iterator i = bloecke.begin();
   while (i < bloecke.end())
   {
     if (strcmp((*i)->kennung, Insel5::kennung) == 0)
@@ -81,11 +81,11 @@ Welt::Welt(std::istream& f)
       {
 	int versatz = (info->breite + info->hoehe) / 2;
 	versatz += (versatz & 1) * 2;
-	if (! ((prod.modus & 1) != 0))  // Betrieb ist geschlossen
+	if (!((prod.modus & 1) != 0)) // Betrieb ist geschlossen
 	{
 	  animationen[std::pair<int, int>(x, y)] = {x * 256 + max_x * 128, y * 256 + max_y * 128, 256 + versatz * 205, 0, 350, 32, (max_x + max_y) * 128, true};
 	}
-	if ((prod.ani & 0x0f) == 0x0f)  // Betrieb hat Rohstoffmangel
+	if ((prod.ani & 0x0f) == 0x0f) // Betrieb hat Rohstoffmangel
 	{
 	  animationen[std::pair<int, int>(x, y)] = {x * 256 + max_x * 128, y * 256 + max_y * 128, 256 + versatz * 205, 0, 382, 32, (max_x + max_y) * 128, true};
 	}
@@ -113,19 +113,20 @@ Welt::Welt(std::istream& f)
 	{
 	  int versatz = (info->breite + info->hoehe) / 2;
 	  versatz += (versatz & 1) * 2 + 3;
-	  if (erz.typ == 2)  // Eisen
+	  if (erz.typ == 2) // Eisen
 	  {
-	    animationen[std::pair<int, int>(x, y)] = {x * 256 + max_x * 128, y * 256 + max_y * 128, 256 + versatz * 205, 0, 556, 32, (max_x + max_y) * 128, true};
+	    animationen[std::pair<int, int>(x, y)]
+		= {x * 256 + max_x * 128, y * 256 + max_y * 128, 256 + versatz * 205, 0, 556, 32, (max_x + max_y) * 128, true};
 	  }
-	  if (erz.typ == 3)  // Gold
+	  if (erz.typ == 3) // Gold
 	  {
-	    animationen[std::pair<int, int>(x, y)] = {x * 256 + max_x * 128, y * 256 + max_y * 128, 256 + versatz * 205, 0, 588, 32, (max_x + max_y) * 128, true};
+	    animationen[std::pair<int, int>(x, y)]
+		= {x * 256 + max_x * 128, y * 256 + max_y * 128, 256 + versatz * 205, 0, 588, 32, (max_x + max_y) * 128, true};
 	  }
 	}
       }
     }
   }
-
 }
 
 int Welt::inselnummer_an_pos(uint16_t x, uint16_t y)
@@ -151,7 +152,7 @@ Insel* Welt::insel_an_pos(uint16_t x, uint16_t y)
 void Welt::simulationsschritt()
 {
   ani = (ani + 1) % 12;
-  for (Insel *insel : inseln)
+  for (Insel* insel : inseln)
   {
     insel->bewege_wasser();
   }
