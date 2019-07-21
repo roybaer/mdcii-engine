@@ -99,7 +99,7 @@ Welt::Welt(std::istream& f)
   {
     for (int i = 0; i < reinterpret_cast<Insel5*>(insel->inselX->daten)->erzvorkommen; i++)
     {
-      Erzvorkommen& erz = reinterpret_cast<Insel5*>(insel->inselX->daten)->erze[i];
+      const Erzvorkommen& erz = reinterpret_cast<Insel5*>(insel->inselX->daten)->erze[i];
       int x = erz.x_pos + insel->xpos;
       int y = erz.y_pos + insel->ypos;
       inselfeld_t inselfeld;
