@@ -18,7 +18,6 @@
 
 #include <string>
 #include "kamera.hpp"
-#include "iteratoren.hpp"
 #include "grafiken.hpp"
 
 #define SGFX std::string("sgfx/")
@@ -473,7 +472,6 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
   bs.setze_schriftfarbe(245, 0);
   bs.zeichne_string(*zei, "aktuelle Position:", 10, 10);
   bs.zeichne_string(*zei, "(" + std::to_string(xpos) + ", " + std::to_string(ypos) + ")", 10, 30);
-  Nordostiterator leer;
   if (feld_unter_maus)
   {
     inselfeld_t inselfeld;
