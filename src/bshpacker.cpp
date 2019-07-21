@@ -37,6 +37,7 @@ int main(int argc, char** argv)
   int bpp;
   int extra;
 
+  // clang-format off
   po::options_description desc("Zulässige Optionen");
   desc.add_options()
     ("output,o", po::value<string>(&output_name), "Zieldatei (*.bsh, *.zei)")
@@ -49,6 +50,7 @@ int main(int argc, char** argv)
     ("extra,e", po::value<int>(&extra)->default_value(0), "Extraspalten in den Ausgangsdateien")
     ("help,h", "Gibt diesen Hilfetext aus")
   ;
+  // clang-format on
 
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -104,8 +106,8 @@ int main(int argc, char** argv)
     {
       if (file_format == "pnm")
 	bsh.pgm_anhaengen((prefix + boost::str(boost::format("%04d.pgm") % i)).c_str());
-//       else if (file_format == "bmp")
-// 	bsh.bmp_anhaengen((prefix + boost::str(boost::format("%04d.bmp") % i)).c_str());
+      // else if (file_format == "bmp")
+      //   bsh.bmp_anhaengen((prefix + boost::str(boost::format("%04d.bmp") % i)).c_str());
     }
   }
   bsh.datei_schreiben(output_name.c_str());

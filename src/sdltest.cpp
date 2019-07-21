@@ -57,6 +57,7 @@ int main(int argc, char **argv)
   int rate;
   std::string gam_name;
   
+  // clang-format off
   po::options_description desc("Zulässige Optionen");
   desc.add_options()
     ("width,W", po::value<int>(&screen_width)->default_value(800), "Bildschirmbreite")
@@ -66,6 +67,7 @@ int main(int argc, char **argv)
     ("load,l", po::value<std::string>(&gam_name)->default_value("game00.gam"), "Lädt den angegebenen Spielstand (*.gam)")
     ("help,h", "Gibt diesen Hilfetext aus")
   ;
+  // clang-format on
   
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);

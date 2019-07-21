@@ -30,10 +30,10 @@ struct Ware // 20 bytes
   uint32_t einkaufswert : 10;   ///< Einkaufswert in Goldstücken
   uint32_t aktion : 12;         ///< 0: keine, 1: verkaufen, 2: einkaufen
   uint32_t unbekannt; // i.d.R. 0, einmal 0x80
-  uint16_t leer1;
+  uint16_t leer1; //
   uint16_t lagerstand_soll;     ///< Soll-Lagerstand in 1/32 t
   uint16_t lagerstand_ist;      ///< Ist-Lagerstand in 1/32 t
-  uint16_t leer2;
+  uint16_t leer2; //
   uint16_t ware; //0x6109 0x6509 0xe105 0xe705 0xe305 0xe905 0xdf05 0xf501 0x0902 0x0502 0x1102 0x0f02 0x3304 0x0d02 0xdd05 0xe505 0x0702 0xfb01 0xf901 0x1502 0x0302 0xd107 0x0102
   uint16_t leer3;
 } __attribute__((packed));
@@ -45,7 +45,7 @@ struct Insel3
   uint8_t inselnummer;  ///< Identifikationsnummer für diese Insel (pro Spiel)
   uint8_t breite;       ///< Breite der Insel in Feldern
   uint8_t hoehe;        ///< Höhe der Insel in Feldern
-  uint8_t a;
+  uint8_t a; //
   uint16_t x_pos;       ///< X-Position der Insel auf der Karte
   uint16_t y_pos;       ///< Y-Position der Insel auf der Karte
   uint16_t b;
@@ -69,21 +69,21 @@ struct Insel5
   uint8_t inselnummer;  ///< Identifikationsnummer für diese Insel (pro Spiel)
   uint8_t breite;       ///< Breite der Insel in Feldern
   uint8_t hoehe;        ///< Höhe der Insel in Feldern
-  uint8_t a;
+  uint8_t a; //
   uint16_t x_pos;       ///< X-Position der Insel auf der Karte
   uint16_t y_pos;       ///< Y-Position der Insel auf der Karte
-  uint16_t b;
-  uint16_t c;
-  uint8_t bytes0[14];
+  uint16_t b; //
+  uint16_t c; //
+  uint8_t bytes0[14]; //
   uint8_t erzvorkommen; ///< Anzahl an Erzvorkommen (Eisen, Gold) auf dieser Insel (0, 1 oder 2)
   uint8_t erkundet;     ///< 0: Fruchtbarkeit nicht erkundet, 1: Fruchtbarkeit erkundet
   Erzvorkommen erze[2]; ///< Erzvorkommen auf dieser Insel (Daten, ggf. 0)
-  uint8_t bytes1[48];
+  uint8_t bytes1[48]; //
   uint8_t fruchtbarkeit;   ///< Zeigt an, was auf dieser Insel wie gut wächst
   uint8_t d; // immer 0x11?
-  uint16_t e;
+  uint16_t e; //
   uint16_t basis;       ///< Nummer der Basisinsel (in ihrer Größenordnung)
-  uint16_t f;
+  uint16_t f; //
   uint8_t sued;         ///< 0x00 = nord, 0x01 = süd
   uint8_t diff;         ///< 0x00 = eigenständig, 0x01 = basiert auf "basis"
   uint8_t bytes2[14];
@@ -93,7 +93,7 @@ struct Insel5
 
 struct Hirsch2 // 8 bytes
 {
-  uint8_t inselnummer;
+  uint8_t inselnummer; //
   uint8_t x_pos;        ///< X-Position auf der Insel
   uint8_t y_pos;        ///< Y-Position auf der Insel
   uint8_t a; // 0x00
@@ -143,7 +143,7 @@ struct Prodlist // 24 bytes
   uint8_t leer3;            ///< immer 0
   uint8_t arbeitsschritt; // 0x00, 0x80, seltener 0x56, 0x60, 0x40; arbeitsschritt und ani niemals gleichzeitig != 0
   uint16_t auslastung_zaehler; // Auslastung in Prozent etwa = (200 * zaehler) / (256 * nenner) abgerundet
-  uint16_t auslastung_nenner;
+  uint16_t auslastung_nenner; //
   uint8_t modus; // 0x00, 0x01, 0x05, 0x15, 0x2d, 0x35, 0x25, 0x19, 0x03, 0x11, 0x29, 0x21, 0x31, 0x39, 0x28  Flag 0x01 = aktiv, 0x40 = nicht abholen
   uint8_t ani; // Inaktivität? 0x00 bis 0x0f.  0x0f = Rohstoffmangel oder öffentlich; arbeitsschritt und ani niemals gleichzeitig != 0
   uint16_t leer4;           ///< immer 0
@@ -200,11 +200,11 @@ struct Stadt // 168 bytes
   uint8_t unbekannt0;       ///< Meist 0, manchmal 1
   uint16_t spieler;         ///< Spieler, dem die Stadt gehört
   uint8_t baumaterialien_entziehen; ///< 0: Dem Volk Baumaterialien überlassen, 1: Dem Volk keine Baumaterialien überlassen
-  uint8_t unbekannt1[87];
+  uint8_t unbekannt1[87]; //
   uint32_t einwohner[5];    ///< Anzahl der Einwohner mit entsprechender Entwicklungsstufe
-  uint8_t unbekannt2[15];
+  uint8_t unbekannt2[15]; //
   uint8_t steuersatz[5];    ///< Steuersatz für jede Entwicklungsstufe (jeweils zwischen 0x40 und 0xc0)
-  uint8_t unbekannt3[3];
+  uint8_t unbekannt3[3]; //
   char name[33];            ///< Name der Stadt
   
   static constexpr char kennung[] = "STADT4";
@@ -215,7 +215,7 @@ struct Kontor // 1004 bytes
   uint8_t inselnummer;  ///< Insel, auf der dieses Kontor steht
   uint8_t x_pos;        ///< X-Position auf der Insel
   uint8_t y_pos;        ///< Y-Position auf der Insel
-  uint8_t spieler;
+  uint8_t spieler; //
   Ware waren[50]; // 23 Waren ab index 2
   
   static constexpr char kennung[] = "KONTOR2";
@@ -225,7 +225,7 @@ struct Markt_intern // 16 bytes
 {
   uint16_t unbekannt1;
   uint16_t unbekannt2; //0x0000, 0x0001, 0x0002, 0x0004 (im gleichen Markt kombinierbar)
-  uint16_t unbekannt3;
+  uint16_t unbekannt3; //
   uint16_t leer1;       ///< immer 0
   uint32_t leer2;       ///< immer 0
   uint16_t ware; //Ware: 0x3304 0x0d02 0xdd05 0xe505 0x0702 0xfb01 0xf901 0x1502 0x0302 0xd107 0x0102
@@ -236,9 +236,9 @@ struct Markt_intern // 16 bytes
 struct Markt // 260 bytes
 {
   uint8_t id;                   ///< fortlaufende Nummerierung der Marktplätze pro Spieler
-  uint8_t spieler;
+  uint8_t spieler; //
   uint16_t a; // 0x0000
-  Markt_intern unbekannt[16];
+  Markt_intern unbekannt[16]; //
   
   static constexpr char kennung[] = "MARKT2";
 } __attribute__((packed));
@@ -252,26 +252,26 @@ struct Vertrag // 8 bytes
 struct Player // 1072 bytes
 {
   int32_t kontostand;           ///< Kontostand dieses Spielers
-  uint8_t b;
+  uint8_t b; //
   uint8_t spieler;              ///< Spielernummer? (0 bis 3)
-  uint8_t c;
+  uint8_t c; //
   uint8_t farbe;                ///< Spielerfarbe? (0 bis 3)
-  uint8_t unbekannt1[8];
+  uint8_t unbekannt1[8]; //
   uint16_t gegner_besiegt;      ///< Anzahl besiegter Gegner (jeweils +1500 Punkte)
   uint16_t triumphboegen;       ///< Anzahl bereits gebauter Triumphbögen
   uint16_t soldaten_besiegt;    ///< Anzahl Soldaten, die dieser Spieler besiegt hat
   uint16_t soldaten_gefallen;   ///< Anzahl gefallener Soldaten
   uint16_t schiffe_gesunken;    ///< Anzahl gesunkener Schiffe
   uint16_t schiffe_versenkt;    ///< Anzahl Schiffe, die dieser Spieler versenkt hat
-  uint8_t unbekannt2[24];
+  uint8_t unbekannt2[24]; //
   uint32_t freigeschaltet;      ///< Bitflags für Gruppen freigeschalteter Gebäude
   uint16_t zufriedenheit;       ///< Zufriedenheit der Bevölkerung (Anzahl Denkmäler) Punkte pro Denkmal: zwischen 169,16666 und 169,25
   uint16_t denkmaeler;          ///< Anzahl bereits gebauter Denkmäler
   uint32_t unbekannt3;          ///< immer 0xffffffff?
-  uint8_t unbekannt4[264];
+  uint8_t unbekannt4[264]; //
   Vertrag handelsvertraege[3];  ///< Handelsverträge mit den drei anderen Spielern
   Vertrag friedensvertraege[3]; ///< Friedensverträge mit den drei anderen Spielern
-  uint8_t unbekannt5[584];
+  uint8_t unbekannt5[584]; //
   char name[112];               ///< Name dieses Spielers
   
   static constexpr char kennung[] = "PLAYER4";
@@ -313,9 +313,9 @@ struct Laderaum
 struct Handelsroute // 36 bytes
 {
   uint8_t id; // 0x35, 0x36, 0x37     oder 4 Bytes Kurs für Patrouille
-  uint8_t kontornummer;
+  uint8_t kontornummer; //
   uint16_t leer1; // 0x0000
-  Laderaum ladung[2];
+  Laderaum ladung[2]; //
   uint8_t leer2[16]; // 0
 } __attribute__((packed));
 
@@ -338,8 +338,8 @@ struct Ship // 436 bytes
   uint32_t a[3]; // 0x00000000 0x00000000 0x00000000
   uint32_t kurs_start; // Y-Koordinate: Byte2[4:7]Byte3, X-Koordinate: Byte2[0:3]Byte4
   uint32_t kurs_ziel; // Byte1: 0x00 für stehen, 0x37 für fahren
-  uint32_t kurs_aktuell;
-  uint32_t b;
+  uint32_t kurs_aktuell; //
+  uint32_t b; //
   uint16_t lp;          ///< Zustand (Lebenspunkte) des Schiffes
   uint16_t c; // 0x0000, 0x000c, 0x0010, 0x0011
   uint8_t d1; // 0, 1, 2, 3, 5, 6
@@ -378,12 +378,12 @@ struct Soldat // 68 bytes
   uint16_t e; // 0x0000
   uint8_t f; // 0x00
   uint8_t unbekannt1; // Nicht die Inselnummer
-  uint8_t unbekannt2[4];
+  uint8_t unbekannt2[4]; //
   uint8_t spieler;      ///< Spieler, dem die Einheit gehört (0 bis 3 bzw. 6 für Eingeborene)
   uint8_t h; // 1, 4, 5, 6, 7
   uint8_t i; // 0x2d (45)
   uint8_t richtung;     ///< Gegenwärtige Blickrichtung (0 bis 7)
-  uint8_t leer1;
+  uint8_t leer1; //
   uint8_t patrouille;   ///< Einheit ist auf Patrouille (0 = nein, 1 = ja)
   uint8_t kurs2[4];     ///< 4 Bytes Kurs
   uint8_t kurs3[4];     ///< 4 Bytes Kurs
@@ -406,7 +406,7 @@ struct Turm // 36 bytes
   uint32_t e; // 0x00000000
   uint16_t f; // 0x0000
   uint8_t g; // 0x06
-  uint8_t inselnummer2;
+  uint8_t inselnummer2; //
   uint32_t spieler;         ///< Spieler, dem der Turm gehört
   uint32_t h; // 0x00000000
   uint32_t i; // 0x00000000

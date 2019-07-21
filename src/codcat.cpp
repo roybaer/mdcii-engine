@@ -45,7 +45,7 @@ int main(int argc, char** argv)
     exit(EXIT_FAILURE);
 
   filtering_istream in;
-//   in.push(newline_filter(newline::dos));
+  // in.push(newline_filter(newline::dos));
   in.push(bytewise_2s_complement_input_filter());
   in.push(file_source(argv[1]));
 

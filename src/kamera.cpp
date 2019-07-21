@@ -39,13 +39,13 @@ Kamera::Kamera()
   effekte_bsh[1] = new Bsh_leser(MGFX + "effekte.bsh");
   effekte_bsh[2] = new Bsh_leser(GFX + "effekte.bsh");
   
-//   maeher_bsh[0] = new Bsh_leser(SGFX + "maeher.bsh");
-//   maeher_bsh[1] = new Bsh_leser(MGFX + "maeher.bsh");
-//   maeher_bsh[2] = new Bsh_leser(GFX + "maeher.bsh");
-//   
-//   numbers_bsh[0] = new Bsh_leser(SGFX + "numbers.bsh");
-//   numbers_bsh[1] = new Bsh_leser(MGFX + "NUMBERS.BSH");
-//   numbers_bsh[2] = new Bsh_leser(GFX + "NUMBERS.BSH");
+  // maeher_bsh[0] = new Bsh_leser(SGFX + "maeher.bsh");
+  // maeher_bsh[1] = new Bsh_leser(MGFX + "maeher.bsh");
+  // maeher_bsh[2] = new Bsh_leser(GFX + "maeher.bsh");
+  
+  // numbers_bsh[0] = new Bsh_leser(SGFX + "numbers.bsh");
+  // numbers_bsh[1] = new Bsh_leser(MGFX + "NUMBERS.BSH");
+  // numbers_bsh[2] = new Bsh_leser(GFX + "NUMBERS.BSH");
   
   ship_bsh[0] = new Bsh_leser(SGFX + "ship.bsh");
   ship_bsh[1] = new Bsh_leser(MGFX + "ship.bsh");
@@ -59,13 +59,13 @@ Kamera::Kamera()
   stadtfld_bsh[1] = new Bsh_leser(MGFX + "stadtfld.bsh");
   stadtfld_bsh[2] = new Bsh_leser(GFX + "stadtfld.bsh");
   
-//   tiere_bsh[0] = new Bsh_leser(SGFX + "tiere.bsh");
-//   tiere_bsh[1] = new Bsh_leser(MGFX + "tiere.bsh");
-//   tiere_bsh[2] = new Bsh_leser(GFX + "tiere.bsh");
-//   
-//   traeger_bsh[0] = new Bsh_leser(SGFX + "traeger.bsh");
-//   traeger_bsh[1] = new Bsh_leser(MGFX + "traeger.bsh");
-//   traeger_bsh[2] = new Bsh_leser(GFX + "traeger.bsh");
+  // tiere_bsh[0] = new Bsh_leser(SGFX + "tiere.bsh");
+  // tiere_bsh[1] = new Bsh_leser(MGFX + "tiere.bsh");
+  // tiere_bsh[2] = new Bsh_leser(GFX + "tiere.bsh");
+  
+  // traeger_bsh[0] = new Bsh_leser(SGFX + "traeger.bsh");
+  // traeger_bsh[1] = new Bsh_leser(MGFX + "traeger.bsh");
+  // traeger_bsh[2] = new Bsh_leser(GFX + "traeger.bsh");
   
   zei = new Zei_leser("toolgfx/zei16g.zei");
   

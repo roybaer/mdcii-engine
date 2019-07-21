@@ -36,6 +36,7 @@ int main(int argc, char **argv)
   int color;
   int bpp;
 
+  // clang-format off
   po::options_description desc("Zulässige Optionen");
   desc.add_options()
     ("input,i", po::value<string>(&input_name), "Eingabedatei (*.zei)")
@@ -46,6 +47,7 @@ int main(int argc, char **argv)
     ("text,t", po::value<string>(&text), "Text, der Ausgegeben werden soll")
     ("help,h", "Gibt diesen Hilfetext aus")
   ;
+  // clang-format on
 
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);

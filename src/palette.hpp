@@ -1,3 +1,4 @@
+// clang-format off
 const unsigned char palette[768] =
 {
     0x00, 0x00, 0x00,

@@ -34,6 +34,7 @@ int main(int argc, char **argv)
   int color;
   int bpp;
   
+  // clang-format off
   po::options_description desc("Zulässige Optionen");
   desc.add_options()
     ("input,i", po::value<std::string>(&input_name), "Eingabedatei (*.bsh)")
@@ -43,6 +44,7 @@ int main(int argc, char **argv)
     ("color,c", po::value<int>(&color)->default_value(0), "Hintergrundfarbe für transparente Bereiche")
     ("help,h", "Gibt diesen Hilfetext aus")
   ;
+  // clang-format on
   
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
