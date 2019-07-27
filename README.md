@@ -3,7 +3,7 @@ MDCII Game Engine
 
 Ziel des MDCII-Projekts ist eine unabhängige Neuimplementierung der Engine des PC-Spiels **ANNO 1602** unter freier Lizenz.
 
-Gegenwärtig enthält das Projekt die Programme [`mdcii-bshdump`](doc/mdcii-bshdump.md), [`mdcii-bshpacker`](doc/mdcii-bshpacker.md), `mdcii-inselbmp`, [`mdcii-sdltest`](doc/mdcii-sdltest.md) und `mdcii-weltbmp`.
+Gegenwärtig enthält das Projekt die Programme [`mdcii-bshdump`](doc/mdcii-bshdump.md), [`mdcii-bshpacker`](doc/mdcii-bshpacker.md), `mdcii-codcat`, `mdcii-inselbmp`, [`mdcii-sdltest`](doc/mdcii-sdltest.md) und `mdcii-weltbmp`.
 
 Das komplexeste dieser Programme ist [`mdcii-sdltest`](doc/mdcii-sdltest.md), das Spielstände von ANNO 1602 animiert und navigierbar darstellen kann.
 
@@ -12,7 +12,6 @@ Installation
 ------------
 
 Die Programme erwarten in ihrem Ordner bestimmte Ordner und Dateien aus der ANNO-1602-Installation beziehungsweise vom ANNO-1602-Datenträger.
-Auf einem unixoiden System werden zudem alle Dateinamen kleingeschrieben erwartet.
 
 Die erforderlichen Ordner sind:
 

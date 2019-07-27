@@ -67,7 +67,7 @@ int main(int argc, char** argv)
     ("fullscreen,F", po::value<bool>(&fullscreen)->default_value(false), "Vollbildmodus (true/false)")
     ("rate,r", po::value<int>(&rate)->default_value(10), "Bildrate")
     ("load,l", po::value<std::string>(&gam_name)->default_value("game00.gam"), "Lädt den angegebenen Spielstand (*.gam)")
-    ("path,p", po::value<std::string>(&files_path)->default_value("."), "Pfad zur ANNO1602 Installation")
+    ("path,p", po::value<std::string>(&files_path)->default_value("."), "Pfad zur ANNO1602-Installation")
     ("help,h", "Gibt diesen Hilfetext aus")
   ;
   // clang-format on
