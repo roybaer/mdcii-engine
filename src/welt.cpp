@@ -16,14 +16,14 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#include <string.h>
 #include "welt.hpp"
 #include "files.hpp"
+#include <string.h>
 
-Welt::Welt(std::istream& f)
+Welt::Welt(std::istream& f, std::shared_ptr<Haeuser> haeuser)
+  : haeuser(haeuser)
 {
   auto files = Files::instance();
-  bebauung = new Bebauung(files->instance()->get_file("bebauung.txt"));
 
   while (!f.eof())
   {
@@ -34,7 +34,7 @@ Welt::Welt(std::istream& f)
   {
     if (strcmp((*i)->kennung, Insel5::kennung) == 0)
     {
-      inseln.push_back(new Insel(*i, *(i + 1), *bebauung));
+      inseln.push_back(new Insel(*i, *(i + 1), haeuser));
       i++;
     }
     else if (strcmp((*i)->kennung, Kontor::kennung) == 0)
@@ -65,23 +65,22 @@ Welt::Welt(std::istream& f)
     i++;
   }
 
-
   // Initialisiere Animationen über Gebäuden
 
-  for (Prodlist& prod : prodlist)
+  for (auto& prod : prodlist)
   {
     int x = prod.x_pos + inseln[prod.inselnummer]->xpos;
     int y = prod.y_pos + inseln[prod.inselnummer]->ypos;
     inselfeld_t inselfeld;
     feld_an_pos(inselfeld, x, y);
-    Bebauungsinfo* info = bebauung->info_zu(inselfeld.bebauung);
-    if (info != nullptr)
+    auto info = haeuser->get_haus(inselfeld.bebauung);
+    if (info)
     {
-      int max_x = (((inselfeld.rot & 1) == 0) ? info->breite : info->hoehe) - 1;
-      int max_y = (((inselfeld.rot & 1) == 0) ? info->hoehe : info->breite) - 1;
-      if (info->kategorie == 4)
+      int max_x = (((inselfeld.rot & 1) == 0) ? info.value()->Size.w : info.value()->Size.h) - 1;
+      int max_y = (((inselfeld.rot & 1) == 0) ? info.value()->Size.h : info.value()->Size.w) - 1;
+      if (info.value()->HAUS_PRODTYP.Kind == ProdtypKindType::HANDWERK)
       {
-        int versatz = (info->breite + info->hoehe) / 2;
+        int versatz = (info.value()->Size.w + info.value()->Size.h) / 2;
         versatz += (versatz & 1) * 2;
         if (!((prod.modus & 1) != 0)) // Betrieb ist geschlossen
         {
@@ -96,7 +95,6 @@ Welt::Welt(std::istream& f)
   }
 
   // Initialisiere Animationen über Bergen
-
   for (Insel*& insel : inseln)
   {
     for (int i = 0; i < reinterpret_cast<Insel5*>(insel->inselX->daten)->erzvorkommen; i++)
@@ -106,14 +104,14 @@ Welt::Welt(std::istream& f)
       int y = erz.y_pos + insel->ypos;
       inselfeld_t inselfeld;
       feld_an_pos(inselfeld, x, y);
-      Bebauungsinfo* info = bebauung->info_zu(inselfeld.bebauung);
-      if (info != nullptr)
+      auto info = haeuser->get_haus(inselfeld.bebauung);
+      if (info)
       {
-        int max_x = (((inselfeld.rot & 1) == 0) ? info->breite : info->hoehe) - 1;
-        int max_y = (((inselfeld.rot & 1) == 0) ? info->hoehe : info->breite) - 1;
-        // if (info->kategorie == 4)
+        int max_x = (((inselfeld.rot & 1) == 0) ? info.value()->Size.w : info.value()->Size.h) - 1;
+        int max_y = (((inselfeld.rot & 1) == 0) ? info.value()->Size.h : info.value()->Size.w) - 1;
+        if (info.value()->Kind == ObjectKindType::FELS)
         {
-          int versatz = (info->breite + info->hoehe) / 2;
+          int versatz = (info.value()->Size.h + info.value()->Size.w) / 2;
           versatz += (versatz & 1) * 2 + 3;
           if (erz.typ == 2) // Eisen
           {
