@@ -56,8 +56,8 @@ private:
     {
       if (NULL != Files::_instance)
       {
-	delete Files::_instance;
-	Files::_instance = NULL;
+        delete Files::_instance;
+        Files::_instance = NULL;
       }
     }
   };

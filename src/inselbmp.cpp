@@ -71,8 +71,8 @@ int main(int argc, char** argv)
       insel.grafik_bebauung(feld, x, y, 0, stadtfld_grafiken);
       if (feld.index != -1)
       {
-	Bsh_bild& bsh = bsh_leser.gib_bsh_bild(feld.index);
-	bs.zeichne_bsh_bild_oz(bsh, (x - y + height) * XRASTER, (x + y) * YRASTER + 2 * YRASTER - feld.grundhoehe * ELEVATION);
+        Bsh_bild& bsh = bsh_leser.gib_bsh_bild(feld.index);
+        bs.zeichne_bsh_bild_oz(bsh, (x - y + height) * XRASTER, (x + y) * YRASTER + 2 * YRASTER - feld.grundhoehe * ELEVATION);
       }
     }
   }

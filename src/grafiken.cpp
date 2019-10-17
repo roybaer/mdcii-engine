@@ -35,7 +35,7 @@ Grafiken::Grafiken(std::string dateiname)
       uint32_t grafikindex;
       ss >> bebauung >> grafikindex;
       if (datei.good())
-	index[bebauung] = grafikindex;
+        index[bebauung] = grafikindex;
     }
   }
 }

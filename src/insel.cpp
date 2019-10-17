@@ -50,23 +50,23 @@ void Insel::insel_rastern(inselfeld_t* a, uint32_t laenge, inselfeld_t* b, uint8
       int x, y, u, v;
       if (feld.rot % 2 == 0)
       {
-	u = info->breite;
-	v = info->hoehe;
+        u = info->breite;
+        v = info->hoehe;
       }
       else
       {
-	u = info->hoehe;
-	v = info->breite;
+        u = info->hoehe;
+        v = info->breite;
       }
 
       for (int y = 0; y < v && feld.y_pos + y < hoehe; y++)
       {
-	for (int x = 0; x < u && feld.x_pos + x < breite; x++)
-	{
-	  b[(feld.y_pos + y) * breite + feld.x_pos + x] = feld;
-	  b[(feld.y_pos + y) * breite + feld.x_pos + x].x_pos = x;
-	  b[(feld.y_pos + y) * breite + feld.x_pos + x].y_pos = y;
-	}
+        for (int x = 0; x < u && feld.x_pos + x < breite; x++)
+        {
+          b[(feld.y_pos + y) * breite + feld.x_pos + x] = feld;
+          b[(feld.y_pos + y) * breite + feld.x_pos + x].x_pos = x;
+          b[(feld.y_pos + y) * breite + feld.x_pos + x].y_pos = y;
+        }
       }
     }
     else
@@ -124,8 +124,8 @@ Insel::Insel(Block* inselX, Block* inselhaus, Bebauung& bebauung)
       karte = files->instance()->find_path_for_file(karte);
       if (files->instance()->check_file(karte) == false)
       {
-	std::cout << "[ERR] Island not found: " << karte << std::endl;
-	exit(EXIT_FAILURE);
+        std::cout << "[ERR] Island not found: " << karte << std::endl;
+        exit(EXIT_FAILURE);
       }
 
       f.open(karte, std::ios_base::in | std::ios_base::binary);
@@ -142,8 +142,8 @@ Insel::Insel(Block* inselX, Block* inselhaus, Bebauung& bebauung)
     {
       for (x = 0; x < this->breite; x++)
       {
-	if (schicht2[y * this->breite + x].bebauung == 0xffff)
-	  schicht2[y * this->breite + x] = schicht1[y * this->breite + x];
+        if (schicht2[y * this->breite + x].bebauung == 0xffff)
+          schicht2[y * this->breite + x] = schicht1[y * this->breite + x];
       }
     }
   }
@@ -251,11 +251,11 @@ void Insel::bewege_wasser() // FIXME
     {
       inselfeld_t& feld = schicht2[y * breite + x];
       if (feld.bebauung >= 1201 && feld.bebauung <= 1218 || feld.bebauung >= 901 && feld.bebauung <= 905 || feld.bebauung >= 1251 && feld.bebauung <= 1259
-	  || feld.bebauung == 1071 || feld.bebauung == 2311)
+          || feld.bebauung == 1071 || feld.bebauung == 2311)
       {
-	Bebauungsinfo* info = bebauung.info_zu(feld.bebauung);
-	if (info != nullptr)
-	  feld.ani = (feld.ani + 1) % info->ani_schritte;
+        Bebauungsinfo* info = bebauung.info_zu(feld.bebauung);
+        if (info != nullptr)
+          feld.ani = (feld.ani + 1) % info->ani_schritte;
       }
     }
   }

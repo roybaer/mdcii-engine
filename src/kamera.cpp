@@ -81,27 +81,27 @@ void Kamera::nach_links()
   {
     case 0:
       if (xpos > 0)
-	xpos--;
+        xpos--;
       if (ypos < Welt::KARTENHOEHE - 1)
-	ypos++;
+        ypos++;
       break;
     case 1:
       if (xpos < Welt::KARTENBREITE - 1)
-	xpos++;
+        xpos++;
       if (ypos < Welt::KARTENHOEHE - 1)
-	ypos++;
+        ypos++;
       break;
     case 2:
       if (xpos < Welt::KARTENBREITE - 1)
-	xpos++;
+        xpos++;
       if (ypos > 0)
-	ypos--;
+        ypos--;
       break;
     case 3:
       if (xpos > 0)
-	xpos--;
+        xpos--;
       if (ypos > 0)
-	ypos--;
+        ypos--;
       break;
   }
 }
@@ -112,27 +112,27 @@ void Kamera::nach_rechts()
   {
     case 0:
       if (xpos < Welt::KARTENBREITE - 1)
-	xpos++;
+        xpos++;
       if (ypos > 0)
-	ypos--;
+        ypos--;
       break;
     case 1:
       if (xpos > 0)
-	xpos--;
+        xpos--;
       if (ypos > 0)
-	ypos--;
+        ypos--;
       break;
     case 2:
       if (xpos > 0)
-	xpos--;
+        xpos--;
       if (ypos < Welt::KARTENHOEHE - 1)
-	ypos++;
+        ypos++;
       break;
     case 3:
       if (xpos < Welt::KARTENBREITE - 1)
-	xpos++;
+        xpos++;
       if (ypos < Welt::KARTENHOEHE - 1)
-	ypos++;
+        ypos++;
       break;
   }
 }
@@ -143,27 +143,27 @@ void Kamera::nach_oben()
   {
     case 0:
       if (xpos > 0)
-	xpos--;
+        xpos--;
       if (ypos > 0)
-	ypos--;
+        ypos--;
       break;
     case 1:
       if (xpos > 0)
-	xpos--;
+        xpos--;
       if (ypos < Welt::KARTENHOEHE - 1)
-	ypos++;
+        ypos++;
       break;
     case 2:
       if (xpos < Welt::KARTENBREITE - 1)
-	xpos++;
+        xpos++;
       if (ypos < Welt::KARTENHOEHE - 1)
-	ypos++;
+        ypos++;
       break;
     case 3:
       if (xpos < Welt::KARTENBREITE - 1)
-	xpos++;
+        xpos++;
       if (ypos > 0)
-	ypos--;
+        ypos--;
       break;
   }
 }
@@ -174,27 +174,27 @@ void Kamera::nach_unten()
   {
     case 0:
       if (xpos < Welt::KARTENBREITE - 1)
-	xpos++;
+        xpos++;
       if (ypos < Welt::KARTENHOEHE - 1)
-	ypos++;
+        ypos++;
       break;
     case 1:
       if (xpos < Welt::KARTENBREITE - 1)
-	xpos++;
+        xpos++;
       if (ypos > 0)
-	ypos--;
+        ypos--;
       break;
     case 2:
       if (xpos > 0)
-	xpos--;
+        xpos--;
       if (ypos > 0)
-	ypos--;
+        ypos--;
       break;
     case 3:
       if (xpos > 0)
-	xpos--;
+        xpos--;
       if (ypos < Welt::KARTENHOEHE - 1)
-	ypos++;
+        ypos++;
       break;
   }
 }
@@ -361,10 +361,10 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
       Insel::grafik_bebauung_inselfeld(feld, inselfeld, drehung, *welt.bebauung, *stadtfld_grafiken);
       if (feld.index != -1)
       {
-	int bs_x, bs_y, bs_z;
-	auf_bildschirm(bs, x, y, feld.grundhoehe, bs_x, bs_y, bs_z);
-	bild_mit_pos_t bild_mit_pos = {&stadtfld_bsh[vergroesserung]->gib_bsh_bild(feld.index), bs_x, bs_y + y_raster[vergroesserung], bs_z, x, y, true};
-	felder.push_back(bild_mit_pos);
+        int bs_x, bs_y, bs_z;
+        auf_bildschirm(bs, x, y, feld.grundhoehe, bs_x, bs_y, bs_z);
+        bild_mit_pos_t bild_mit_pos = {&stadtfld_bsh[vergroesserung]->gib_bsh_bild(feld.index), bs_x, bs_y + y_raster[vergroesserung], bs_z, x, y, true};
+        felder.push_back(bild_mit_pos);
       }
     }
   }
@@ -376,7 +376,7 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
     int bs_x, bs_y, bs_z;
     auf_bildschirm_256(bs, animation.x, animation.y, animation.z, bs_x, bs_y, bs_z);
     bild_mit_pos_t bild_mit_pos = {&effekte_bsh[vergroesserung]->gib_bsh_bild(animation.start_index + animation.ani), bs_x, bs_y, bs_z + animation.bs_z_versatz,
-	map_elem.first.first, map_elem.first.second, false};
+        map_elem.first.first, map_elem.first.second, false};
     felder.push_back(bild_mit_pos);
   }
 
@@ -469,8 +469,8 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
     bs.zeichne_string(*zei, std::to_string(inselfeld.bebauung), 10, 80);
     bs.zeichne_string(*zei, "Position und Insel unter Mauszeiger:", 10, 110);
     bs.zeichne_string(*zei,
-	"(" + std::to_string(feld_unter_maus_x) + ", " + std::to_string(feld_unter_maus_y) + ")  Insel "
-	    + std::to_string(welt.inselnummer_an_pos(feld_unter_maus_x, feld_unter_maus_y)),
-	10, 130);
+        "(" + std::to_string(feld_unter_maus_x) + ", " + std::to_string(feld_unter_maus_y) + ")  Insel "
+            + std::to_string(welt.inselnummer_an_pos(feld_unter_maus_x, feld_unter_maus_y)),
+        10, 130);
   }
 }

@@ -34,8 +34,8 @@ Bebauung::Bebauung(std::string dateiname)
       uint16_t bebauung, breite, hoehe, richtungen, ani_schritte, grundhoehe, bauhoehe, lagerstaende, kategorie;
       ss >> bebauung >> breite >> hoehe >> richtungen >> ani_schritte >> grundhoehe >> bauhoehe >> lagerstaende >> kategorie;
       if (datei.good())
-	index[bebauung] = {(uint8_t)breite, (uint8_t)hoehe, (uint8_t)richtungen, (uint8_t)ani_schritte, (uint8_t)grundhoehe, (uint8_t)bauhoehe,
-	    (uint8_t)lagerstaende, (uint8_t)kategorie};
+        index[bebauung] = {(uint8_t)breite, (uint8_t)hoehe, (uint8_t)richtungen, (uint8_t)ani_schritte, (uint8_t)grundhoehe, (uint8_t)bauhoehe,
+            (uint8_t)lagerstaende, (uint8_t)kategorie};
     }
   }
 }

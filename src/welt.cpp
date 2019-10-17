@@ -40,27 +40,27 @@ Welt::Welt(std::istream& f)
     else if (strcmp((*i)->kennung, Kontor::kennung) == 0)
     {
       for (int j = 0; j < (*i)->laenge / sizeof(Kontor); j++)
-	kontore.push_back((Kontor&)(*i)->daten[j * sizeof(Kontor)]);
+        kontore.push_back((Kontor&)(*i)->daten[j * sizeof(Kontor)]);
     }
     else if (strcmp((*i)->kennung, Ship::kennung) == 0)
     {
       for (int j = 0; j < (*i)->laenge / sizeof(Ship); j++)
-	schiffe.push_back((Ship&)(*i)->daten[j * sizeof(Ship)]);
+        schiffe.push_back((Ship&)(*i)->daten[j * sizeof(Ship)]);
     }
     else if (strcmp((*i)->kennung, Soldat::kennung) == 0)
     {
       for (int j = 0; j < (*i)->laenge / sizeof(Soldat); j++)
-	soldaten.push_back((Soldat&)(*i)->daten[j * sizeof(Soldat)]);
+        soldaten.push_back((Soldat&)(*i)->daten[j * sizeof(Soldat)]);
     }
     else if (strcmp((*i)->kennung, Prodlist::kennung) == 0)
     {
       for (int j = 0; j < (*i)->laenge / sizeof(Prodlist); j++)
-	prodlist.push_back((Prodlist&)(*i)->daten[j * sizeof(Prodlist)]);
+        prodlist.push_back((Prodlist&)(*i)->daten[j * sizeof(Prodlist)]);
     }
     else if (strcmp((*i)->kennung, Player::kennung) == 0)
     {
       for (int j = 0; j < (*i)->laenge / sizeof(Player); j++)
-	spieler.push_back((Player&)(*i)->daten[j * sizeof(Player)]);
+        spieler.push_back((Player&)(*i)->daten[j * sizeof(Player)]);
     }
     i++;
   }
@@ -81,16 +81,16 @@ Welt::Welt(std::istream& f)
       int max_y = (((inselfeld.rot & 1) == 0) ? info->hoehe : info->breite) - 1;
       if (info->kategorie == 4)
       {
-	int versatz = (info->breite + info->hoehe) / 2;
-	versatz += (versatz & 1) * 2;
-	if (!((prod.modus & 1) != 0)) // Betrieb ist geschlossen
-	{
-	  animationen[std::pair<int, int>(x, y)] = {x * 256 + max_x * 128, y * 256 + max_y * 128, 256 + versatz * 205, 0, 350, 32, (max_x + max_y) * 128, true};
-	}
-	if ((prod.ani & 0x0f) == 0x0f) // Betrieb hat Rohstoffmangel
-	{
-	  animationen[std::pair<int, int>(x, y)] = {x * 256 + max_x * 128, y * 256 + max_y * 128, 256 + versatz * 205, 0, 382, 32, (max_x + max_y) * 128, true};
-	}
+        int versatz = (info->breite + info->hoehe) / 2;
+        versatz += (versatz & 1) * 2;
+        if (!((prod.modus & 1) != 0)) // Betrieb ist geschlossen
+        {
+          animationen[std::pair<int, int>(x, y)] = {x * 256 + max_x * 128, y * 256 + max_y * 128, 256 + versatz * 205, 0, 350, 32, (max_x + max_y) * 128, true};
+        }
+        if ((prod.ani & 0x0f) == 0x0f) // Betrieb hat Rohstoffmangel
+        {
+          animationen[std::pair<int, int>(x, y)] = {x * 256 + max_x * 128, y * 256 + max_y * 128, 256 + versatz * 205, 0, 382, 32, (max_x + max_y) * 128, true};
+        }
       }
     }
   }
@@ -109,23 +109,23 @@ Welt::Welt(std::istream& f)
       Bebauungsinfo* info = bebauung->info_zu(inselfeld.bebauung);
       if (info != nullptr)
       {
-	int max_x = (((inselfeld.rot & 1) == 0) ? info->breite : info->hoehe) - 1;
-	int max_y = (((inselfeld.rot & 1) == 0) ? info->hoehe : info->breite) - 1;
-	// if (info->kategorie == 4)
-	{
-	  int versatz = (info->breite + info->hoehe) / 2;
-	  versatz += (versatz & 1) * 2 + 3;
-	  if (erz.typ == 2) // Eisen
-	  {
-	    animationen[std::pair<int, int>(x, y)]
-		= {x * 256 + max_x * 128, y * 256 + max_y * 128, 256 + versatz * 205, 0, 556, 32, (max_x + max_y) * 128, true};
-	  }
-	  if (erz.typ == 3) // Gold
-	  {
-	    animationen[std::pair<int, int>(x, y)]
-		= {x * 256 + max_x * 128, y * 256 + max_y * 128, 256 + versatz * 205, 0, 588, 32, (max_x + max_y) * 128, true};
-	  }
-	}
+        int max_x = (((inselfeld.rot & 1) == 0) ? info->breite : info->hoehe) - 1;
+        int max_y = (((inselfeld.rot & 1) == 0) ? info->hoehe : info->breite) - 1;
+        // if (info->kategorie == 4)
+        {
+          int versatz = (info->breite + info->hoehe) / 2;
+          versatz += (versatz & 1) * 2 + 3;
+          if (erz.typ == 2) // Eisen
+          {
+            animationen[std::pair<int, int>(x, y)]
+                = {x * 256 + max_x * 128, y * 256 + max_y * 128, 256 + versatz * 205, 0, 556, 32, (max_x + max_y) * 128, true};
+          }
+          if (erz.typ == 3) // Gold
+          {
+            animationen[std::pair<int, int>(x, y)]
+                = {x * 256 + max_x * 128, y * 256 + max_y * 128, 256 + versatz * 205, 0, 588, 32, (max_x + max_y) * 128, true};
+          }
+        }
       }
     }
   }
@@ -170,14 +170,14 @@ void Welt::simulationsschritt()
     {
       if (animation.ani < animation.schritte - 1)
       {
-	animation.ani++;
+        animation.ani++;
       }
       else
       {
-	if (animation.wiederholen)
-	  animation.ani = 0;
-	else
-	  animation.ani = -1;
+        if (animation.wiederholen)
+          animation.ani = 0;
+        else
+          animation.ani = -1;
       }
     }
   }
