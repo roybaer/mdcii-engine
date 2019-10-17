@@ -56,7 +56,7 @@ int main(int argc, char** argv)
   f.close();
 
   auto files = Files::create_instance(".");
-  std::shared_ptr<Cod_Parser> haeuser_cod = std::make_shared<Cod_Parser>(files->instance()->find_path_for_file("haeuser.cod"), true);
+  std::shared_ptr<Cod_Parser> haeuser_cod = std::make_shared<Cod_Parser>(files->instance()->find_path_for_file("haeuser.cod"), true, false);
   std::shared_ptr<Haeuser> haeuser = std::make_shared<Haeuser>(haeuser_cod);
 
   Anno_version version = Version::Detect_game_version();

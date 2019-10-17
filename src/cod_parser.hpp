@@ -40,7 +40,7 @@
 class Cod_Parser
 {
 public:
-  Cod_Parser(const std::string& cod_file_path, bool decode);
+  Cod_Parser(const std::string& cod_file_path, bool decode, bool debug);
   Cod_Parser(const std::string& file_as_string);
 
   void debug_output();

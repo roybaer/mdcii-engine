@@ -18,11 +18,15 @@
 
 #include "cod_parser.hpp"
 
-Cod_Parser::Cod_Parser(const std::string& cod_file_path, bool decode)
+Cod_Parser::Cod_Parser(const std::string& cod_file_path, bool decode, bool debug)
   : path(cod_file_path)
 {
   read_file(decode);
   parse_file();
+  if (debug == true)
+  {
+    debug_output();
+  }
 }
 
 Cod_Parser::Cod_Parser(const std::string& file_as_string)
