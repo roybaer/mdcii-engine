@@ -94,6 +94,7 @@ bool Cod_Parser::read_file_as_string(const std::string& buffer)
 bool Cod_Parser::parse_file()
 {
   std::map<std::string, int> variable_numbers;
+  std::map<std::string, std::vector<int>> variable_numbers_array;
 
   int spaces = -1;
   for (int line_index = 0; line_index < cod_txt.size(); line_index++)
@@ -155,6 +156,54 @@ bool Cod_Parser::parse_file()
       }
     }
     {
+      // example: '@Pos:       +0, +42'
+      std::vector<std::string> result = regex_search("@(\\w+):.*(,)", line);
+      if (result.size() > 0)
+      {
+        std::string name = result[1];
+        std::vector<int> offsets;
+        result = regex_search(":\\s*(.*)", line);
+        if (result.size() > 0)
+        {
+
+          std::vector<std::string> tokens = split_by_delimiter(result[1], ",");
+          for (auto& e : tokens)
+          {
+            e = trim_spaces_leading_trailing(e);
+            std::vector<std::string> number = regex_search("([+|-]?)(\\d+)", e);
+            int offset = std::stoi(number[2]);
+            if (number[1] == "-")
+            {
+              offset *= -1;
+            }
+            offsets.push_back(offset);
+          }
+        }
+        int index = exists_in_current_object(name);
+        std::vector<int> current_array_values;
+        for (int i = 0; i < offsets.size(); i++)
+        {
+          int current_value = 0;
+          if (index != -1)
+          {
+            current_value = current_object->variables().variable(index).value_array().value(i).value_int();
+            current_value = calculate_operation(current_value, "+", offsets[i]);
+            current_object->mutable_variables()->mutable_variable(index)->mutable_value_array()->mutable_value(i)->set_value_int(current_value);
+          }
+          else
+          {
+            current_value = calculate_operation(variable_numbers_array[name][i], "+", offsets[i]);
+            auto var = create_or_reuse_variable(name);
+            var->set_name(name);
+            var->mutable_value_array()->add_value()->set_value_int(current_value);
+          }
+          current_array_values.push_back(current_value);
+        }
+        variable_numbers_array[name] = current_array_values;
+        continue;
+      }
+    }
+    {
       if (is_substring(line, ",") == true && is_substring(line, "ObjFill") == false)
       {
         // example:
@@ -197,6 +246,7 @@ bool Cod_Parser::parse_file()
           std::vector<std::string> result = regex_search("(\\b(?!Objekt\\b)\\w+)\\s*:\\s*(.+)", line);
           if (result.size() > 0)
           {
+            std::vector<int> current_array_values;
             std::vector<std::string> values = split_by_delimiter(result[2], ",");
             for (auto& v : values)
             {
@@ -217,6 +267,7 @@ bool Cod_Parser::parse_file()
               if (check_type(v) == Cod_value_type::INT)
               {
                 arr->add_value()->set_value_int(std::stoi(v));
+                current_array_values.push_back(std::stoi(v));
               }
               else if (check_type(v) == Cod_value_type::FLOAT)
               {
@@ -232,6 +283,7 @@ bool Cod_Parser::parse_file()
                   if (var.Value_case() == cod_pb::Variable::ValueCase::kValueInt)
                   {
                     arr->add_value()->set_value_int(var.value_int());
+                    current_array_values.push_back(var.value_int());
                   }
                   else if (var.Value_case() == cod_pb::Variable::ValueCase::kValueFloat)
                   {
@@ -248,6 +300,7 @@ bool Cod_Parser::parse_file()
                 }
               }
             }
+            variable_numbers_array[result[1]] = current_array_values;
           }
         }
         continue;
