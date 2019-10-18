@@ -50,8 +50,8 @@ private:
   // Input/Output related functions
   bool read_file_as_string(const std::string& buffer);
   bool read_file(bool decode);
-  bool parse_file();
-  bool json();
+  void parse_file();
+  void json();
 
   // Object related functions
   cod_pb::Object* create_object(bool number_object, int spaces, bool add_to_stack);

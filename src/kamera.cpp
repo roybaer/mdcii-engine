@@ -357,7 +357,7 @@ void Kamera::zeichne_bild(Bildspeicher& bs, Welt& welt, int maus_x, int maus_y)
       inselfeld_t inselfeld;
       welt.feld_an_pos(inselfeld, x, y);
       feld_t feld;
-      int index = Insel::grafik_bebauung_inselfeld(feld, inselfeld, drehung, haeuser);
+      Insel::grafik_bebauung_inselfeld(feld, inselfeld, drehung, haeuser);
       if (feld.index != -1)
       {
         int bs_x, bs_y, bs_z;

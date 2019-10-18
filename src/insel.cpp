@@ -205,13 +205,13 @@ void Insel::inselfeld_bebauung(inselfeld_t& ziel, uint8_t x, uint8_t y)
   ziel.y_pos = yp;
 }
 
-int Insel::grafik_bebauung_inselfeld(feld_t& ziel, inselfeld_t& feld, uint8_t r, std::shared_ptr<Haeuser> haeuser)
+void Insel::grafik_bebauung_inselfeld(feld_t& ziel, inselfeld_t& feld, uint8_t r, std::shared_ptr<Haeuser> haeuser)
 {
   if (feld.bebauung == 0xffff)
   {
     ziel.index = -1;
     ziel.grundhoehe = 0;
-    return -1;
+    return;
   }
   auto info = haeuser->get_haus(feld.bebauung);
 
@@ -219,7 +219,7 @@ int Insel::grafik_bebauung_inselfeld(feld_t& ziel, inselfeld_t& feld, uint8_t r,
   {
     ziel.index = -1;
     ziel.grundhoehe = 0;
-    return -1;
+    return;
   }
   int grafik = info.value()->Gfx;
   int index = grafik;
@@ -255,7 +255,7 @@ void Insel::grafik_bebauung(feld_t& ziel, uint8_t x, uint8_t y, uint8_t r)
 {
   inselfeld_t feld;
   inselfeld_bebauung(feld, x, y);
-  int index = grafik_bebauung_inselfeld(ziel, feld, r, haeuser);
+  grafik_bebauung_inselfeld(ziel, feld, r, haeuser);
 }
 
 void Insel::bewege_wasser() // FIXME

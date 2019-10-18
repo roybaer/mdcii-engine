@@ -91,7 +91,7 @@ bool Cod_Parser::read_file_as_string(const std::string& buffer)
   return true;
 }
 
-bool Cod_Parser::parse_file()
+void Cod_Parser::parse_file()
 {
   std::map<std::string, int> variable_numbers;
   std::map<std::string, std::vector<int>> variable_numbers_array;
@@ -229,7 +229,6 @@ bool Cod_Parser::parse_file()
               if (tokens.size() > 0)
               {
                 int index = exists_in_current_object(tokens[4]);
-                int current_value = 0;
                 if (index != -1)
                 {
                   int arr_value = current_object->variables().variable(index).value_array().value(std::stoi(tokens[5])).value_int();
@@ -278,7 +277,6 @@ bool Cod_Parser::parse_file()
                 int i = constant_exists(v);
                 if (i != -1)
                 {
-                  cod_pb::Variable* variable;
                   auto var = get_variable(v);
                   if (var.Value_case() == cod_pb::Variable::ValueCase::kValueInt)
                   {
@@ -533,7 +531,7 @@ bool Cod_Parser::parse_file()
   // std::cout << variables.DebugString() << std::endl;
 }
 
-bool Cod_Parser::json()
+void Cod_Parser::json()
 {
   std::string json_string;
   google::protobuf::util::JsonPrintOptions options;
