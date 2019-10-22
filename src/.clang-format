@@ -19,7 +19,7 @@ SpaceInEmptyParentheses: 'false'
 Standard: Auto
 TabWidth: '8'
 SortIncludes: 'false'
-AlwaysBreakTemplateDeclarations: Yes
+AlwaysBreakTemplateDeclarations: 'true'
 AccessModifierOffset: '-2'
 AlignTrailingComments: 'true'
 Cpp11BracedListStyle: 'true'

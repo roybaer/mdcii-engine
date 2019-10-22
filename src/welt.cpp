@@ -22,6 +22,7 @@
 
 Welt::Welt(std::istream& f, std::shared_ptr<Haeuser> haeuser)
   : haeuser(haeuser)
+  , ani(0)
 {
   auto files = Files::instance();
 
@@ -151,7 +152,7 @@ Insel* Welt::insel_an_pos(uint16_t x, uint16_t y)
 
 void Welt::simulationsschritt()
 {
-  ani = (ani + 1) % 12;
+  ani = (ani + 1) % haeuser->get_haus(1201).value()->AnimAnz;
   for (Insel* insel : inseln)
   {
     insel->bewege_wasser();
@@ -190,7 +191,8 @@ void Welt::feld_an_pos(inselfeld_t& feld, int x, int y)
   {
     memset(&feld, 0, sizeof(inselfeld_t));
     feld.bebauung = 1201;
-    feld.ani = (0x80000000 + y + x * 3 + ani) % 12; // (12 == ani_schritte des Meeres);
+    auto info = haeuser->get_haus(feld.bebauung);
+    feld.ani = (0x80000000 + y + x * 3 + ani) % info.value()->AnimAnz;
   }
 }
 

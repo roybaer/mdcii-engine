@@ -241,7 +241,7 @@ void Insel::grafik_bebauung_inselfeld(feld_t& ziel, inselfeld_t& feld, uint8_t r
     case 2: index += (info.value()->Size.h - feld.y_pos - 1) * info.value()->Size.w + (info.value()->Size.w - feld.x_pos - 1); break;
     case 3: index += feld.x_pos * info.value()->Size.w + (info.value()->Size.w - feld.y_pos - 1); break;
   }
-  index += info.value()->Rotate * richtungen * (feld.ani % ani_schritte);
+  index += info.value()->Size.h * info.value()->Size.w * richtungen * (feld.ani % ani_schritte);
   ziel.index = index;
   int grundhoehe = 0;
   if (info.value()->Posoffs == 20)
@@ -271,7 +271,6 @@ void Insel::bewege_wasser() // FIXME
         auto info = haeuser->get_haus(feld.bebauung);
         if (info)
         {
-          int animAnz = 1;
           if (info.value()->AnimAnz > 0)
           {
             feld.ani = (feld.ani + 1) % (info.value()->AnimAnz);
